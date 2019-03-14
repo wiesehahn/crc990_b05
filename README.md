@@ -1,2 +1,5 @@
 # crc990_b05
-Research on land use patterns in Jambi within the CRC990 project
+Research on land use patterns in Jambi (group B package 5) within the CRC990 project (Collaborative Research Centre 990: Ecological and Socioeconomic Functions of Tropical Lowland Rainforest Transformation Systems (Sumatra, Indonesia))
+
+## ToDo
+- landuse/landcover classification (with SEPAL?)

@@ -1,0 +1,27 @@
+Ministry of Forestry, Melati (2017) I , Melati (2017) II , Melati (2017) III ,Stolle et al. (2003),Sambodo et al. (2018),Nurwanda et al. (2016),Ekadinata et al. (2011),this study
+Primary dryland forest ,NA,NA, Primary forest ,Natural vegetation,Forest,Forest,Forest, Primary forest 
+Primary swamp forest ,NA,NA, Primary forest ,Natural vegetation,Forest,Forest,Forest, Primary forest 
+Primary mangrove forest  ,NA,NA, Primary forest ,Natural vegetation,Forest,Forest,Forest, Primary forest 
+Secondary dryland forest , Secondary dryland forest , Secondary forest , Secondary forest ,Logged-over forest,Forest,Forest,Forest, Secondary forest
+Secondary swamp forest , Secondary swamp forest , Secondary forest , Secondary forest ,Logged-over forest,Forest,Forest,Forest, Secondary forest
+Secondary mangrove forest  ,  Secondary mangrove forest , Secondary forest , Secondary forest ,Logged-over forest,Mangrove + Shrubs with trees,Forest,Forest, Secondary forest
+Jungle rubber , Jungle rubber  , Jungle rubber  , Jungle rubber  ,Small-holder rubber,Rubber,Rubber,Rubber agroforest, Secondary forest
+Rubber Plantation , Rubber plantation  , Rubber plantation  , Rubber plantation   ,Rubber plantation,Rubber,Rubber,Monoculture rubber, Plantation forest
+Plantation forest , Plantation forest ,?, Plantation forest ,Tree crop mosaic,?,?,?, Plantation forest
+Oil palm plantation , Oil palm plantation  , Oil palm plantation  , Oil palm plantation , Oil palm plantation  ,Oil palm + Coconut plantations,Oil palm plantation,Oil palm plantation, Immature oil palm plantation
+Oil palm plantation , Oil palm plantation  , Oil palm plantation  , Oil palm plantation , Oil palm plantation  ,Oil palm + Coconut plantations,Oil palm plantation,Oil palm plantation, Mature oil palm plantation
+Oil palm plantation , Oil palm plantation  , Oil palm plantation  , Oil palm plantation ,Oil/rubber plantation,Oil palm + Coconut plantations,Oil palm plantation,Oil palm plantation, Mature oil palm plantation
+NA,NA,NA,NA,Coconut plantation,Oil palm + Coconut plantations,NA,NA, Coconut plantation
+Agriculture , Mixed dryland agriculture ,NA, Agriculture ,Tea plantation,Cropland,Mixed dryland agriculture ,NA, Tea plantation
+Agriculture , Mixed dryland agriculture ,NA, Agriculture ,Food crop mosaic,Cropland,Mixed dryland agriculture ,NA,NA
+Agriculture , Dryland agriculture ,NA, Agriculture ,Secondary/food mosaic,Cropland,Mixed dryland agriculture ,NA,NA
+Agriculture , Paddy field  ,NA, Agriculture ,Sawah or tidal rice,Cropland,NA,Rice field, Rice
+Shrub/bush , Shrub/bush  , Shrub/bush  , Shrub/bush ,Others,Shrub,Shrub,Shrub, Shrub/bush
+Swamp bush  , Swamp bush , Shrub/bush  , Shrub/bush ,Others,Shrub,Shrub,Shrub, Shrub/bush
+Bare land , Bare land , Bare land , Others ,Others,Bare soil,Bare land,Cleared land, Burned/Cleared
+Mining , Mining , Bare land , Others ,Others,Bare soil,Bare land,Cleared land, Burned/Cleared
+Water bodies , Water body  , Water body  , Others ,Others,Water,Water body,NA, Water
+Fishponds , Water body  , Water body  , Others ,Others,Water,Water body,NA, Water
+Transmigration areas , Settlement , Settlement , Others ,Others,Settlement,Built-up area,Settlement, Urban
+Airport , Settlement , Settlement , Others ,Others,Settlement,Built-up area,Settlement, Urban
+Settlements , Settlement , Settlement , Others ,Homesteads,Settlement,Built-up area,Settlement, Urban

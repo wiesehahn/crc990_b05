@@ -24,6 +24,7 @@ library(citr)
 library(viridis)
 library(kableExtra)
 library(readr)
+library(plotly)
 library(here)
 ```
 
@@ -301,18 +302,30 @@ print(rf_fit)
 ```
 
 
-
 ```{r gridsearch_result2, fig.cap= "Gridsearch result for number of predictor variables and minimal node size"}
-ggplot(data= rf_fit$results) + 
-  geom_line(aes(x=mtry, y=Accuracy, color= as.factor(min.node.size))) + 
-  geom_point(aes(x=mtry, y=Accuracy, color= as.factor(min.node.size)), size = 3) +
-  scale_color_viridis(discrete = TRUE, option = "D", name="Minimal Node Size") +
-  labs(x = "Randomly Selected Predictors",
-       y = "Accuracy (Cross-Validation)") +
-    theme_classic() +
-  theme(legend.position="bottom") 
+# ggplot(data= rf_fit$results) + 
+#   geom_line(aes(x=mtry, y=Accuracy, color= as.factor(min.node.size))) + 
+#   geom_point(aes(x=mtry, y=Accuracy, color= as.factor(min.node.size)), size = 3) +
+#   scale_color_viridis(discrete = TRUE, option = "D", name="Minimal Node Size") +
+#   labs(x = "Randomly Selected Predictors",
+#        y = "Accuracy (Cross-Validation)") +
+#     theme_classic() +
+#   theme(legend.position="bottom") 
+
+rf_fit$results %>%
+  plot_ly(x= ~mtry) %>%
+  add_trace(y = ~Accuracy, 
+            mode = 'lines+markers', 
+            color= ~ as.factor(min.node.size), colors = viridis_pal(option = "D")(3),
+            error_y = ~list(array = AccuracySD),
+            text = ~paste("Accuracy: ", Accuracy, "<br>AccuracySD:", AccuracySD) 
+            ) %>%
+  layout(xaxis = list(title="Randomly Selected Predictors"),
+         yaxis = list(title="Accuracy (Cross-Validation)")) 
 
 ```
+
+Differences are not very pronounced.
 
 -----------------
 
@@ -337,6 +350,7 @@ In model fitting a relative variable importance is calculated to give an impress
 ```{r gridsearch_importance, fig.cap= "Relative variable importance"}
 # variable importance
 imp <- varImp(rf_fit)
+
 plot(imp)
 ```
 
@@ -439,8 +453,11 @@ if (file.exists(filename)){
 
 The best model in regards to predictor variables uses 18 out of 19 variables, all except for *VV_variance*. However, one can see that the model performs equally good with less predictor variables.
 ```{r rfe_result2, echo=FALSE, fig.cap= "Model performance by number of features evaluated with Recursive Feature Elimitaion"}
-ggplot(rfProfile) + theme_classic()
+#ggplot(rfProfile) + theme_classic()
+plot_ly(rfProfile$resample, y = ~Accuracy, color = ~as.factor(Variables), colors= viridis_pal(option = "D")(19), type = "box")
+ 
 ```
+
 
 **Chosen variables**
 
@@ -585,11 +602,18 @@ knitr::include_graphics(here("output_data/img/reference/problems/ge_bad-scene.jp
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.358113,102.9531757,4277m/data=!3m1!1e3)
 
+For a lot of areas in Jambi there is no appropriate reference image available. Problems, among others, are:  
+- no high resolution imagery is available  
+- high resolution imagery is covered by clouds  
+- last appropriate image is severeal years old  
+
 #### land-use mosaic 1 {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics(here("output_data/img/reference/problems/ge_mosaic1.jpg"))
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.1448537,104.1225995,1069m/data=!3m1!1e3)
+
+In many regions of Jambi province, the lulc-pattern is very heterogenious with many different classes densely mixed. In these cases it is hard to collect reference data because lulc areas covered by a single class are very small and chances are high to receive backscatter of mixed classes.
 
 #### land-use mosaic 2 {-}
 ```{r, echo=FALSE, out.width = "100%"}
@@ -597,11 +621,22 @@ knitr::include_graphics(here("output_data/img/reference/problems/ge_mosaic2.jpg"
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.7708193,101.2165027,881m/data=!3m1!1e3)
 
+In some cases lulc classes are devided by other classes (e.g. intercropped with trees) which also makes it more difficult to collect proper reference data.
+
 #### similar appearance {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics(here("output_data/img/reference/problems/ge_plantation.jpg"))
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.396042,102.7611715,935m/data=!3m1!1e3)
+
+Some classes are hard to differentiate from each other in aerial images. For example:  
+- Primary forest - Secondary forest  
+- Secondary forest - Plantation forest  
+- Oil palm plantation - Coconut plantation  
+
+### Processing
+
+Although most processing steps were done in Google Earth Engine, using high performance server clusters via cloud computing, calculations were problematic. For the calculations vast amounts of data had to be processed. The area of interest (Jambi) is quite large covering many image tiles, for each tile data from almost 2 years was processed from different sources (Sentinel-1 and Sentinel-2) in many steps. Due to these complex processing steps calculations were aborted (timed-out) from time to time and other calculations took several days to complete before results could be evaluated and following steps could be initiated. 
 
 
 -----------------

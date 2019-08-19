@@ -576,7 +576,7 @@ A classifier was then trained on this data with its output mode set to probabili
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics(here("output_data/img/presentation/certainty.jpg"))
 ```
-[see in GEE](https://code.earthengine.google.com/76be374763dd5b9172f918325acdcde3)
+[see in GEE](https://code.earthengine.google.com/ae39bc061d4b551c20720a432d7b02e9)
 
 -----------------
 
@@ -585,9 +585,7 @@ knitr::include_graphics(here("output_data/img/presentation/certainty.jpg"))
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics(here("output_data/img/presentation/results_banner.jpg"))
 ```
-[see in GEE](https://code.earthengine.google.com/d4073c3f3877d2c772d44a61e42580b6)
-
-
+[see in GEE](https://code.earthengine.google.com/f928cbe0eb9c6679c3fad8efb428306e)
 -----------------
 
 # Problems 

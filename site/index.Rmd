@@ -1,5 +1,34 @@
 ---
-title: "My Website"
+title: "CRC990 B05"
 ---
 
-Hello, Website!
+Poject 
+
+### Collaborative Research Centre 990:{-}
+
+#### Ecological and Socioeconomic Functions of Tropical Lowland Rainforest Transformation Systems (Sumatra, Indonesia) (Phase 2: 2016 - 2019){-}
+
+Group 
+
+### Project Group B{-}
+
+#### Biota and ecosystem services{-}
+
+Workpackage
+
+### B05{-}
+
+#### Land use patterns in Jambi - quantification of structure, heterogeneity and changes of vegetation and land use as a basis for the explanation of ecological and socioeconomic functions{-}
+
+
+-----------------
+
+The objective of this study is to analyse recent land-use and land-cover (lulc) patterns in Jambi Province, Indonesia.  
+
+Leading research questions are:  
+- Is it possible to detect land-use and land-cover types with appropriate accuracy?  
+- Is a combination of Sentinel platforms (1+2) useful?  
+- Which area is covered by oil palm plantations?  
+- How do these areas change and what are the hotspots?  
+- Are there still some intact forest landscapes left?  
+

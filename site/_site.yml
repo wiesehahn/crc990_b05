@@ -3,7 +3,7 @@ output_dir: "../docs"
 navbar:
   title: "Mapping Jambi"
   left:
-    - text: "Home"
+    - text: "About"
       href: index.html
     - text: "Workflow"
       href: project_overview.html

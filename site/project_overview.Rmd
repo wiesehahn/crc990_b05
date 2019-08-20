@@ -76,11 +76,11 @@ knitr::include_graphics("https://secure.gravatar.com/avatar/d466c4c764058f633599
 ```
 &emsp;&emsp; `r icon::fa("angle-double-right", size = 2)` &emsp;
 ```{r, echo=FALSE, out.width = "75px"}
-knitr::include_graphics("https://banner2.kisspng.com/20180218/khe/kisspng-rstudio-macos-clip-art-r-5a89b3da0b6081.4779308415189739140466.jpg")
+knitr::include_graphics("https://www.zwodnik.com/media/cache/e9/84/e9846013e4388ce0708810344fef7b4c.png")
 ```
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `r icon::fa("angle-double-right", size = 2)` &emsp;
-```{r, echo=FALSE, out.width = "75px"}
-knitr::include_graphics("https://www.gislounge.com/wp-content/uploads/2018/06/google-earth-engine.jpg")
+```{r, echo=FALSE, out.width = "150px"}
+knitr::include_graphics("https://static1.squarespace.com/static/56df0fad746fb9352d1fc4de/t/5ab02ac76d2a73ff3a9380e4/1521494491356/?format=1500w")
 ```
 
 

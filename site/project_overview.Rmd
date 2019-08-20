@@ -72,11 +72,11 @@ knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/out
 ```
 `r icon::fa("plus")`
 ```{r, echo=FALSE, out.width = "50px"}
-knitr::include_graphics(here("https://github.com/wiesehahn/crc990_b05/tree/master/output_data/img/presentation/logo_bing-maps.png"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/tree/master/output_data/img/presentation/logo_bing-maps.png")
 ```
 &emsp;&emsp; `r icon::fa("angle-double-right", size = 2)` &emsp;
 ```{r, echo=FALSE, out.width = "75px"}
-knitr::include_graphics(here("output_data/img/presentation/logo_r.png"))
+knitr::include_graphics("./output_data/img/presentation/logo_r.png")
 ```
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `r icon::fa("angle-double-right", size = 2)` &emsp;
 ```{r, echo=FALSE, out.width = "75px"}

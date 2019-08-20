@@ -1,0 +1,25 @@
+name: "crc990_b05"
+output_dir: "../docs"
+navbar:
+  title: "Mapping Jambi"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Workflow"
+      href: project_overview.html
+    - text: "Google Earth Engine"
+      icon: fa-code
+      href: ee_scripts.html
+output: 
+  html_document:
+    highlight: kate
+    fig_caption: yes
+    theme: paper
+    code_folding: hide
+    toc: true
+    toc_float: true
+    collapsed: false 
+    number_sections: true
+    css: style.css
+    includes:
+      after_body: footer.html

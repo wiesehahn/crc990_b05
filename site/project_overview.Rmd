@@ -1,0 +1,632 @@
+---
+title: "Workflow"
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(citr)
+library(viridis)
+library(kableExtra)
+library(readr)
+library(plotly)
+library(here)
+```
+
+Work as part of the [*Collaborative Research Centre 990: Ecological and Socioeconomic Functions of Tropical Lowland Rainforest Transformation Systems (Sumatra, Indonesia)*](https://www.uni-goettingen.de/en/310995.html)
+
+*Project Group B - Biota and ecosystem services*
+
+*B05 - Land use patterns in Jambi - quantification of structure, heterogeneity and changes of vegetation and land use as a basis for the explanation of ecological and socioeconomic functions*
+
+-----------------
+
+# Introduction
+
+
+## Previous studies
+
+Many studies attempted to produce land-use/land-cover maps for Jambi province. Nevertheless, these maps do not meet project demands for different reasons:
+
+- do not cover entire province 
+- classes are delineated visually with coarse resolution
+- are outdated
+
+e.g. [@Ekadinata2011; @Melati2017; @Nurwanda2016; @SooChinLiew2003]
+
+-----------------
+
+## Objectives of this study
+
+In order to serve as reference for further research questions in the project a number of demands have been defined, the produced map should:
+
+- cover the entire province
+- be up-to-date (ideally 2018/19)
+- have similar classes to other classifications to make it comparable
+- have a focus on oil palm plantations
+- have a reasonable accuracy
+
+Ideally a similar map with same classes can be produced for past years to:
+
+- enable change analysis
+- detect hotspots of forest conversion
+- make predictions for future development
+
+
+-----------------
+
+# Methods
+
+The classification process is done with Google Earth Engine and R. While the reference data was delineated in GEE, images from Bing Maps and Google Earth Pro were also used for visual interpretation of lulc-classes. As model tuning is not possible in GEE the reference data was exported to R in order to find the best model parameters. The classification itself was then done in GEE, using model parameters defined in R. 
+
+Reference Data | Model Tuning | Classification
+--- | --- | ---
+
+
+```{r, echo=FALSE, out.width = "75px"}
+knitr::include_graphics("../output_data/img/presentation/logo_earth-engine.png")
+```
+`r icon::fa("plus")`
+```{r, echo=FALSE, out.width = "50px"}
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/logo_google-earth-pro.png?raw=true")
+```
+`r icon::fa("plus")`
+```{r, echo=FALSE, out.width = "50px"}
+knitr::include_graphics(here("https://github.com/wiesehahn/crc990_b05/tree/master/output_data/img/presentation/logo_bing-maps.png"))
+```
+&emsp;&emsp; `r icon::fa("angle-double-right", size = 2)` &emsp;
+```{r, echo=FALSE, out.width = "75px"}
+knitr::include_graphics(here("output_data/img/presentation/logo_r.png"))
+```
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `r icon::fa("angle-double-right", size = 2)` &emsp;
+```{r, echo=FALSE, out.width = "75px"}
+knitr::include_graphics(here("output_data/img/presentation/logo_earth-engine.png"))
+```
+
+
+-----------------
+
+## Reference Data
+
+### LuLc-Classes in previous studies
+
+Previous studies on land-cover and land-use in Jambi used different classification keys. Some classes were classified in sub-categories in other studies, while other classes were merged or were not assessed.  
+@Melati2017 used different classification schemes for different purposes (areas) by merging the 22 classes differentiated by the Ministry of Forestry. @Stolle2003 also used many classes, while @Sambodo2018, @Nurwanda2016, and @Ekadinata2011 merged some of the classes into broarder categories. 
+
+```{r read_classes, message=FALSE, warning=FALSE}
+classes <- read_csv(here("raw_data/classification-classes.csv"), na = "NA")
+dt_classes <- classes 
+
+names(dt_classes)[1] <- paste0(names(dt_classes)[1], 
+                                footnote_marker_symbol(1))
+dt_classes %>%
+  kable(escape = F) %>%
+  kable_styling(bootstrap_options = c("hover", "condensed", "responsive"), font_size = 12, fixed_thead = T) %>%
+  column_spec(1:9, width_min = "15em", italic = TRUE) %>%
+  collapse_rows(columns = 1:9, valign = "top") %>%
+  scroll_box(width = "100%") %>%
+  footnote(symbol =  "as used in Melati (2017)" )
+
+```
+
+-----------------
+
+### LuLc-Classes in this study {.tabset .tabset-pills}
+
+As @Melati2017 suggests oil palm plantations were differentiated in mature and immature plantations.
+Class Rubber was not classified seperately since other studies had no success trying this (e.g. @Melati2017) and because rubber trees could not be differentiated visually in high resolution imagery for reference data creation.
+
+#### water {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_water.jpg"))
+```
+
+#### primary forest {-} 
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_primary-forest.jpg"))
+```
+
+#### secondary forest {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_secondary-forest.jpg"))
+```
+
+#### oilpalm mature {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_oilpalm-mature.jpg"))
+```
+
+#### oilpalm immature {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_oilpalm-immature.jpg"))
+```
+
+#### bush shrub {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_bush-shrub.jpg"))
+```
+
+#### plantation forest {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_plantation-forest.jpg"))
+```
+
+#### burned cleared {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_burned-cleared.jpg"))
+```
+
+#### urban buildings {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_urban-buildings.jpg"))
+```
+
+#### coconut plantation {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_coconut-plantation.jpg"))
+```
+
+#### rice {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_rice.jpg"))
+```
+
+#### tea plantation {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/examples/ge_tea-plantation.jpg"))
+```
+
+
+
+### Data collection
+
+Reference data is delineated in GEE with support of high resolution imagery from GE Pro and Bing Maps. The following conditions were met for data collection:
+
+- medium to large sized polygons   
+*(more efficient but also less distributed with higher intracorrelation)*  
+- cover only one lulc-class  
+*(avoid mixed pixels and false references)*
+- based on high quality images from 2018/19  
+*(up-to-date mapping)*
+- have a low chance of further lulc-changes recently  
+*(avoid false references from changed classes)*
+- distributed in the entire region  
+*(cover regional variability)*
+
+
+```{r figs, echo=FALSE, out.width = "100%", fig.cap = "sample of reference data collected in GEE"}
+knitr::include_graphics(here("output_data/img/presentation/reference_banner.jpg"))
+```
+[see in GEE](https://code.earthengine.google.com/5a3241a7c5d90f1670bf1b3c910ca701)
+
+-----------------
+
+## Classification
+
+A supervised classification algorithm with good performance should be used in combination with good predictor variables.
+
+**input variables**
+
+A combination of Sentinel-1 (radar) and Sentinel-2 (optical) imagery is used
+
+**classification model**
+
+Decision tree models are used widely for classification problems, preliminary tests indicated that Random Forest (RF) algorithm performed better than Classification And Regression Trees (CART). Hence, a RF model was trained to classify Land-use and Land-cover.
+
+**classification key**
+
+-----------------
+
+### Model Tuning
+
+
+#### Gridsearch Results
+
+```{r read, message=FALSE, warning=FALSE}
+library(readr)
+library(tidyverse)
+library(caret)
+library(kableExtra)
+
+# read reference data exported by google earth engine
+ref <- read_csv(here("raw_data/reference/stratified-reference_20190521.csv"),
+                col_types = cols(.geo = col_skip(), 
+                                 class = col_factor(levels = c("0", "1", "2", "3", "4", "5", "6", "7", "8", "10", "11", "12")), 
+                                 latitude_209564535 = col_skip(), 
+                                 longitude_209564535 = col_skip(), 
+                                 `system:index` = col_skip()))
+
+# split in train and test data
+index <- createDataPartition(y = ref$class, p = .7, list = FALSE)
+training <- ref[index, ]
+testing <- ref[-index, ]
+```
+
+
+```{r gridsearch}
+# create random forest model
+filename = here("output_data/model/rf_fit.rds")
+if (file.exists(filename)){
+  
+  rf_fit <- readRDS(filename)
+  
+} else{
+  
+  # specify that the resampling method is 
+  fit_control <- trainControl(## 10-fold CV
+    method = "cv",
+    number = 10)
+  
+  # define a grid of parameter options to try
+  rf_grid <- expand.grid(mtry = c(2, 3, 4, 6, 8),
+                         splitrule = c("gini"),
+                         min.node.size = c(1, 5, 10))
+  
+  # run a random forest model
+  set.seed(825)
+  library(doParallel)
+  cl <- makePSOCKcluster(4)
+  registerDoParallel(cl)
+  
+  # fit the model with the parameter grid
+  rf_fit <- train(class ~ ., 
+                  data = training, 
+                  method = "ranger",
+                  importance = "impurity" ,
+                  trControl = fit_control,
+                  # provide a grid of parameters
+                  tuneGrid = rf_grid)
+  
+  stopCluster(cl)
+  
+  # save model
+  saveRDS(rf_fit, filename)
+  
+}
+```
+
+
+```{r gridsearch_result}
+print(rf_fit)
+```
+
+
+```{r gridsearch_result2, fig.cap= "Gridsearch result for number of predictor variables and minimal node size"}
+# ggplot(data= rf_fit$results) + 
+#   geom_line(aes(x=mtry, y=Accuracy, color= as.factor(min.node.size))) + 
+#   geom_point(aes(x=mtry, y=Accuracy, color= as.factor(min.node.size)), size = 3) +
+#   scale_color_viridis(discrete = TRUE, option = "D", name="Minimal Node Size") +
+#   labs(x = "Randomly Selected Predictors",
+#        y = "Accuracy (Cross-Validation)") +
+#     theme_classic() +
+#   theme(legend.position="bottom") 
+
+rf_fit$results %>%
+  plot_ly(x= ~mtry) %>%
+  add_trace(y = ~Accuracy, 
+            mode = 'lines+markers', 
+            color= ~ as.factor(min.node.size), colors = viridis_pal(option = "D")(3),
+            error_y = ~list(array = AccuracySD),
+            text = ~paste("Accuracy: ", Accuracy, "<br>AccuracySD:", AccuracySD) 
+            ) %>%
+  layout(xaxis = list(title="Randomly Selected Predictors"),
+         yaxis = list(title="Accuracy (Cross-Validation)")) 
+
+```
+
+Differences are not very pronounced.
+
+-----------------
+
+#### Model Simplification
+
+simplest model with high accuracy (max 2% difference to best model)
+
+```{r gridsearch_result3}
+# get simplest model with similar accuracy
+whichTwoPct <- tolerance(rf_fit$results, metric = "Accuracy", 
+                         tol = 2, maximize = TRUE)  
+
+rf_fit$results[whichTwoPct,]
+```
+
+-----------------
+
+#### Variable Importance
+
+In model fitting a relative variable importance is calculated to give an impression which predictor variables are valuable and which are less valuable for the prediction process. Nevertheless, correlation between variables is not taken into account.
+
+```{r gridsearch_importance, fig.cap= "Relative variable importance"}
+# variable importance
+imp <- varImp(rf_fit)
+
+plot(imp)
+```
+
+-----------------
+
+#### Model Validation
+
+The validation data is classified with the best model obtained by gridsearch. Its confusion matrix is calculated as a value of prediction accuracy.
+
+<br>
+
+**Error Matrix**
+```{r gridsearch_validation}
+# validation
+testing.pred <- predict(rf_fit, newdata = testing[1:19], probability= F)
+cm<- confusionMatrix(data = testing.pred, reference = testing$class)
+
+cm.df <- as.data.frame.matrix(cm$table)
+
+cm.df %>%
+  
+  mutate_all(~ifelse(. > max(cm.df[1:12])*0.75,
+                  cell_spec(., "html", color = "white", bold = T, background = "green"),
+                  ifelse(. > 0,
+                         cell_spec(., color = "white", bold = T, background = spec_color(., option = "A", direction= -1, begin = 0.3, scale_from = c(0,53))),
+                         cell_spec(., "html", color = "grey")
+                         )
+                  )
+             ) %>%
+  
+  mutate(class = cell_spec(c("water - 0","primary forest - 1","secondary forest - 2","mature oilpalm - 3", "immature oilpalm - 4","shrubland - 5","plantation forest - 6","burned / cleared - 7","urban buildings - 8","coconut plantation - 10","rice - 11","tea plantation - 12"), "html",bold = T)) %>%
+  select(class, everything(.)) %>%
+  kable("html", escape = F, rownames = T, align=c('r', rep('c', 12))) %>%
+  kable_styling("hover", full_width = F)
+```
+
+<br>
+
+**Respective Accuracy**
+```{r, message=FALSE, warning=FALSE}
+print(cm$overall[1:4])
+```
+
+-----------------
+
+### Feature Selection
+
+To further simplify the prediction model a Recursive Feature Elimitaion (rfe) is applied. This will eliminate worst performing predictor variables (chosen by importance) at each step and keep the best performing variables.
+
+```{r rfe, message=FALSE, warning=FALSE}
+# perform reverse feature selection with all variables
+filename = here("output_data/model/rfProfile_all.rds")
+if (file.exists(filename)){
+  
+  rfProfile <- readRDS(filename)
+  
+  } else{
+    # normalize data
+    training_recipe <- recipe(class ~ ., data = training) %>%
+      step_center(all_predictors()) %>%
+      step_scale(all_predictors()) %>%
+      step_nzv(all_predictors()) 
+    
+    train_prepped <- 
+      training_recipe %>% 
+      prep(training) %>% 
+      juice()
+    
+    # number of features to test
+    subsets <- c(1:19)
+    
+    training_ctrl <- rfeControl(
+      method = "repeatedcv",
+      repeats = 5,
+      functions = rfFuncs, 
+      returnResamp = "all"
+    )
+    
+    library(doParallel)
+    cl <- makePSOCKcluster(4)
+    registerDoParallel(cl)
+    
+    rfProfile <- rfe(x = train_prepped %>% dplyr::select(-class),
+                     y = train_prepped$class,
+                     sizes = subsets,
+                     metric = "Accuracy",
+                     rfeControl = training_ctrl)
+    
+    stopCluster(cl)
+    
+    # save model
+    saveRDS(rfProfile, filename)
+    
+    }
+```
+
+-----------------
+
+#### Number of Features
+
+The best model in regards to predictor variables uses 18 out of 19 variables, all except for *VV_variance*. However, one can see that the model performs equally good with less predictor variables.
+```{r rfe_result2, echo=FALSE, fig.cap= "Model performance by number of features evaluated with Recursive Feature Elimitaion"}
+#ggplot(rfProfile) + theme_classic()
+plot_ly(rfProfile$resample, y = ~Accuracy, color = ~as.factor(Variables), colors= viridis_pal(option = "D")(19), type = "box")
+ 
+```
+
+
+**Chosen variables**
+
+```{r rfe_result, echo=FALSE}
+print(predictors(rfProfile)) # chosen predictors
+```
+
+-----------------
+
+#### Model Simplification
+
+To simplify the model without loosing prediction accuracy we search for a model with less predictor variables, which has the same accury (max 2 % difference in accuracy).
+
+```{r rfe_result3, echo=FALSE}
+# get simplest model with similar accuracy
+whichTwoPct <- tolerance(rfProfile$results, metric = "Accuracy", 
+                         tol = 2, maximize = TRUE)  
+var_num <- rfProfile$results[whichTwoPct,"Variables"]
+rfProfile$results[whichTwoPct,]
+
+```
+
+A model using the following 8 prediction variables instead of all 18 variables has almost the same accuracy.
+
+```{r rfe_result4}
+selectedVars <- rfProfile$variables
+bestVar <- rfProfile$control$functions$selectVar(selectedVars, var_num)
+bestVar
+```
+
+-----------------
+
+### Final Model
+
+Using the results from previous analysis we train a model with best performing predictor variables and model-hyperparameters. 
+
+The predictor variables are:
+
+* VH
+* B5
+* VV:VH
+* B11
+* VV
+* B12
+* NBRI
+* NDVI
+
+The hyperparameters are:
+
+* Number of variables to possibly split at in each node (mtry) = 2
+* Minimal node size = 1
+* Number of trees = 500 (this was not optimized, as more trees usually give better results)
+
+-----------------
+
+#### Model Validation
+
+Applying the final model to the validation data set the error matrix looks like this. 
+
+<br>
+
+**Error Matrix**
+```{r rfe_result5, message=FALSE, warning=FALSE}
+library(ranger)
+
+f <- as.formula(paste("class", paste(bestVar, collapse=" + "), sep=" ~ "))
+
+simpler_model <- ranger(formula = f, 
+                        data = training,
+                        num.trees = 500, 
+                        mtry = 2,
+                        min.node.size = 1,
+                        importance = "impurity")
+
+testing.pred <- predict(simpler_model, testing)
+
+cm<- confusionMatrix(data = testing.pred$predictions, reference = testing$class)
+
+cm.df <- as.data.frame.matrix(cm$table)
+
+cm.df %>%
+  
+  mutate_all(~ifelse(. > max(cm.df[1:12])*0.5,
+                  cell_spec(., "html", color = "white", bold = T, background = "green"),
+                  ifelse(. > 0,
+                         cell_spec(., color = "white", bold = T, background = spec_color(., option = "A", direction= -1, begin = 0.3, scale_from = c(0,53))),
+                         cell_spec(., "html", color = "grey")
+                         )
+                  )
+             ) %>%
+  
+ mutate(class = cell_spec(c("water - 0","primary forest - 1","secondary forest - 2","mature oilpalm - 3", "immature oilpalm - 4","shrubland - 5","plantation forest - 6","burned / cleared - 7","urban buildings - 8","coconut plantation - 10","rice - 11","tea plantation - 12"), "html",bold = T)) %>%
+  select(class, everything(.)) %>%
+  kable("html", escape = F, rownames = T, align=c('r', rep('c', 12))) %>%
+  kable_styling("hover", full_width = F) 
+
+```
+
+<br>
+
+**Respective Accuracy**
+```{r rfe_result6, message=FALSE, warning=FALSE}
+print(cm$overall[1:4])
+```
+
+### Classification Reliability
+
+The model validation provides us with values for overall model performance, but cannot give us regional performance values.
+Therefore a second classification was produced to inform about per pixel classification certainty. Since classification probability can only be calculated for a two-class classifier and the project focus is put on oilpalm plantations, the lulc-classes in the training dataset were merged into following classes: 
+
+1. **Oilpalm plantation (mature and immature)** 
+2. **other classes**
+
+A classifier was then trained on this data with its output mode set to probability.
+
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/presentation/certainty.jpg"))
+```
+[see in GEE](https://code.earthengine.google.com/ae39bc061d4b551c20720a432d7b02e9)
+
+-----------------
+
+# Results
+
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/presentation/results_banner.jpg"))
+```
+[see in GEE](https://code.earthengine.google.com/f928cbe0eb9c6679c3fad8efb428306e)
+-----------------
+
+# Problems 
+
+## Classification
+
+### reference data {.tabset .tabset-pills}
+
+#### bad image quality {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/problems/ge_bad-scene.jpg"))
+```
+[see in Google Maps](https://www.google.com/maps/@-1.358113,102.9531757,4277m/data=!3m1!1e3)
+
+For a lot of areas in Jambi there is no appropriate reference image available. Problems, among others, are:  
+- no high resolution imagery is available  
+- high resolution imagery is covered by clouds  
+- last appropriate image is severeal years old  
+
+#### land-use mosaic 1 {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/problems/ge_mosaic1.jpg"))
+```
+[see in Google Maps](https://www.google.com/maps/@-1.1448537,104.1225995,1069m/data=!3m1!1e3)
+
+In many regions of Jambi province, the lulc-pattern is very heterogenious with many different classes densely mixed. In these cases it is hard to collect reference data because lulc areas covered by a single class are very small and chances are high to receive backscatter of mixed classes.
+
+#### land-use mosaic 2 {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/problems/ge_mosaic2.jpg"))
+```
+[see in Google Maps](https://www.google.com/maps/@-1.7708193,101.2165027,881m/data=!3m1!1e3)
+
+In some cases lulc classes are devided by other classes (e.g. intercropped with trees) which also makes it more difficult to collect proper reference data.
+
+#### similar appearance {-}
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics(here("output_data/img/reference/problems/ge_plantation.jpg"))
+```
+[see in Google Maps](https://www.google.com/maps/@-1.396042,102.7611715,935m/data=!3m1!1e3)
+
+Some classes are hard to differentiate from each other in aerial images. For example:  
+- Primary forest - Secondary forest  
+- Secondary forest - Plantation forest  
+- Oil palm plantation - Coconut plantation  
+
+### Processing
+
+Although most processing steps were done in Google Earth Engine, using high performance server clusters via cloud computing, calculations were problematic. For the calculations vast amounts of data had to be processed. The area of interest (Jambi) is quite large covering many image tiles, for each tile data from almost 2 years was processed from different sources (Sentinel-1 and Sentinel-2) in many steps. Due to these complex processing steps calculations were aborted (timed-out) from time to time and other calculations took several days to complete before results could be evaluated and following steps could be initiated. 
+
+
+-----------------
+
+# References
+

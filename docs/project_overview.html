@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Workflow</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.8.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.39.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.39.2/plotly-latest.min.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #ffffff; color: #1f1c1b; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; background-color: #ffffff; color: #a0a0a0; border-right: 1px solid #a0a0a0; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #1f1c1b; background-color: #ffffff; }
+code > span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code > span.dt { color: #0057ae; } /* DataType */
+code > span.dv { color: #b08000; } /* DecVal */
+code > span.bn { color: #b08000; } /* BaseN */
+code > span.fl { color: #b08000; } /* Float */
+code > span.cn { color: #aa5500; } /* Constant */
+code > span.ch { color: #924c9d; } /* Char */
+code > span.sc { color: #3daee9; } /* SpecialChar */
+code > span.st { color: #bf0303; } /* String */
+code > span.vs { color: #bf0303; } /* VerbatimString */
+code > span.ss { color: #ff5500; } /* SpecialString */
+code > span.im { color: #ff5500; } /* Import */
+code > span.co { color: #898887; } /* Comment */
+code > span.do { color: #607880; } /* Documentation */
+code > span.an { color: #ca60ca; } /* Annotation */
+code > span.cv { color: #0095ff; } /* CommentVar */
+code > span.ot { color: #006e28; } /* Other */
+code > span.fu { color: #644a9b; } /* Function */
+code > span.va { color: #0057ae; } /* Variable */
+code > span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #1f1c1b; } /* Operator */
+code > span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code > span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code > span.pp { color: #006e28; } /* Preprocessor */
+code > span.at { color: #0057ae; } /* Attribute */
+code > span.re { color: #0057ae; } /* RegionMarker */
+code > span.in { color: #b08000; } /* Information */
+code > span.wa { color: #bf0303; } /* Warning */
+code > span.al { color: #bf0303; font-weight: bold; } /* Alert */
+code > span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code > span. { color: #1f1c1b; } /* Normal */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Mapping Jambi</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="project_overview.html">Workflow</a>
+</li>
+<li>
+  <a href="ee_scripts.html">
+    <span class="fa fa-code"></span>
+     
+    Google Earth Engine
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Workflow</h1>
+
+</div>
+
+
+<p>Work as part of the <a href="https://www.uni-goettingen.de/en/310995.html"><em>Collaborative Research Centre 990: Ecological and Socioeconomic Functions of Tropical Lowland Rainforest Transformation Systems (Sumatra, Indonesia)</em></a></p>
+<p><em>Project Group B - Biota and ecosystem services</em></p>
+<p><em>B05 - Land use patterns in Jambi - quantification of structure, heterogeneity and changes of vegetation and land use as a basis for the explanation of ecological and socioeconomic functions</em></p>
+<hr />
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<div id="previous-studies" class="section level2">
+<h2><span class="header-section-number">1.1</span> Previous studies</h2>
+<p>Many studies attempted to produce land-use/land-cover maps for Jambi province. Nevertheless, these maps do not meet project demands for different reasons:</p>
+<ul>
+<li>do not cover entire province</li>
+<li>classes are delineated visually with coarse resolution</li>
+<li>are outdated</li>
+</ul>
+<p>e.g. <span class="citation">(Ekadinata and Vincent 2011; Melati 2017; Nurwanda, Zain, and Rustiadi 2016; Soo Chin Liew, Chew Wai Chang, and Kim Hwa Lim 2003)</span></p>
+<hr />
+</div>
+<div id="objectives-of-this-study" class="section level2">
+<h2><span class="header-section-number">1.2</span> Objectives of this study</h2>
+<p>In order to serve as reference for further research questions in the project a number of demands have been defined, the produced map should:</p>
+<ul>
+<li>cover the entire province</li>
+<li>be up-to-date (ideally 2018/19)</li>
+<li>have similar classes to other classifications to make it comparable</li>
+<li>have a focus on oil palm plantations</li>
+<li>have a reasonable accuracy</li>
+</ul>
+<p>Ideally a similar map with same classes can be produced for past years to:</p>
+<ul>
+<li>enable change analysis</li>
+<li>detect hotspots of forest conversion</li>
+<li>make predictions for future development</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="methods" class="section level1">
+<h1><span class="header-section-number">2</span> Methods</h1>
+<p>The classification process is done with Google Earth Engine and R. While the reference data was delineated in GEE, images from Bing Maps and Google Earth Pro were also used for visual interpretation of lulc-classes. As model tuning is not possible in GEE the reference data was exported to R in order to find the best model parameters. The classification itself was then done in GEE, using model parameters defined in R.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Reference Data</th>
+<th>Model Tuning</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><img src="../output_data/img/presentation/logo_earth-engine.png" width="75px" /> <i class="fas  fa-plus "></i> <img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/logo_google-earth-pro.png?raw=true" width="50px" /> <i class="fas  fa-plus "></i> <img src="F:/projects/crc990_b05/https://github.com/wiesehahn/crc990_b05/tree/master/output_data/img/presentation/logo_bing-maps.png" width="50px" />    <i class="fas  fa-angle-double-right fa-2x "></i>   <img src="F:/projects/crc990_b05/output_data/img/presentation/logo_r.png" width="75px" />          <i class="fas  fa-angle-double-right fa-2x "></i>   <img src="F:/projects/crc990_b05/output_data/img/presentation/logo_earth-engine.png" width="75px" /></p>
+<hr />
+<div id="reference-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> Reference Data</h2>
+<div id="lulc-classes-in-previous-studies" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> LuLc-Classes in previous studies</h3>
+<p>Previous studies on land-cover and land-use in Jambi used different classification keys. Some classes were classified in sub-categories in other studies, while other classes were merged or were not assessed.<br />
+<span class="citation">Melati (2017)</span> used different classification schemes for different purposes (areas) by merging the 22 classes differentiated by the Ministry of Forestry. <span class="citation">Stolle et al. (2003)</span> also used many classes, while <span class="citation">Sambodo and Indriasari (2018)</span>, <span class="citation">Nurwanda, Zain, and Rustiadi (2016)</span>, and <span class="citation">Ekadinata and Vincent (2011)</span> merged some of the classes into broarder categories.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">classes &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;raw_data/classification-classes.csv&quot;</span>), <span class="dt">na =</span> <span class="st">&quot;NA&quot;</span>)
+dt_classes &lt;-<span class="st"> </span>classes 
+
+<span class="kw">names</span>(dt_classes)[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">names</span>(dt_classes)[<span class="dv">1</span>], 
+                                <span class="kw">footnote_marker_symbol</span>(<span class="dv">1</span>))
+dt_classes <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable</span>(<span class="dt">escape =</span> F) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="kw">c</span>(<span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>, <span class="st">&quot;responsive&quot;</span>), <span class="dt">font_size =</span> <span class="dv">12</span>, <span class="dt">fixed_thead =</span> T) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">column_spec</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dt">width_min =</span> <span class="st">&quot;15em&quot;</span>, <span class="dt">italic =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">collapse_rows</span>(<span class="dt">columns =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, <span class="dt">valign =</span> <span class="st">&quot;top&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">scroll_box</span>(<span class="dt">width =</span> <span class="st">&quot;100%&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">footnote</span>(<span class="dt">symbol =</span>  <span class="st">&quot;as used in Melati (2017)&quot;</span> )</code></pre></div>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
+<table class="table table-hover table-condensed table-responsive" style="font-size: 12px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Ministry of Forestry<sup>*</sup>
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Melati (2017) I
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Melati (2017) II
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Melati (2017) III
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Stolle et al. (2003)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Sambodo et al. (2018)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Nurwanda et al. (2016)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Ekadinata et al. (2011)
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+this study
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Primary dryland forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Primary forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Natural vegetation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="5">
+Forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="6">
+Forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="6">
+Forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Primary forest
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Primary swamp forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Primary mangrove forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Secondary dryland forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Secondary dryland forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Secondary forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Secondary forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Logged-over forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="4">
+Secondary forest
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Secondary swamp forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Secondary swamp forest
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Secondary mangrove forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Secondary mangrove forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Mangrove + Shrubs with trees
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Jungle rubber
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Jungle rubber
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Jungle rubber
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Jungle rubber
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Small-holder rubber
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Rubber
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Rubber
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Rubber agroforest
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Rubber Plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Rubber plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Rubber plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Rubber plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Rubber plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Monoculture rubber
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Plantation forest
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Plantation forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Plantation forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+?
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Plantation forest
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Tree crop mosaic
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+?
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+?
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+?
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Oil palm plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Oil palm plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Oil palm plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Oil palm plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Oil palm plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="4">
+Oil palm + Coconut plantations
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Oil palm plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Oil palm plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Immature oil palm plantation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Mature oil palm plantation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Oil/rubber plantation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Coconut plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Coconut plantation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="4">
+Agriculture
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Mixed dryland agriculture
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="4">
+Agriculture
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Tea plantation
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="4">
+Cropland
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Mixed dryland agriculture
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Tea plantation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Food crop mosaic
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Dryland agriculture
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Secondary/food mosaic
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Paddy field
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Sawah or tidal rice
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Rice field
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Rice
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Shrub/bush
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Shrub/bush
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Shrub/bush
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Shrub/bush
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="8">
+Others
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Shrub
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Shrub
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Shrub
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Shrub/bush
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Swamp bush
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Swamp bush
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Bare land
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Bare land
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Bare land
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="7">
+Others
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Bare soil
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Bare land
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Cleared land
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Burned/Cleared
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Mining
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Mining
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Water bodies
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Water body
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Water body
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Water
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Water body
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="2">
+Water
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Fishponds
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Transmigration areas
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Settlement
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Settlement
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Settlement
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Built-up area
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Settlement
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;vertical-align: top !important;" rowspan="3">
+Urban
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Airport
+</td>
+</tr>
+<tr>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Settlements
+</td>
+<td style="text-align:left;min-width: 15em; font-style: italic;">
+Homesteads
+</td>
+</tr>
+</tbody>
+</table>
+<tfoot>
+<tr>
+<td style="padding: 0; border: 0;" colspan="100%">
+<sup>*</sup> as used in Melati (2017)
+</td>
+</tr>
+</tfoot>
+</div>
+<hr />
+</div>
+<div id="lulc-classes-in-this-study" class="section level3 tabset tabset-pills">
+<h3><span class="header-section-number">2.1.2</span> LuLc-Classes in this study</h3>
+<p>As <span class="citation">Melati (2017)</span> suggests oil palm plantations were differentiated in mature and immature plantations. Class Rubber was not classified seperately since other studies had no success trying this (e.g. <span class="citation">Melati (2017)</span>) and because rubber trees could not be differentiated visually in high resolution imagery for reference data creation.</p>
+<div id="water" class="section level4 unnumbered">
+<h4>water</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_water.jpg" width="100%" /></p>
+</div>
+<div id="primary-forest" class="section level4 unnumbered">
+<h4>primary forest</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_primary-forest.jpg" width="100%" /></p>
+</div>
+<div id="secondary-forest" class="section level4 unnumbered">
+<h4>secondary forest</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_secondary-forest.jpg" width="100%" /></p>
+</div>
+<div id="oilpalm-mature" class="section level4 unnumbered">
+<h4>oilpalm mature</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_oilpalm-mature.jpg" width="100%" /></p>
+</div>
+<div id="oilpalm-immature" class="section level4 unnumbered">
+<h4>oilpalm immature</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_oilpalm-immature.jpg" width="100%" /></p>
+</div>
+<div id="bush-shrub" class="section level4 unnumbered">
+<h4>bush shrub</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_bush-shrub.jpg" width="100%" /></p>
+</div>
+<div id="plantation-forest" class="section level4 unnumbered">
+<h4>plantation forest</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_plantation-forest.jpg" width="100%" /></p>
+</div>
+<div id="burned-cleared" class="section level4 unnumbered">
+<h4>burned cleared</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_burned-cleared.jpg" width="100%" /></p>
+</div>
+<div id="urban-buildings" class="section level4 unnumbered">
+<h4>urban buildings</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_urban-buildings.jpg" width="100%" /></p>
+</div>
+<div id="coconut-plantation" class="section level4 unnumbered">
+<h4>coconut plantation</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_coconut-plantation.jpg" width="100%" /></p>
+</div>
+<div id="rice" class="section level4 unnumbered">
+<h4>rice</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_rice.jpg" width="100%" /></p>
+</div>
+<div id="tea-plantation" class="section level4 unnumbered">
+<h4>tea plantation</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/examples/ge_tea-plantation.jpg" width="100%" /></p>
+</div>
+</div>
+<div id="data-collection" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Data collection</h3>
+<p>Reference data is delineated in GEE with support of high resolution imagery from GE Pro and Bing Maps. The following conditions were met for data collection:</p>
+<ul>
+<li>medium to large sized polygons<br />
+<em>(more efficient but also less distributed with higher intracorrelation)</em><br />
+</li>
+<li>cover only one lulc-class<br />
+<em>(avoid mixed pixels and false references)</em></li>
+<li>based on high quality images from 2018/19<br />
+<em>(up-to-date mapping)</em></li>
+<li>have a low chance of further lulc-changes recently<br />
+<em>(avoid false references from changed classes)</em></li>
+<li>distributed in the entire region<br />
+<em>(cover regional variability)</em></li>
+</ul>
+<div class="figure">
+<img src="F:/projects/crc990_b05/output_data/img/presentation/reference_banner.jpg" alt="sample of reference data collected in GEE" width="100%" />
+<p class="caption">
+sample of reference data collected in GEE
+</p>
+</div>
+<p><a href="https://code.earthengine.google.com/5a3241a7c5d90f1670bf1b3c910ca701">see in GEE</a></p>
+<hr />
+</div>
+</div>
+<div id="classification" class="section level2">
+<h2><span class="header-section-number">2.2</span> Classification</h2>
+<p>A supervised classification algorithm with good performance should be used in combination with good predictor variables.</p>
+<p><strong>input variables</strong></p>
+<p>A combination of Sentinel-1 (radar) and Sentinel-2 (optical) imagery is used</p>
+<p><strong>classification model</strong></p>
+<p>Decision tree models are used widely for classification problems, preliminary tests indicated that Random Forest (RF) algorithm performed better than Classification And Regression Trees (CART). Hence, a RF model was trained to classify Land-use and Land-cover.</p>
+<p><strong>classification key</strong></p>
+<hr />
+<div id="model-tuning" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Model Tuning</h3>
+<div id="gridsearch-results" class="section level4">
+<h4><span class="header-section-number">2.2.1.1</span> Gridsearch Results</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+<span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(caret)
+<span class="kw">library</span>(kableExtra)
+
+<span class="co"># read reference data exported by google earth engine</span>
+ref &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;raw_data/reference/stratified-reference_20190521.csv&quot;</span>),
+                <span class="dt">col_types =</span> <span class="kw">cols</span>(<span class="dt">.geo =</span> <span class="kw">col_skip</span>(), 
+                                 <span class="dt">class =</span> <span class="kw">col_factor</span>(<span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;5&quot;</span>, <span class="st">&quot;6&quot;</span>, <span class="st">&quot;7&quot;</span>, <span class="st">&quot;8&quot;</span>, <span class="st">&quot;10&quot;</span>, <span class="st">&quot;11&quot;</span>, <span class="st">&quot;12&quot;</span>)), 
+                                 <span class="dt">latitude_209564535 =</span> <span class="kw">col_skip</span>(), 
+                                 <span class="dt">longitude_209564535 =</span> <span class="kw">col_skip</span>(), 
+                                 <span class="st">`</span><span class="dt">system:index</span><span class="st">`</span> =<span class="st"> </span><span class="kw">col_skip</span>()))
+
+<span class="co"># split in train and test data</span>
+index &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(<span class="dt">y =</span> ref<span class="op">$</span>class, <span class="dt">p =</span> .<span class="dv">7</span>, <span class="dt">list =</span> <span class="ot">FALSE</span>)
+training &lt;-<span class="st"> </span>ref[index, ]
+testing &lt;-<span class="st"> </span>ref[<span class="op">-</span>index, ]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create random forest model</span>
+filename =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;output_data/model/rf_fit.rds&quot;</span>)
+<span class="cf">if</span> (<span class="kw">file.exists</span>(filename)){
+  
+  rf_fit &lt;-<span class="st"> </span><span class="kw">readRDS</span>(filename)
+  
+} <span class="cf">else</span>{
+  
+  <span class="co"># specify that the resampling method is </span>
+  fit_control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(## 10-fold CV
+    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,
+    <span class="dt">number =</span> <span class="dv">10</span>)
+  
+  <span class="co"># define a grid of parameter options to try</span>
+  rf_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">mtry =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>),
+                         <span class="dt">splitrule =</span> <span class="kw">c</span>(<span class="st">&quot;gini&quot;</span>),
+                         <span class="dt">min.node.size =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>))
+  
+  <span class="co"># run a random forest model</span>
+  <span class="kw">set.seed</span>(<span class="dv">825</span>)
+  <span class="kw">library</span>(doParallel)
+  cl &lt;-<span class="st"> </span><span class="kw">makePSOCKcluster</span>(<span class="dv">4</span>)
+  <span class="kw">registerDoParallel</span>(cl)
+  
+  <span class="co"># fit the model with the parameter grid</span>
+  rf_fit &lt;-<span class="st"> </span><span class="kw">train</span>(class <span class="op">~</span><span class="st"> </span>., 
+                  <span class="dt">data =</span> training, 
+                  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,
+                  <span class="dt">importance =</span> <span class="st">&quot;impurity&quot;</span> ,
+                  <span class="dt">trControl =</span> fit_control,
+                  <span class="co"># provide a grid of parameters</span>
+                  <span class="dt">tuneGrid =</span> rf_grid)
+  
+  <span class="kw">stopCluster</span>(cl)
+  
+  <span class="co"># save model</span>
+  <span class="kw">saveRDS</span>(rf_fit, filename)
+  
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(rf_fit)</code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 8400 samples
+##   19 predictor
+##   12 classes: &#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;10&#39;, &#39;11&#39;, &#39;12&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 7560, 7560, 7560, 7560, 7560, 7560, ... 
+## Resampling results across tuning parameters:
+## 
+##   mtry  min.node.size  Accuracy   Kappa    
+##   2      1             0.9273810  0.9207792
+##   2      5             0.9261905  0.9194805
+##   2     10             0.9238095  0.9168831
+##   3      1             0.9285714  0.9220779
+##   3      5             0.9273810  0.9207792
+##   3     10             0.9257143  0.9189610
+##   4      1             0.9275000  0.9209091
+##   4      5             0.9261905  0.9194805
+##   4     10             0.9248810  0.9180519
+##   6      1             0.9246429  0.9177922
+##   6      5             0.9267857  0.9201299
+##   6     10             0.9241667  0.9172727
+##   8      1             0.9241667  0.9172727
+##   8      5             0.9261905  0.9194805
+##   8     10             0.9235714  0.9166234
+## 
+## Tuning parameter &#39;splitrule&#39; was held constant at a value of gini
+## Accuracy was used to select the optimal model using the largest value.
+## The final values used for the model were mtry = 3, splitrule = gini
+##  and min.node.size = 1.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ggplot(data= rf_fit$results) + </span>
+<span class="co">#   geom_line(aes(x=mtry, y=Accuracy, color= as.factor(min.node.size))) + </span>
+<span class="co">#   geom_point(aes(x=mtry, y=Accuracy, color= as.factor(min.node.size)), size = 3) +</span>
+<span class="co">#   scale_color_viridis(discrete = TRUE, option = &quot;D&quot;, name=&quot;Minimal Node Size&quot;) +</span>
+<span class="co">#   labs(x = &quot;Randomly Selected Predictors&quot;,</span>
+<span class="co">#        y = &quot;Accuracy (Cross-Validation)&quot;) +</span>
+<span class="co">#     theme_classic() +</span>
+<span class="co">#   theme(legend.position=&quot;bottom&quot;) </span>
+
+rf_fit<span class="op">$</span>results <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">plot_ly</span>(<span class="dt">x=</span> <span class="op">~</span>mtry) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_trace</span>(<span class="dt">y =</span> <span class="op">~</span>Accuracy, 
+            <span class="dt">mode =</span> <span class="st">&#39;lines+markers&#39;</span>, 
+            <span class="dt">color=</span> <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(min.node.size), <span class="dt">colors =</span> <span class="kw">viridis_pal</span>(<span class="dt">option =</span> <span class="st">&quot;D&quot;</span>)(<span class="dv">3</span>),
+            <span class="dt">error_y =</span> <span class="op">~</span><span class="kw">list</span>(<span class="dt">array =</span> AccuracySD),
+            <span class="dt">text =</span> <span class="op">~</span><span class="kw">paste</span>(<span class="st">&quot;Accuracy: &quot;</span>, Accuracy, <span class="st">&quot;&lt;br&gt;AccuracySD:&quot;</span>, AccuracySD) 
+            ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">layout</span>(<span class="dt">xaxis =</span> <span class="kw">list</span>(<span class="dt">title=</span><span class="st">&quot;Randomly Selected Predictors&quot;</span>),
+         <span class="dt">yaxis =</span> <span class="kw">list</span>(<span class="dt">title=</span><span class="st">&quot;Accuracy (Cross-Validation)&quot;</span>)) </code></pre></div>
+<pre><code>## No trace type specified:
+##   Based on info supplied, a &#39;scatter&#39; trace seems appropriate.
+##   Read more about this trace type -&gt; https://plot.ly/r/reference/#scatter</code></pre>
+<div class="figure">
+<div id="htmlwidget-f1685cf775f3cab679a9" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f1685cf775f3cab679a9">{"x":{"visdat":{"2af05ee76ed2":["function () ","plotlyVisDat"]},"cur_data":"2af05ee76ed2","attrs":{"2af05ee76ed2":{"x":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"y":{},"mode":"lines+markers","color":{},"colors":["#440154FF","#21908CFF","#FDE725FF"],"error_y":{},"text":{},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Randomly Selected Predictors"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Accuracy (Cross-Validation)"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[2,3,4,6,8],"y":[0.927380952380952,0.928571428571429,0.9275,0.924642857142857,0.924166666666667],"mode":"lines+markers","error_y":{"color":"rgba(68,1,84,1)","array":[0.00856628299401705,0.0107363089352926,0.0103934927410387,0.0105737401543446,0.0104990131391452]},"text":["Accuracy:  0.927380952380952 <br>AccuracySD: 0.00856628299401705","Accuracy:  0.928571428571429 <br>AccuracySD: 0.0105737401543446","Accuracy:  0.9275 <br>AccuracySD: 0.0113279576864691","Accuracy:  0.924642857142857 <br>AccuracySD: 0.00996102887486559","Accuracy:  0.924166666666667 <br>AccuracySD: 0.00978558876836044"],"type":"scatter","name":"1","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2,3,4,6,8],"y":[0.926190476190476,0.927380952380952,0.926190476190476,0.926785714285714,0.926190476190476],"mode":"lines+markers","error_y":{"color":"rgba(33,144,140,1)","array":[0.00973961838516982,0.0113279576864691,0.00954032958743756,0.0109318014615506,0.00996102887486559]},"text":["Accuracy:  0.926190476190476 <br>AccuracySD: 0.0107363089352926","Accuracy:  0.927380952380952 <br>AccuracySD: 0.0104990131391452","Accuracy:  0.926190476190476 <br>AccuracySD: 0.00954032958743756","Accuracy:  0.926785714285714 <br>AccuracySD: 0.0104426169578895","Accuracy:  0.926190476190476 <br>AccuracySD: 0.0104539205335869"],"type":"scatter","name":"5","marker":{"color":"rgba(33,144,140,1)","line":{"color":"rgba(33,144,140,1)"}},"textfont":{"color":"rgba(33,144,140,1)"},"error_x":{"color":"rgba(33,144,140,1)"},"line":{"color":"rgba(33,144,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2,3,4,6,8],"y":[0.923809523809524,0.925714285714286,0.924880952380952,0.924166666666667,0.923571428571429],"mode":"lines+markers","error_y":{"color":"rgba(253,231,37,1)","array":[0.0104426169578895,0.0109260380229206,0.00978558876836044,0.0104539205335869,0.0107186939784979]},"text":["Accuracy:  0.923809523809524 <br>AccuracySD: 0.0103934927410387","Accuracy:  0.925714285714286 <br>AccuracySD: 0.00973961838516982","Accuracy:  0.924880952380952 <br>AccuracySD: 0.0109318014615506","Accuracy:  0.924166666666667 <br>AccuracySD: 0.0109260380229206","Accuracy:  0.923571428571429 <br>AccuracySD: 0.0107186939784979"],"type":"scatter","name":"10","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+<p class="caption">
+Gridsearch result for number of predictor variables and minimal node size
+</p>
+</div>
+<p>Differences are not very pronounced.</p>
+<hr />
+</div>
+<div id="model-simplification" class="section level4">
+<h4><span class="header-section-number">2.2.1.2</span> Model Simplification</h4>
+<p>simplest model with high accuracy (max 2% difference to best model)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get simplest model with similar accuracy</span>
+whichTwoPct &lt;-<span class="st"> </span><span class="kw">tolerance</span>(rf_fit<span class="op">$</span>results, <span class="dt">metric =</span> <span class="st">&quot;Accuracy&quot;</span>, 
+                         <span class="dt">tol =</span> <span class="dv">2</span>, <span class="dt">maximize =</span> <span class="ot">TRUE</span>)  
+
+rf_fit<span class="op">$</span>results[whichTwoPct,]</code></pre></div>
+<pre><code>##   mtry splitrule min.node.size Accuracy     Kappa  AccuracySD     KappaSD
+## 1    2      gini             1 0.927381 0.9207792 0.008566283 0.009345036</code></pre>
+<hr />
+</div>
+<div id="variable-importance" class="section level4">
+<h4><span class="header-section-number">2.2.1.3</span> Variable Importance</h4>
+<p>In model fitting a relative variable importance is calculated to give an impression which predictor variables are valuable and which are less valuable for the prediction process. Nevertheless, correlation between variables is not taken into account.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># variable importance</span>
+imp &lt;-<span class="st"> </span><span class="kw">varImp</span>(rf_fit)
+
+<span class="kw">plot</span>(imp)</code></pre></div>
+<div class="figure">
+<img src="project_overview_files/figure-html/gridsearch_importance-1.png" alt="Relative variable importance" width="672" />
+<p class="caption">
+Relative variable importance
+</p>
+</div>
+<hr />
+</div>
+<div id="model-validation" class="section level4">
+<h4><span class="header-section-number">2.2.1.4</span> Model Validation</h4>
+<p>The validation data is classified with the best model obtained by gridsearch. Its confusion matrix is calculated as a value of prediction accuracy.</p>
+<p><br></p>
+<p><strong>Error Matrix</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># validation</span>
+testing.pred &lt;-<span class="st"> </span><span class="kw">predict</span>(rf_fit, <span class="dt">newdata =</span> testing[<span class="dv">1</span><span class="op">:</span><span class="dv">19</span>], <span class="dt">probability=</span> F)
+cm&lt;-<span class="st"> </span><span class="kw">confusionMatrix</span>(<span class="dt">data =</span> testing.pred, <span class="dt">reference =</span> testing<span class="op">$</span>class)
+
+cm.df &lt;-<span class="st"> </span><span class="kw">as.data.frame.matrix</span>(cm<span class="op">$</span>table)
+
+cm.df <span class="op">%&gt;%</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">mutate_all</span>(<span class="op">~</span><span class="kw">ifelse</span>(. <span class="op">&gt;</span><span class="st"> </span><span class="kw">max</span>(cm.df[<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>])<span class="op">*</span><span class="fl">0.75</span>,
+                  <span class="kw">cell_spec</span>(., <span class="st">&quot;html&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">bold =</span> T, <span class="dt">background =</span> <span class="st">&quot;green&quot;</span>),
+                  <span class="kw">ifelse</span>(. <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,
+                         <span class="kw">cell_spec</span>(., <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">bold =</span> T, <span class="dt">background =</span> <span class="kw">spec_color</span>(., <span class="dt">option =</span> <span class="st">&quot;A&quot;</span>, <span class="dt">direction=</span> <span class="op">-</span><span class="dv">1</span>, <span class="dt">begin =</span> <span class="fl">0.3</span>, <span class="dt">scale_from =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">53</span>))),
+                         <span class="kw">cell_spec</span>(., <span class="st">&quot;html&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;grey&quot;</span>)
+                         )
+                  )
+             ) <span class="op">%&gt;%</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">class =</span> <span class="kw">cell_spec</span>(<span class="kw">c</span>(<span class="st">&quot;water - 0&quot;</span>,<span class="st">&quot;primary forest - 1&quot;</span>,<span class="st">&quot;secondary forest - 2&quot;</span>,<span class="st">&quot;mature oilpalm - 3&quot;</span>, <span class="st">&quot;immature oilpalm - 4&quot;</span>,<span class="st">&quot;shrubland - 5&quot;</span>,<span class="st">&quot;plantation forest - 6&quot;</span>,<span class="st">&quot;burned / cleared - 7&quot;</span>,<span class="st">&quot;urban buildings - 8&quot;</span>,<span class="st">&quot;coconut plantation - 10&quot;</span>,<span class="st">&quot;rice - 11&quot;</span>,<span class="st">&quot;tea plantation - 12&quot;</span>), <span class="st">&quot;html&quot;</span>,<span class="dt">bold =</span> T)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(class, <span class="kw">everything</span>(.)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable</span>(<span class="st">&quot;html&quot;</span>, <span class="dt">escape =</span> F, <span class="dt">rownames =</span> T, <span class="dt">align=</span><span class="kw">c</span>(<span class="st">&#39;r&#39;</span>, <span class="kw">rep</span>(<span class="st">&#39;c&#39;</span>, <span class="dv">12</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable_styling</span>(<span class="st">&quot;hover&quot;</span>, <span class="dt">full_width =</span> F)</code></pre></div>
+<table class="table table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+class
+</th>
+<th style="text-align:center;">
+0
+</th>
+<th style="text-align:center;">
+1
+</th>
+<th style="text-align:center;">
+2
+</th>
+<th style="text-align:center;">
+3
+</th>
+<th style="text-align:center;">
+4
+</th>
+<th style="text-align:center;">
+5
+</th>
+<th style="text-align:center;">
+6
+</th>
+<th style="text-align:center;">
+7
+</th>
+<th style="text-align:center;">
+8
+</th>
+<th style="text-align:center;">
+10
+</th>
+<th style="text-align:center;">
+11
+</th>
+<th style="text-align:center;">
+12
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">water - 0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">300</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">primary forest - 1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">284</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 185, 127, 1) !important;">11</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">secondary forest - 2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 204, 143, 1) !important;">8</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">281</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">mature oilpalm - 3</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">292</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">immature oilpalm - 4</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">293</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">shrubland - 5</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">296</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">plantation forest - 6</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">295</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">burned / cleared - 7</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">298</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">urban buildings - 8</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">299</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">coconut plantation - 10</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">291</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">rice - 11</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">300</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">tea plantation - 12</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">299</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Respective Accuracy</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(cm<span class="op">$</span>overall[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</code></pre></div>
+<pre><code>##      Accuracy         Kappa AccuracyLower AccuracyUpper 
+##     0.9800000     0.9781818     0.9748788     0.9843191</code></pre>
+<hr />
+</div>
+</div>
+<div id="feature-selection" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Feature Selection</h3>
+<p>To further simplify the prediction model a Recursive Feature Elimitaion (rfe) is applied. This will eliminate worst performing predictor variables (chosen by importance) at each step and keep the best performing variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># perform reverse feature selection with all variables</span>
+filename =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;output_data/model/rfProfile_all.rds&quot;</span>)
+<span class="cf">if</span> (<span class="kw">file.exists</span>(filename)){
+  
+  rfProfile &lt;-<span class="st"> </span><span class="kw">readRDS</span>(filename)
+  
+  } <span class="cf">else</span>{
+    <span class="co"># normalize data</span>
+    training_recipe &lt;-<span class="st"> </span><span class="kw">recipe</span>(class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> training) <span class="op">%&gt;%</span>
+<span class="st">      </span><span class="kw">step_center</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span>
+<span class="st">      </span><span class="kw">step_scale</span>(<span class="kw">all_predictors</span>()) <span class="op">%&gt;%</span>
+<span class="st">      </span><span class="kw">step_nzv</span>(<span class="kw">all_predictors</span>()) 
+    
+    train_prepped &lt;-<span class="st"> </span>
+<span class="st">      </span>training_recipe <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">prep</span>(training) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">juice</span>()
+    
+    <span class="co"># number of features to test</span>
+    subsets &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">19</span>)
+    
+    training_ctrl &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(
+      <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,
+      <span class="dt">repeats =</span> <span class="dv">5</span>,
+      <span class="dt">functions =</span> rfFuncs, 
+      <span class="dt">returnResamp =</span> <span class="st">&quot;all&quot;</span>
+    )
+    
+    <span class="kw">library</span>(doParallel)
+    cl &lt;-<span class="st"> </span><span class="kw">makePSOCKcluster</span>(<span class="dv">4</span>)
+    <span class="kw">registerDoParallel</span>(cl)
+    
+    rfProfile &lt;-<span class="st"> </span><span class="kw">rfe</span>(<span class="dt">x =</span> train_prepped <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>class),
+                     <span class="dt">y =</span> train_prepped<span class="op">$</span>class,
+                     <span class="dt">sizes =</span> subsets,
+                     <span class="dt">metric =</span> <span class="st">&quot;Accuracy&quot;</span>,
+                     <span class="dt">rfeControl =</span> training_ctrl)
+    
+    <span class="kw">stopCluster</span>(cl)
+    
+    <span class="co"># save model</span>
+    <span class="kw">saveRDS</span>(rfProfile, filename)
+    
+    }</code></pre></div>
+<hr />
+<div id="number-of-features" class="section level4">
+<h4><span class="header-section-number">2.2.2.1</span> Number of Features</h4>
+The best model in regards to predictor variables uses 18 out of 19 variables, all except for <em>VV_variance</em>. However, one can see that the model performs equally good with less predictor variables.
+<div class="figure">
+<div id="htmlwidget-995966d4346329c26bc5" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-995966d4346329c26bc5">{"x":{"visdat":{"2af03db6168a":["function () ","plotlyVisDat"]},"cur_data":"2af03db6168a","attrs":{"2af03db6168a":{"y":{},"color":{},"colors":["#440154FF","#481668FF","#482878FF","#443A83FF","#3E4A89FF","#375A8CFF","#31688EFF","#2B758EFF","#26828EFF","#21908CFF","#1F9E89FF","#25AB82FF","#35B779FF","#4EC36BFF","#6DCD59FF","#8FD744FF","#B4DE2CFF","#DAE319FF","#FDE725FF"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"Accuracy"},"xaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"y":[0.28452380952381,0.304761904761905,0.286904761904762,0.30952380952381,0.297619047619048,0.289285714285714,0.291666666666667,0.285714285714286,0.276190476190476,0.298809523809524,0.283333333333333,0.283333333333333,0.310714285714286,0.29047619047619,0.28452380952381,0.286904761904762,0.283333333333333,0.29047619047619,0.276190476190476,0.31547619047619,0.271428571428571,0.302380952380952,0.31547619047619,0.288095238095238,0.29047619047619,0.296428571428571,0.276190476190476,0.278571428571429,0.301190476190476,0.288095238095238,0.310714285714286,0.288095238095238,0.294047619047619,0.276190476190476,0.289285714285714,0.29047619047619,0.295238095238095,0.304761904761905,0.277380952380952,0.279761904761905,0.280952380952381,0.301190476190476,0.289285714285714,0.295238095238095,0.29047619047619,0.292857142857143,0.295238095238095,0.294047619047619,0.304761904761905,0.302380952380952],"type":"box","name":"1","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.517857142857143,0.496428571428571,0.529761904761905,0.526190476190476,0.509523809523809,0.536904761904762,0.520238095238095,0.509523809523809,0.530952380952381,0.523809523809524,0.536904761904762,0.555952380952381,0.529761904761905,0.526190476190476,0.466666666666667,0.542857142857143,0.542857142857143,0.521428571428571,0.503571428571429,0.525,0.511904761904762,0.529761904761905,0.509523809523809,0.521428571428571,0.501190476190476,0.533333333333333,0.522619047619048,0.521428571428571,0.552380952380952,0.519047619047619,0.530952380952381,0.527380952380952,0.520238095238095,0.508333333333333,0.53452380952381,0.514285714285714,0.528571428571429,0.532142857142857,0.523809523809524,0.517857142857143,0.514285714285714,0.544047619047619,0.53452380952381,0.517857142857143,0.485714285714286,0.532142857142857,0.522619047619048,0.519047619047619,0.502380952380952,0.552380952380952],"type":"box","name":"2","marker":{"color":"rgba(72,22,104,1)","line":{"color":"rgba(72,22,104,1)"}},"line":{"color":"rgba(72,22,104,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.701190476190476,0.672619047619048,0.697619047619048,0.688095238095238,0.667857142857143,0.667857142857143,0.688095238095238,0.702380952380952,0.76547619047619,0.696428571428571,0.701190476190476,0.701190476190476,0.771428571428571,0.689285714285714,0.754761904761905,0.667857142857143,0.678571428571429,0.703571428571429,0.663095238095238,0.672619047619048,0.764285714285714,0.696428571428571,0.685714285714286,0.696428571428571,0.680952380952381,0.692857142857143,0.680952380952381,0.677380952380952,0.678571428571429,0.688095238095238,0.685714285714286,0.69047619047619,0.691666666666667,0.667857142857143,0.760714285714286,0.691666666666667,0.669047619047619,0.657142857142857,0.686904761904762,0.697619047619048,0.654761904761905,0.778571428571429,0.68452380952381,0.676190476190476,0.692857142857143,0.761904761904762,0.685714285714286,0.673809523809524,0.673809523809524,0.694047619047619],"type":"box","name":"3","marker":{"color":"rgba(72,40,120,1)","line":{"color":"rgba(72,40,120,1)"}},"line":{"color":"rgba(72,40,120,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.833333333333333,0.825,0.807142857142857,0.833333333333333,0.798809523809524,0.802380952380952,0.821428571428571,0.839285714285714,0.823809523809524,0.846428571428571,0.839285714285714,0.836904761904762,0.833333333333333,0.827380952380952,0.825,0.819047619047619,0.823809523809524,0.814285714285714,0.804761904761905,0.832142857142857,0.832142857142857,0.839285714285714,0.794047619047619,0.832142857142857,0.823809523809524,0.823809523809524,0.821428571428571,0.819047619047619,0.819047619047619,0.861904761904762,0.814285714285714,0.839285714285714,0.822619047619048,0.84047619047619,0.833333333333333,0.827380952380952,0.802380952380952,0.825,0.817857142857143,0.826190476190476,0.821428571428571,0.835714285714286,0.830952380952381,0.839285714285714,0.821428571428571,0.827380952380952,0.811904761904762,0.804761904761905,0.796428571428571,0.829761904761905],"type":"box","name":"4","marker":{"color":"rgba(68,58,131,1)","line":{"color":"rgba(68,58,131,1)"}},"line":{"color":"rgba(68,58,131,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.83452380952381,0.882142857142857,0.875,0.825,0.798809523809524,0.797619047619048,0.860714285714286,0.829761904761905,0.823809523809524,0.896428571428571,0.885714285714286,0.84047619047619,0.832142857142857,0.822619047619048,0.822619047619048,0.822619047619048,0.875,0.807142857142857,0.865476190476191,0.882142857142857,0.878571428571429,0.833333333333333,0.796428571428571,0.828571428571429,0.813095238095238,0.825,0.879761904761905,0.880952380952381,0.885714285714286,0.9,0.813095238095238,0.882142857142857,0.816666666666667,0.878571428571429,0.828571428571429,0.889285714285714,0.803571428571429,0.820238095238095,0.876190476190476,0.894047619047619,0.878571428571429,0.830952380952381,0.873809523809524,0.89047619047619,0.866666666666667,0.878571428571429,0.811904761904762,0.866666666666667,0.861904761904762,0.89047619047619],"type":"box","name":"5","marker":{"color":"rgba(62,74,137,1)","line":{"color":"rgba(62,74,137,1)"}},"line":{"color":"rgba(62,74,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.879761904761905,0.876190476190476,0.875,0.872619047619048,0.869047619047619,0.85952380952381,0.864285714285714,0.870238095238095,0.884523809523809,0.891666666666667,0.880952380952381,0.870238095238095,0.886904761904762,0.879761904761905,0.879761904761905,0.879761904761905,0.867857142857143,0.867857142857143,0.860714285714286,0.872619047619048,0.871428571428571,0.876190476190476,0.853571428571429,0.888095238095238,0.869047619047619,0.858333333333333,0.876190476190476,0.870238095238095,0.883333333333333,0.898809523809524,0.869047619047619,0.883333333333333,0.870238095238095,0.878571428571429,0.886904761904762,0.883333333333333,0.860714285714286,0.867857142857143,0.871428571428571,0.889285714285714,0.878571428571429,0.888095238095238,0.873809523809524,0.880952380952381,0.867857142857143,0.884523809523809,0.871428571428571,0.863095238095238,0.860714285714286,0.888095238095238],"type":"box","name":"6","marker":{"color":"rgba(55,90,140,1)","line":{"color":"rgba(55,90,140,1)"}},"line":{"color":"rgba(55,90,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.902380952380952,0.903571428571429,0.9,0.888095238095238,0.882142857142857,0.883333333333333,0.902380952380952,0.885714285714286,0.898809523809524,0.91547619047619,0.904761904761905,0.89047619047619,0.908333333333333,0.901190476190476,0.888095238095238,0.897619047619048,0.913095238095238,0.905952380952381,0.878571428571429,0.898809523809524,0.885714285714286,0.892857142857143,0.892857142857143,0.910714285714286,0.897619047619048,0.892857142857143,0.886904761904762,0.897619047619048,0.90952380952381,0.904761904761905,0.897619047619048,0.896428571428571,0.895238095238095,0.895238095238095,0.904761904761905,0.901190476190476,0.894047619047619,0.898809523809524,0.895238095238095,0.91547619047619,0.892857142857143,0.914285714285714,0.898809523809524,0.889285714285714,0.894047619047619,0.908333333333333,0.902380952380952,0.898809523809524,0.89047619047619,0.91547619047619],"type":"box","name":"7","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"line":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.901190476190476,0.908333333333333,0.921428571428571,0.919047619047619,0.90952380952381,0.901190476190476,0.907142857142857,0.898809523809524,0.916666666666667,0.922619047619048,0.919047619047619,0.896428571428571,0.907142857142857,0.91547619047619,0.904761904761905,0.913095238095238,0.908333333333333,0.907142857142857,0.907142857142857,0.903571428571429,0.910714285714286,0.903571428571429,0.905952380952381,0.913095238095238,0.908333333333333,0.904761904761905,0.9,0.911904761904762,0.91547619047619,0.911904761904762,0.9,0.910714285714286,0.91547619047619,0.897619047619048,0.908333333333333,0.908333333333333,0.907142857142857,0.920238095238095,0.917857142857143,0.920238095238095,0.905952380952381,0.920238095238095,0.90952380952381,0.903571428571429,0.919047619047619,0.925,0.905952380952381,0.901190476190476,0.9,0.920238095238095],"type":"box","name":"8","marker":{"color":"rgba(43,117,142,1)","line":{"color":"rgba(43,117,142,1)"}},"line":{"color":"rgba(43,117,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.911904761904762,0.920238095238095,0.928571428571429,0.919047619047619,0.91547619047619,0.904761904761905,0.916666666666667,0.905952380952381,0.917857142857143,0.921428571428571,0.922619047619048,0.903571428571429,0.913095238095238,0.917857142857143,0.913095238095238,0.90952380952381,0.923809523809524,0.914285714285714,0.90952380952381,0.920238095238095,0.922619047619048,0.907142857142857,0.910714285714286,0.917857142857143,0.914285714285714,0.917857142857143,0.898809523809524,0.917857142857143,0.914285714285714,0.920238095238095,0.905952380952381,0.921428571428571,0.923809523809524,0.901190476190476,0.90952380952381,0.911904761904762,0.913095238095238,0.920238095238095,0.919047619047619,0.922619047619048,0.911904761904762,0.922619047619048,0.914285714285714,0.90952380952381,0.921428571428571,0.930952380952381,0.908333333333333,0.903571428571429,0.905952380952381,0.929761904761905],"type":"box","name":"9","marker":{"color":"rgba(38,130,142,1)","line":{"color":"rgba(38,130,142,1)"}},"line":{"color":"rgba(38,130,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.905952380952381,0.923809523809524,0.928571428571429,0.91547619047619,0.91547619047619,0.907142857142857,0.910714285714286,0.904761904761905,0.922619047619048,0.919047619047619,0.921428571428571,0.901190476190476,0.910714285714286,0.91547619047619,0.916666666666667,0.914285714285714,0.921428571428571,0.91547619047619,0.91547619047619,0.913095238095238,0.921428571428571,0.910714285714286,0.91547619047619,0.919047619047619,0.913095238095238,0.911904761904762,0.904761904761905,0.921428571428571,0.920238095238095,0.914285714285714,0.90952380952381,0.920238095238095,0.919047619047619,0.903571428571429,0.910714285714286,0.916666666666667,0.914285714285714,0.923809523809524,0.920238095238095,0.919047619047619,0.911904761904762,0.925,0.914285714285714,0.90952380952381,0.916666666666667,0.930952380952381,0.9,0.907142857142857,0.911904761904762,0.925],"type":"box","name":"10","marker":{"color":"rgba(33,144,140,1)","line":{"color":"rgba(33,144,140,1)"}},"line":{"color":"rgba(33,144,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.90952380952381,0.920238095238095,0.932142857142857,0.917857142857143,0.914285714285714,0.916666666666667,0.913095238095238,0.914285714285714,0.921428571428571,0.916666666666667,0.922619047619048,0.902380952380952,0.911904761904762,0.922619047619048,0.920238095238095,0.919047619047619,0.927380952380952,0.911904761904762,0.916666666666667,0.923809523809524,0.925,0.914285714285714,0.916666666666667,0.919047619047619,0.925,0.914285714285714,0.905952380952381,0.917857142857143,0.926190476190476,0.923809523809524,0.904761904761905,0.913095238095238,0.920238095238095,0.907142857142857,0.922619047619048,0.916666666666667,0.919047619047619,0.927380952380952,0.922619047619048,0.926190476190476,0.91547619047619,0.930952380952381,0.922619047619048,0.911904761904762,0.920238095238095,0.929761904761905,0.905952380952381,0.90952380952381,0.917857142857143,0.928571428571429],"type":"box","name":"11","marker":{"color":"rgba(31,158,137,1)","line":{"color":"rgba(31,158,137,1)"}},"line":{"color":"rgba(31,158,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.908333333333333,0.925,0.936904761904762,0.929761904761905,0.926190476190476,0.922619047619048,0.914285714285714,0.907142857142857,0.917857142857143,0.927380952380952,0.930952380952381,0.901190476190476,0.90952380952381,0.919047619047619,0.920238095238095,0.925,0.925,0.920238095238095,0.917857142857143,0.929761904761905,0.922619047619048,0.916666666666667,0.921428571428571,0.917857142857143,0.921428571428571,0.916666666666667,0.9,0.916666666666667,0.935714285714286,0.929761904761905,0.913095238095238,0.916666666666667,0.922619047619048,0.914285714285714,0.925,0.91547619047619,0.927380952380952,0.927380952380952,0.920238095238095,0.920238095238095,0.910714285714286,0.932142857142857,0.920238095238095,0.911904761904762,0.919047619047619,0.925,0.90952380952381,0.90952380952381,0.916666666666667,0.936904761904762],"type":"box","name":"12","marker":{"color":"rgba(37,171,130,1)","line":{"color":"rgba(37,171,130,1)"}},"line":{"color":"rgba(37,171,130,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.922619047619048,0.932142857142857,0.925,0.921428571428571,0.927380952380952,0.91547619047619,0.91547619047619,0.926190476190476,0.927380952380952,0.930952380952381,0.908333333333333,0.921428571428571,0.920238095238095,0.921428571428571,0.927380952380952,0.933333333333333,0.919047619047619,0.917857142857143,0.927380952380952,0.922619047619048,0.913095238095238,0.91547619047619,0.921428571428571,0.922619047619048,0.910714285714286,0.911904761904762,0.920238095238095,0.939285714285714,0.930952380952381,0.91547619047619,0.91547619047619,0.919047619047619,0.908333333333333,0.921428571428571,0.925,0.921428571428571,0.928571428571429,0.929761904761905,0.926190476190476,0.908333333333333,0.928571428571429,0.914285714285714,0.917857142857143,0.925,0.933333333333333,0.917857142857143,0.905952380952381,0.917857142857143,0.935714285714286],"type":"box","name":"13","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"line":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.917857142857143,0.926190476190476,0.928571428571429,0.919047619047619,0.921428571428571,0.925,0.91547619047619,0.916666666666667,0.929761904761905,0.929761904761905,0.93452380952381,0.905952380952381,0.922619047619048,0.923809523809524,0.926190476190476,0.930952380952381,0.933333333333333,0.920238095238095,0.919047619047619,0.923809523809524,0.926190476190476,0.914285714285714,0.920238095238095,0.925,0.925,0.91547619047619,0.913095238095238,0.917857142857143,0.94047619047619,0.935714285714286,0.919047619047619,0.91547619047619,0.926190476190476,0.911904761904762,0.927380952380952,0.921428571428571,0.921428571428571,0.933333333333333,0.933333333333333,0.926190476190476,0.910714285714286,0.925,0.928571428571429,0.925,0.923809523809524,0.928571428571429,0.913095238095238,0.905952380952381,0.91547619047619,0.936904761904762],"type":"box","name":"14","marker":{"color":"rgba(78,195,107,1)","line":{"color":"rgba(78,195,107,1)"}},"line":{"color":"rgba(78,195,107,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.916666666666667,0.932142857142857,0.930952380952381,0.917857142857143,0.921428571428571,0.926190476190476,0.919047619047619,0.919047619047619,0.929761904761905,0.930952380952381,0.933333333333333,0.908333333333333,0.927380952380952,0.929761904761905,0.922619047619048,0.933333333333333,0.936904761904762,0.927380952380952,0.923809523809524,0.927380952380952,0.928571428571429,0.916666666666667,0.925,0.921428571428571,0.927380952380952,0.913095238095238,0.914285714285714,0.923809523809524,0.939285714285714,0.938095238095238,0.920238095238095,0.917857142857143,0.922619047619048,0.917857142857143,0.927380952380952,0.923809523809524,0.920238095238095,0.936904761904762,0.927380952380952,0.928571428571429,0.914285714285714,0.929761904761905,0.929761904761905,0.921428571428571,0.922619047619048,0.936904761904762,0.923809523809524,0.914285714285714,0.914285714285714,0.930952380952381],"type":"box","name":"15","marker":{"color":"rgba(109,205,89,1)","line":{"color":"rgba(109,205,89,1)"}},"line":{"color":"rgba(109,205,89,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.930952380952381,0.936904761904762,0.929761904761905,0.921428571428571,0.932142857142857,0.919047619047619,0.920238095238095,0.930952380952381,0.932142857142857,0.936904761904762,0.908333333333333,0.922619047619048,0.923809523809524,0.927380952380952,0.932142857142857,0.933333333333333,0.926190476190476,0.926190476190476,0.928571428571429,0.926190476190476,0.923809523809524,0.922619047619048,0.927380952380952,0.927380952380952,0.921428571428571,0.917857142857143,0.926190476190476,0.942857142857143,0.93452380952381,0.917857142857143,0.922619047619048,0.927380952380952,0.916666666666667,0.928571428571429,0.926190476190476,0.928571428571429,0.933333333333333,0.935714285714286,0.933333333333333,0.91547619047619,0.929761904761905,0.93452380952381,0.920238095238095,0.921428571428571,0.938095238095238,0.925,0.919047619047619,0.926190476190476,0.933333333333333],"type":"box","name":"16","marker":{"color":"rgba(143,215,68,1)","line":{"color":"rgba(143,215,68,1)"}},"line":{"color":"rgba(143,215,68,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.93452380952381,0.936904761904762,0.929761904761905,0.921428571428571,0.932142857142857,0.920238095238095,0.920238095238095,0.928571428571429,0.935714285714286,0.938095238095238,0.913095238095238,0.925,0.921428571428571,0.93452380952381,0.933333333333333,0.932142857142857,0.929761904761905,0.926190476190476,0.927380952380952,0.925,0.926190476190476,0.916666666666667,0.929761904761905,0.926190476190476,0.923809523809524,0.911904761904762,0.925,0.941666666666667,0.939285714285714,0.91547619047619,0.919047619047619,0.929761904761905,0.916666666666667,0.932142857142857,0.925,0.928571428571429,0.939285714285714,0.93452380952381,0.933333333333333,0.914285714285714,0.928571428571429,0.929761904761905,0.921428571428571,0.920238095238095,0.94047619047619,0.925,0.91547619047619,0.922619047619048,0.935714285714286],"type":"box","name":"17","marker":{"color":"rgba(180,222,44,1)","line":{"color":"rgba(180,222,44,1)"}},"line":{"color":"rgba(180,222,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.921428571428571,0.93452380952381,0.93452380952381,0.933333333333333,0.922619047619048,0.932142857142857,0.91547619047619,0.917857142857143,0.923809523809524,0.936904761904762,0.935714285714286,0.907142857142857,0.927380952380952,0.922619047619048,0.93452380952381,0.938095238095238,0.933333333333333,0.925,0.925,0.926190476190476,0.925,0.923809523809524,0.914285714285714,0.929761904761905,0.922619047619048,0.916666666666667,0.91547619047619,0.925,0.939285714285714,0.938095238095238,0.917857142857143,0.925,0.929761904761905,0.920238095238095,0.927380952380952,0.922619047619048,0.927380952380952,0.939285714285714,0.935714285714286,0.93452380952381,0.921428571428571,0.926190476190476,0.93452380952381,0.919047619047619,0.927380952380952,0.939285714285714,0.933333333333333,0.919047619047619,0.920238095238095,0.935714285714286],"type":"box","name":"18","marker":{"color":"rgba(218,227,25,1)","line":{"color":"rgba(218,227,25,1)"}},"line":{"color":"rgba(218,227,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.913095238095238,0.93452380952381,0.935714285714286,0.932142857142857,0.920238095238095,0.933333333333333,0.919047619047619,0.916666666666667,0.928571428571429,0.932142857142857,0.936904761904762,0.911904761904762,0.926190476190476,0.922619047619048,0.935714285714286,0.935714285714286,0.932142857142857,0.923809523809524,0.922619047619048,0.925,0.927380952380952,0.923809523809524,0.914285714285714,0.925,0.929761904761905,0.916666666666667,0.916666666666667,0.926190476190476,0.944047619047619,0.938095238095238,0.917857142857143,0.917857142857143,0.928571428571429,0.920238095238095,0.932142857142857,0.922619047619048,0.927380952380952,0.936904761904762,0.93452380952381,0.935714285714286,0.91547619047619,0.927380952380952,0.935714285714286,0.920238095238095,0.921428571428571,0.938095238095238,0.928571428571429,0.927380952380952,0.926190476190476,0.933333333333333],"type":"box","name":"19","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+<p class="caption">
+Model performance by number of features evaluated with Recursive Feature Elimitaion
+</p>
+</div>
+<p><strong>Chosen variables</strong></p>
+<pre><code>##  [1] &quot;VH&quot;          &quot;B5&quot;          &quot;VV_VH&quot;       &quot;B11&quot;         &quot;VV&quot;         
+##  [6] &quot;B12&quot;         &quot;NBRI&quot;        &quot;NDVI&quot;        &quot;B4&quot;          &quot;NDMI&quot;       
+## [11] &quot;B3&quot;          &quot;B6&quot;          &quot;SAVI&quot;        &quot;NDWI&quot;        &quot;B7&quot;         
+## [16] &quot;VH_variance&quot; &quot;B8A&quot;         &quot;B8&quot;</code></pre>
+<hr />
+</div>
+<div id="model-simplification-1" class="section level4">
+<h4><span class="header-section-number">2.2.2.2</span> Model Simplification</h4>
+<p>To simplify the model without loosing prediction accuracy we search for a model with less predictor variables, which has the same accury (max 2 % difference in accuracy).</p>
+<pre><code>##   Variables  Accuracy     Kappa AccuracySD     KappaSD
+## 8         8 0.9098095 0.9016104 0.00739575 0.008068091</code></pre>
+<p>A model using the following 8 prediction variables instead of all 18 variables has almost the same accuracy.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">selectedVars &lt;-<span class="st"> </span>rfProfile<span class="op">$</span>variables
+bestVar &lt;-<span class="st"> </span>rfProfile<span class="op">$</span>control<span class="op">$</span>functions<span class="op">$</span><span class="kw">selectVar</span>(selectedVars, var_num)
+bestVar</code></pre></div>
+<pre><code>## [1] &quot;VH&quot;    &quot;B5&quot;    &quot;VV_VH&quot; &quot;B11&quot;   &quot;VV&quot;    &quot;B12&quot;   &quot;NBRI&quot;  &quot;NDVI&quot;</code></pre>
+<hr />
+</div>
+</div>
+<div id="final-model" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Final Model</h3>
+<p>Using the results from previous analysis we train a model with best performing predictor variables and model-hyperparameters.</p>
+<p>The predictor variables are:</p>
+<ul>
+<li>VH</li>
+<li>B5</li>
+<li>VV:VH</li>
+<li>B11</li>
+<li>VV</li>
+<li>B12</li>
+<li>NBRI</li>
+<li>NDVI</li>
+</ul>
+<p>The hyperparameters are:</p>
+<ul>
+<li>Number of variables to possibly split at in each node (mtry) = 2</li>
+<li>Minimal node size = 1</li>
+<li>Number of trees = 500 (this was not optimized, as more trees usually give better results)</li>
+</ul>
+<hr />
+<div id="model-validation-1" class="section level4">
+<h4><span class="header-section-number">2.2.3.1</span> Model Validation</h4>
+<p>Applying the final model to the validation data set the error matrix looks like this.</p>
+<p><br></p>
+<p><strong>Error Matrix</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ranger)
+
+f &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="st">&quot;class&quot;</span>, <span class="kw">paste</span>(bestVar, <span class="dt">collapse=</span><span class="st">&quot; + &quot;</span>), <span class="dt">sep=</span><span class="st">&quot; ~ &quot;</span>))
+
+simpler_model &lt;-<span class="st"> </span><span class="kw">ranger</span>(<span class="dt">formula =</span> f, 
+                        <span class="dt">data =</span> training,
+                        <span class="dt">num.trees =</span> <span class="dv">500</span>, 
+                        <span class="dt">mtry =</span> <span class="dv">2</span>,
+                        <span class="dt">min.node.size =</span> <span class="dv">1</span>,
+                        <span class="dt">importance =</span> <span class="st">&quot;impurity&quot;</span>)
+
+testing.pred &lt;-<span class="st"> </span><span class="kw">predict</span>(simpler_model, testing)
+
+cm&lt;-<span class="st"> </span><span class="kw">confusionMatrix</span>(<span class="dt">data =</span> testing.pred<span class="op">$</span>predictions, <span class="dt">reference =</span> testing<span class="op">$</span>class)
+
+cm.df &lt;-<span class="st"> </span><span class="kw">as.data.frame.matrix</span>(cm<span class="op">$</span>table)
+
+cm.df <span class="op">%&gt;%</span>
+<span class="st">  </span>
+<span class="st">  </span><span class="kw">mutate_all</span>(<span class="op">~</span><span class="kw">ifelse</span>(. <span class="op">&gt;</span><span class="st"> </span><span class="kw">max</span>(cm.df[<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>])<span class="op">*</span><span class="fl">0.5</span>,
+                  <span class="kw">cell_spec</span>(., <span class="st">&quot;html&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">bold =</span> T, <span class="dt">background =</span> <span class="st">&quot;green&quot;</span>),
+                  <span class="kw">ifelse</span>(. <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>,
+                         <span class="kw">cell_spec</span>(., <span class="dt">color =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">bold =</span> T, <span class="dt">background =</span> <span class="kw">spec_color</span>(., <span class="dt">option =</span> <span class="st">&quot;A&quot;</span>, <span class="dt">direction=</span> <span class="op">-</span><span class="dv">1</span>, <span class="dt">begin =</span> <span class="fl">0.3</span>, <span class="dt">scale_from =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">53</span>))),
+                         <span class="kw">cell_spec</span>(., <span class="st">&quot;html&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;grey&quot;</span>)
+                         )
+                  )
+             ) <span class="op">%&gt;%</span>
+<span class="st">  </span>
+<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">class =</span> <span class="kw">cell_spec</span>(<span class="kw">c</span>(<span class="st">&quot;water - 0&quot;</span>,<span class="st">&quot;primary forest - 1&quot;</span>,<span class="st">&quot;secondary forest - 2&quot;</span>,<span class="st">&quot;mature oilpalm - 3&quot;</span>, <span class="st">&quot;immature oilpalm - 4&quot;</span>,<span class="st">&quot;shrubland - 5&quot;</span>,<span class="st">&quot;plantation forest - 6&quot;</span>,<span class="st">&quot;burned / cleared - 7&quot;</span>,<span class="st">&quot;urban buildings - 8&quot;</span>,<span class="st">&quot;coconut plantation - 10&quot;</span>,<span class="st">&quot;rice - 11&quot;</span>,<span class="st">&quot;tea plantation - 12&quot;</span>), <span class="st">&quot;html&quot;</span>,<span class="dt">bold =</span> T)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(class, <span class="kw">everything</span>(.)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable</span>(<span class="st">&quot;html&quot;</span>, <span class="dt">escape =</span> F, <span class="dt">rownames =</span> T, <span class="dt">align=</span><span class="kw">c</span>(<span class="st">&#39;r&#39;</span>, <span class="kw">rep</span>(<span class="st">&#39;c&#39;</span>, <span class="dv">12</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable_styling</span>(<span class="st">&quot;hover&quot;</span>, <span class="dt">full_width =</span> F) </code></pre></div>
+<table class="table table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+class
+</th>
+<th style="text-align:center;">
+0
+</th>
+<th style="text-align:center;">
+1
+</th>
+<th style="text-align:center;">
+2
+</th>
+<th style="text-align:center;">
+3
+</th>
+<th style="text-align:center;">
+4
+</th>
+<th style="text-align:center;">
+5
+</th>
+<th style="text-align:center;">
+6
+</th>
+<th style="text-align:center;">
+7
+</th>
+<th style="text-align:center;">
+8
+</th>
+<th style="text-align:center;">
+10
+</th>
+<th style="text-align:center;">
+11
+</th>
+<th style="text-align:center;">
+12
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">water - 0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">300</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">primary forest - 1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">227</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(213, 68, 109, 1) !important;">32</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 160, 110, 1) !important;">15</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">secondary forest - 2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(116, 32, 129, 1) !important;">50</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">233</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(246, 108, 92, 1) !important;">23</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">mature oilpalm - 3</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">266</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 147, 103, 1) !important;">17</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">immature oilpalm - 4</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(246, 108, 92, 1) !important;">23</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">271</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">shrubland - 5</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">290</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">plantation forest - 6</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">292</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">burned / cleared - 7</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">286</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 209, 148, 1) !important;">7</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">urban buildings - 8</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">292</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">coconut plantation - 10</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 140, 99, 1) !important;">18</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(250, 129, 95, 1) !important;">20</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 209, 148, 1) !important;">7</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 209, 148, 1) !important;">7</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">252</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">rice - 11</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 185, 127, 1) !important;">11</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">291</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+<span style=" font-weight: bold;    ">tea plantation - 12</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">294</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Respective Accuracy</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(cm<span class="op">$</span>overall[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</code></pre></div>
+<pre><code>##      Accuracy         Kappa AccuracyLower AccuracyUpper 
+##     0.9150000     0.9072727     0.9054105     0.9239091</code></pre>
+</div>
+</div>
+<div id="classification-reliability" class="section level3">
+<h3><span class="header-section-number">2.2.4</span> Classification Reliability</h3>
+<p>The model validation provides us with values for overall model performance, but cannot give us regional performance values. Therefore a second classification was produced to inform about per pixel classification certainty. Since classification probability can only be calculated for a two-class classifier and the project focus is put on oilpalm plantations, the lulc-classes in the training dataset were merged into following classes:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Oilpalm plantation (mature and immature)</strong></li>
+<li><strong>other classes</strong></li>
+</ol>
+<p>A classifier was then trained on this data with its output mode set to probability.</p>
+<p><img src="F:/projects/crc990_b05/output_data/img/presentation/certainty.jpg" width="100%" /> <a href="https://code.earthengine.google.com/ae39bc061d4b551c20720a432d7b02e9">see in GEE</a></p>
+<hr />
+</div>
+</div>
+</div>
+<div id="results" class="section level1">
+<h1><span class="header-section-number">3</span> Results</h1>
+<p><img src="F:/projects/crc990_b05/output_data/img/presentation/results_banner.jpg" width="100%" /> <a href="https://code.earthengine.google.com/f928cbe0eb9c6679c3fad8efb428306e">see in GEE</a> —————–</p>
+</div>
+<div id="problems" class="section level1">
+<h1><span class="header-section-number">4</span> Problems</h1>
+<div id="classification-1" class="section level2">
+<h2><span class="header-section-number">4.1</span> Classification</h2>
+<div id="reference-data-1" class="section level3 tabset tabset-pills">
+<h3><span class="header-section-number">4.1.1</span> reference data</h3>
+<div id="bad-image-quality" class="section level4 unnumbered">
+<h4>bad image quality</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/problems/ge_bad-scene.jpg" width="100%" /> <a href="https://www.google.com/maps/@-1.358113,102.9531757,4277m/data=!3m1!1e3">see in Google Maps</a></p>
+<p>For a lot of areas in Jambi there is no appropriate reference image available. Problems, among others, are:<br />
+- no high resolution imagery is available<br />
+- high resolution imagery is covered by clouds<br />
+- last appropriate image is severeal years old</p>
+</div>
+<div id="land-use-mosaic-1" class="section level4 unnumbered">
+<h4>land-use mosaic 1</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/problems/ge_mosaic1.jpg" width="100%" /> <a href="https://www.google.com/maps/@-1.1448537,104.1225995,1069m/data=!3m1!1e3">see in Google Maps</a></p>
+<p>In many regions of Jambi province, the lulc-pattern is very heterogenious with many different classes densely mixed. In these cases it is hard to collect reference data because lulc areas covered by a single class are very small and chances are high to receive backscatter of mixed classes.</p>
+</div>
+<div id="land-use-mosaic-2" class="section level4 unnumbered">
+<h4>land-use mosaic 2</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/problems/ge_mosaic2.jpg" width="100%" /> <a href="https://www.google.com/maps/@-1.7708193,101.2165027,881m/data=!3m1!1e3">see in Google Maps</a></p>
+<p>In some cases lulc classes are devided by other classes (e.g. intercropped with trees) which also makes it more difficult to collect proper reference data.</p>
+</div>
+<div id="similar-appearance" class="section level4 unnumbered">
+<h4>similar appearance</h4>
+<p><img src="F:/projects/crc990_b05/output_data/img/reference/problems/ge_plantation.jpg" width="100%" /> <a href="https://www.google.com/maps/@-1.396042,102.7611715,935m/data=!3m1!1e3">see in Google Maps</a></p>
+<p>Some classes are hard to differentiate from each other in aerial images. For example:<br />
+- Primary forest - Secondary forest<br />
+- Secondary forest - Plantation forest<br />
+- Oil palm plantation - Coconut plantation</p>
+</div>
+</div>
+<div id="processing" class="section level3">
+<h3><span class="header-section-number">4.1.2</span> Processing</h3>
+<p>Although most processing steps were done in Google Earth Engine, using high performance server clusters via cloud computing, calculations were problematic. For the calculations vast amounts of data had to be processed. The area of interest (Jambi) is quite large covering many image tiles, for each tile data from almost 2 years was processed from different sources (Sentinel-1 and Sentinel-2) in many steps. Due to these complex processing steps calculations were aborted (timed-out) from time to time and other calculations took several days to complete before results could be evaluated and following steps could be initiated.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-Ekadinata2011">
+<p>Ekadinata, Andree, and Grégoire Vincent. 2011. “Rubber agroforests in a changing landscape: Analysis of land use/cover trajectories in bungo district, indonesia.” <em>Forests Trees and Livelihoods</em> 20 (1): 3–14. doi:<a href="https://doi.org/10.1080/14728028.2011.9756694">10.1080/14728028.2011.9756694</a>.</p>
+</div>
+<div id="ref-Melati2017">
+<p>Melati, Dian Nuraini. 2017. “The use of remote sensing data to monitor land use systems and forest variables of the tropical rainforest landscape under transformation in Jambi Province, Sumatra, Indonesia.” PhD thesis, Göttingen.</p>
+</div>
+<div id="ref-Nurwanda2016">
+<p>Nurwanda, Atik, Alinda Fitriany Malik Zain, and Ernan Rustiadi. 2016. “Analysis of Land Cover Changes and Landscape Fragmentation in Batanghari Regency, Jambi Province.” <em>Procedia - Social and Behavioral Sciences</em> 227 (August). Elsevier BV: 87–94. doi:<a href="https://doi.org/10.1016/j.sbspro.2016.06.047">10.1016/j.sbspro.2016.06.047</a>.</p>
+</div>
+<div id="ref-Sambodo2018">
+<p>Sambodo, Katmoko Ari, and Novie Indriasari. 2018. “LAND COVER CLASSIFICATION OF ALOS PALSAR DATA USING SUPPORT VECTOR MACHINE.” <em>International Journal of Remote Sensing and Earth Sciences (IJReSES)</em> 10 (1). Indonesian National Institute of Aeronautics; Space (LAPAN). doi:<a href="https://doi.org/10.30536/j.ijreses.2013.v10.a1836">10.30536/j.ijreses.2013.v10.a1836</a>.</p>
+</div>
+<div id="ref-SooChinLiew2003">
+<p>Soo Chin Liew, Chew Wai Chang, and Kim Hwa Lim. 2003. “Hyperspectral land cover classification of EO-1 Hyperion data by principal component analysis and pixel unmixing.” In, 3111–3. Institute of Electrical; Electronics Engineers (IEEE). doi:<a href="https://doi.org/10.1109/igarss.2002.1027101">10.1109/igarss.2002.1027101</a>.</p>
+</div>
+<div id="ref-Stolle2003">
+<p>Stolle, F., K. M. Chomitz, E. F. Lambin, and T. P. Tomich. 2003. “Land use and vegetation fires in Jambi Province, Sumatra, Indonesia.” <em>Forest Ecology and Management</em> 179 (1-3): 277–92. doi:<a href="https://doi.org/10.1016/S0378-1127(02)00547-9">10.1016/S0378-1127(02)00547-9</a>.</p>
+</div>
+</div>
+</div>
+
+&nbsp;
+<hr />
+<p style="text-align: center;"><span style="color: #808080;"><em>A work by Jens Wiesehahn</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="mailto:wiesehahn.jens@gmail.com" class="fa fa-envelope"></a>
+    <a href="https://github.com/wiesehahn/" class="fa fa-github"></a>
+</p>
+
+&nbsp;
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,811 @@
+---
+title: "Google Earth Engine"
+
+---
+
+
+All scripts for running the classification process are written in javascript within Google Earth Engine Editor with built-in version documentation.  
+They are available under following folder:  
+[**users/wiesehahn/jambi/classification_seperate/...**](https://code.earthengine.google.com/?accept_repo=users/wiesehahn/jambi)
+
+# Processing Scripts
+
+## Create reference data {#A_reference_export}
+
+[**A_reference_export**](https://code.earthengine.google.com/fae4b87d9465b3a585fdc8ccfe17d6e4)
+
+This script creates image composites of Sentinel-1 and Sentinel-2 data for the region of interest. The time period for image data is chosen. Predictor variables (image bands) are chosen. And parameters for filtering and merging image composites are defined. Stratified points within each reference class are created and values of predictor variables are extracted. This reference data set is then exported either as an asset to be used within Google Earth Engine or as a csv-Table to be used outside GEE (e.g. R). 
+
+```{javascript}
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////00 VARIABLE SETTINGS/////////////////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------VARIABLE SELECTION-------------------------------------------------
+
+// set bandnames to use in classification as prediction variables.
+// choose from ['B2','B3','B4','B5','B6','B7','B8','B8A','B11','B12','NDVI','NDWI','NBRI','NDMI','SAVI'
+//             ,'VV','VH','VV_VH','VV_variance','VH_variance'].
+var usedBands = ['B5','B11','B12','NDVI','NBRI',
+                  'VV','VH','VV_VH'
+];
+
+
+// set date range for composite creation.
+// sentinel1 
+var s1_start = ee.Date('2018-01-01');
+var s1_end = ee.Date('2019-12-31');
+// sentinel2
+var s2_start = ee.Date('2018-01-01');
+var s2_end = ee.Date('2019-12-31');
+
+
+// number of reference points per class (divided in validation:training 30:70)
+var pointNumber = 1500;
+
+
+// region of interest, area for classification
+// import region of interest (jambi) from kml file pushed to fusion tables. 
+var roi = ee.FeatureCollection('ft:1O0ylwNlk2Mmqx7P0zSqqwhJA778oBciIt8Myhnxs', 'geometry');
+
+// the path and name for the reference dataset.
+// used in create_reference to save dataset as asset.
+// used in create_classification_model to load dataset
+var assetID_path = 'users/wiesehahn/jambi/';
+var assetID_reference = 'reference/reference_20190618';
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////UTILS////////////////////////////////////////////////////////////////
+
+
+// function mask S2 clouds
+var maskClouds = function(image) {
+  var qa = image.select('QA60');
+  // Bits 10 and 11 are clouds and cirrus, respectively.
+  var cloudBitMask = ee.Number(2).pow(10).int();
+  var cirrusBitMask = ee.Number(2).pow(11).int();
+  // Both flags should be set to zero, indicating clear conditions.
+  var mask = qa.bitwiseAnd(cloudBitMask).eq(0).and(
+             qa.bitwiseAnd(cirrusBitMask).eq(0));
+  // further mask bright areas indicating clouds which are not included in fisrt mask.
+  // suggested here https://forobs.jrc.ec.europa.eu/recaredd/S2_composite.php
+  var mask2 = image.select('B3').lt(2000).and(
+              image.select('B9').lt(900)).and(
+              image.select('B2').lt(1550));
+  // Return the masked and scaled data.
+  return image.updateMask(mask).updateMask(mask2).divide(10000);
+};
+
+
+// function to create S1 image from collection
+var s1col2img = function(collection, start, end) {
+  // funcion to add index (vv:vh normalized ratio)
+  var addIndex = function(image) {
+    var vv_vh = (image.select('VV').subtract(image.select('VH'))).divide(image.select('VV').add(image.select('VH'))).rename('VV_VH'); 
+  return(image.addBands(vv_vh).float());
+  };
+  
+  // function to mask out image edges using angles, <=30deg and >=45deg
+  var mask_gt30 = function(image){
+    var ang = image.select(['angle']);
+    return image.updateMask(ang.gt(30.63993));
+  };
+  var mask_lt45 = function(image){
+    var ang = image.select(['angle']);
+    return image.updateMask(ang.lt(45.53993));
+  };
+
+  var period = collection.filterDate(start, end);
+  
+  var period_masked = period.map(mask_gt30).map(mask_lt45);
+  
+  var mean = period_masked.mean();
+  
+  var mean_index = addIndex(mean);
+
+  var out = mean_index.clip(roi);
+  
+  return out;
+};
+
+ 
+ 
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////01 CREATE COMPONENTS/////////////////////////////////////////////////
+
+
+//-----------------------------------------------------------------------------------------
+// -------------------SENTINEL-2 IMAGE COLLECTION------------------------------------------
+
+
+// filter S2 collection and calculate median
+var s2 = ee.ImageCollection('COPERNICUS/S2')
+  .filterDate(s2_start, s2_end)
+  .filterBounds(roi)
+  .map(maskClouds)
+  .mean()
+  .clipToCollection(roi);
+
+// add indices
+var addIndices = function(image) {
+    var ndvi = image.normalizedDifference(['B8', 'B4']).rename("NDVI"); // normalized difference vegetation index
+    var ndwi = image.normalizedDifference(['B3', 'B8']).rename("NDWI"); // normalized difference water index
+    var nbri = image.normalizedDifference(['B8', 'B12']).rename("NBRI"); // normalized burn ratio index
+    var ndmi = image.normalizedDifference(['B8', 'B11']).rename("NDMI"); // normalized difference moisture index
+    var savi = image.expression('((b("B8") - b("B4")) / (b("B8") + b("B4") + 0.5)) * (1 + 0.5)').rename("SAVI"); // SoilAdjusted Total Vegetation Index 
+    
+  return(image.addBands(ndvi).addBands(ndwi).addBands(nbri).addBands(ndmi).addBands(savi).float());
+};
+
+s2 = addIndices(s2);
+
+
+//------------------------------------------------------------------------------------------
+// -------------------SENTINEL-1 IMAGE COLLECTION-------------------------------------------
+
+
+// filter S1 collection and calculate median
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD')
+    .filterDate(s1_start, s1_end)
+    .filterBounds(roi)
+    // Filter to get images with VV and VH dual polarization.
+    .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+    .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+    .filter(ee.Filter.eq('instrumentMode', 'IW'));
+
+
+s1 = s1col2img(s1, s1_start, s1_end);
+
+/*
+// calculate S1 variance
+var s1_var = ee.ImageCollection('COPERNICUS/S1_GRD')
+    .filterDate(s1_start, s1_end)
+    .filterBounds(roi)
+    // Filter to get images with VV and VH dual polarization.
+    .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+    .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+    .filter(ee.Filter.eq('instrumentMode', 'IW'));
+
+// calculate S1 variance between quartals 
+var calc_var = function(imageCollection) {
+  // ascending variance
+  var ascending = imageCollection.filter(ee.Filter.eq('orbitProperties_pass', 'ASCENDING'));
+  var asc1 = per_quartal(ascending, 1, 91);
+  var asc2 = per_quartal(ascending, 92, 182);
+  var asc3 = per_quartal(ascending, 183, 273);
+  var asc4 = per_quartal(ascending, 274, 365);
+  var asc = ee.ImageCollection([asc1, asc2, asc3, asc4]);
+  var asc_var = asc.reduce(ee.Reducer.variance());
+  //descending variance
+  var descending = imageCollection.filter(ee.Filter.eq('orbitProperties_pass', 'DESCENDING'));
+  var desc1 = per_quartal(descending, 1, 91);
+  var desc2 = per_quartal(descending, 92, 182);
+  var desc3 = per_quartal(descending, 183, 273);
+  var desc4 = per_quartal(descending, 274, 365);
+  var desc = ee.ImageCollection([desc1, desc2, desc3, desc4]);
+  var desc_var = desc.reduce(ee.Reducer.variance());
+  // mean orbital variance
+  var variance = ee.ImageCollection([asc_var, desc_var])
+  .mean()
+  .clip(roi);
+  // focal filter 
+  var median = variance.focal_median(50, 'circle', 'meters');
+return median.select('VV_variance', 'VH_variance') ;
+};
+
+var s1_var = calc_var(s1_var);
+*/
+
+
+// --------------------------------------------------------------------------------------
+// -------------------CREATE COMPOSITE IMAGE---------------------------------------------
+
+// merge s1 and s2 bands to composite
+var composite = ee.Image.cat([s2, 
+                              s1 
+                             // ,s1_var // uncomment if in use
+                              ]).select(usedBands);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////02 CREATE REFERENCE//////////////////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------CREATE REFERENCE DATA----------------------------------------------
+
+
+// merge reference data.
+var reference = ee.FeatureCollection([water,
+                                      primary_forest,
+                                      secondary_forest,
+                                      oilpalm_mature,
+                                      oilpalm_immature,
+                                      bush_shrub,
+                                      plantation_forest,
+                                      burned_cleared,
+                                      urban_buildings,
+                                      coconut_plantation,
+                                      rice,
+                                      tea_plantation,
+                                      dryland_agriculture
+                                      ]).flatten();
+
+// reduce reference data to image band for stratified sampling
+var reference_img = reference
+                    .filter(ee.Filter.neq('class', null))
+                    .reduceToImage({
+                      properties: ['class'],
+                      reducer: ee.Reducer.first()
+                    })
+                    .rename("class");
+
+// get training data stratified by refrence classes 
+var stratified = composite.addBands(reference_img)
+                  .stratifiedSample({
+                    numPoints: pointNumber,
+                    classBand: 'class',
+                    projection: 'EPSG:3665',
+                    scale: 10,
+                    tileScale: 4,
+                    region: reference.geometry({maxError: 10}),
+                    geometries: true
+                  });
+
+// export training data to avoid timeouts
+var assetID = ee.String(assetID_path).cat(ee.String(assetID_reference));
+
+Export.table.toAsset({
+  collection: stratified,
+  description: 'export_reference_to_asset',
+  assetId: assetID.getInfo()});
+
+
+ // for modelling outside EarthEngine
+Export.table.toDrive({
+  collection: stratified,
+  description: 'only_run_for_use_outside_EE'});
+
+
+
+```
+
+
+## Export classified validation data {#B_validation_export}
+
+[**B_validation_export**](https://code.earthengine.google.com/89666a72b0458008b37c4a7211476f6d)
+
+This script splits the reference data in training and validation data (70:30). 
+The random forest classifier is trained using training data and applied to classify the validation data, which is then exported as an asset to be used in Google Earth Engine. 
+
+```{javascript}
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////00 VARIABLE SETTINGS/////////////////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------VARIABLE SELECTION-------------------------------------------------
+
+// set bandnames to use in classification as prediction variables.
+// choose from ['B2','B3','B4','B5','B6','B7','B8','B8A','B11','B12','NDVI','NDWI','NBRI','NDMI','SAVI'
+//             ,'VV','VH','VV_VH','VV_variance','VH_variance'].
+var usedBands = ['B5','B11','B12','NDVI','NBRI',
+                  'VV','VH','VV_VH'
+];
+
+
+// the path and name for the reference dataset.
+// used in create_reference to save dataset as asset.
+// used in create_classification_model to load dataset
+var assetID_path = 'users/wiesehahn/jambi/';
+var assetID_reference = 'reference/reference_20190618';
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////03 CREATE CLASSIFICATION MODEL///////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------VARIABLE SELECTION-------------------------------------------------
+
+//random forest classifier
+
+// choose a classifier and its settings
+var classifier = ee.Classifier.randomForest({numberOfTrees:500,
+                                            variablesPerSplit:2,
+                                            minLeafPopulation:1,
+                                            bagFraction:0.5});
+
+
+// --------------------------------------------------------------------------------------
+// -------------------BUILD MODEL--------------------------------------------------------
+
+// load reference dataset
+var assetID = ee.String(assetID_path).cat(ee.String(assetID_reference));
+var reference_subset = ee.Collection.loadTable(assetID.getInfo());
+
+// split reference dataset in training and validation data.
+var reference_random = reference_subset.randomColumn('random');
+
+var split = 0.7;  // 70% training, 30% validation.
+var trainingPartition = reference_random.filter(ee.Filter.lt('random', split));
+var validationPartition = reference_random.filter(ee.Filter.gte('random', split));
+
+// train the classifier. 
+var model = classifier.train(trainingPartition, 'class', usedBands);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////04 VALIDATE CLASSIFICATION MODEL/////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------VALIDATE MODEL-----------------------------------------------------
+
+// classify the validation data.
+var validation_classification = validationPartition.classify(model);
+
+
+// export classified validation data
+var assetID = ee.String(assetID_path).cat(ee.String('validation/validation_')).cat(ee.String(assetID_reference));
+
+Export.table.toAsset({
+  collection: validation_classification,
+  description: 'export_classified_validation',
+  assetId: assetID.getInfo() });
+
+```
+
+
+## Export of classification {#C_classification_export}
+
+[**C_classification_export**](https://code.earthengine.google.com/1f761abff8044184b17137bde8b07c9b)
+
+This script creates the same image composite as **A_reference_export**. The reference data created with that script is used to train the same random forest model as in **B_validation_export**, which is then applied to the entire image scene. The exported output is a classified image scene and a probability map representing the certainty for each pixel to be oilpalm plantation or any other lulc class.
+
+
+```{javascript}
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////00 VARIABLE SETTINGS/////////////////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------VARIABLE SELECTION-------------------------------------------------
+
+// set bandnames to use in classification as prediction variables.
+// choose from ['B2','B3','B4','B5','B6','B7','B8','B8A','B11','B12','NDVI','NDWI','NBRI','NDMI','SAVI'
+//             ,'VV','VH','VV_VH','VV_variance','VH_variance'].
+var usedBands = ['B5','B11','B12','NDVI','NBRI',
+                  'VV','VH','VV_VH'
+];
+
+
+// set date range for composite creation.
+// sentinel1 
+var s1_start = ee.Date('2018-01-01');
+var s1_end = ee.Date('2019-12-31');
+// sentinel2
+var s2_start = ee.Date('2018-01-01');
+var s2_end = ee.Date('2019-12-31');
+
+
+// region of interest, area for classification
+// import region of interest (jambi) from kml file pushed to fusion tables. 
+var roi = ee.FeatureCollection('ft:1O0ylwNlk2Mmqx7P0zSqqwhJA778oBciIt8Myhnxs', 'geometry');
+
+// the path and name for the reference dataset.
+// used in create_reference to save dataset as asset.
+// used in create_classification_model to load dataset
+var assetID_path = 'users/wiesehahn/jambi/';
+var assetID_reference = 'reference/reference_20190618';
+
+// for map export name will be path/classification_date (e.g.users/wiesehahn/classification_20190521)
+var assetID_date = '20190618';
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////UTILS////////////////////////////////////////////////////////////////
+
+
+// function mask S2 clouds
+var maskClouds = function(image) {
+  var qa = image.select('QA60');
+  // Bits 10 and 11 are clouds and cirrus, respectively.
+  var cloudBitMask = ee.Number(2).pow(10).int();
+  var cirrusBitMask = ee.Number(2).pow(11).int();
+  // Both flags should be set to zero, indicating clear conditions.
+  var mask = qa.bitwiseAnd(cloudBitMask).eq(0).and(
+             qa.bitwiseAnd(cirrusBitMask).eq(0));
+  // further mask bright areas indicating clouds which are not included in fisrt mask.
+  // suggested here https://forobs.jrc.ec.europa.eu/recaredd/S2_composite.php
+  var mask2 = image.select('B3').lt(2000).and(
+              image.select('B9').lt(900)).and(
+              image.select('B2').lt(1550));
+  // Return the masked and scaled data.
+  return image.updateMask(mask).updateMask(mask2).divide(10000);
+};
+
+
+
+// function to create S1 image from collection
+var s1col2img = function(collection, start, end) {
+  // funcion to add index (vv:vh normalized ratio)
+  var addIndex = function(image) {
+    var vv_vh = (image.select('VV').subtract(image.select('VH'))).divide(image.select('VV').add(image.select('VH'))).rename('VV_VH'); 
+  return(image.addBands(vv_vh).float());
+  };
+  
+  // function to mask out image edges using angles, <=30deg and >=45deg
+  var mask_gt30 = function(image){
+    var ang = image.select(['angle']);
+    return image.updateMask(ang.gt(30.63993));
+  };
+  var mask_lt45 = function(image){
+    var ang = image.select(['angle']);
+    return image.updateMask(ang.lt(45.53993));
+  };
+
+  var period = collection.filterDate(start, end);
+  
+  var period_masked = period.map(mask_gt30).map(mask_lt45);
+  
+  var mean = period_masked.mean();
+  
+  var mean_index = addIndex(mean);
+
+  var out = mean_index.clip(roi);
+  
+  return out;
+};
+
+ 
+ 
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////01 CREATE COMPONENTS/////////////////////////////////////////////////
+
+
+//-----------------------------------------------------------------------------------------
+// -------------------SENTINEL-2 IMAGE COLLECTION------------------------------------------
+
+
+// filter S2 collection and calculate median
+var s2 = ee.ImageCollection('COPERNICUS/S2')
+  .filterDate(s2_start, s2_end)
+  .filterBounds(roi)
+  .map(maskClouds)
+  .mean()
+  .clipToCollection(roi);
+
+// add indices
+var addIndices = function(image) {
+    var ndvi = image.normalizedDifference(['B8', 'B4']).rename("NDVI"); // normalized difference vegetation index
+    var ndwi = image.normalizedDifference(['B3', 'B8']).rename("NDWI"); // normalized difference water index
+    var nbri = image.normalizedDifference(['B8', 'B12']).rename("NBRI"); // normalized burn ratio index
+    var ndmi = image.normalizedDifference(['B8', 'B11']).rename("NDMI"); // normalized difference moisture index
+    var savi = image.expression('((b("B8") - b("B4")) / (b("B8") + b("B4") + 0.5)) * (1 + 0.5)').rename("SAVI"); // SoilAdjusted Total Vegetation Index 
+    
+  return(image.addBands(ndvi).addBands(ndwi).addBands(nbri).addBands(ndmi).addBands(savi).float());
+};
+
+s2 = addIndices(s2);
+
+
+//------------------------------------------------------------------------------------------
+// -------------------SENTINEL-1 IMAGE COLLECTION-------------------------------------------
+
+
+// filter S1 collection and calculate median
+var s1 = ee.ImageCollection('COPERNICUS/S1_GRD')
+    .filterDate(s1_start, s1_end)
+    .filterBounds(roi)
+    // Filter to get images with VV and VH dual polarization.
+    .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VH'))
+    .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
+    .filter(ee.Filter.eq('instrumentMode', 'IW'));
+
+
+s1 = s1col2img(s1, s1_start, s1_end);
+ 
+
+// --------------------------------------------------------------------------------------
+// -------------------CREATE COMPOSITE IMAGE---------------------------------------------
+
+// merge s1 and s2 bands to composite
+var composite = ee.Image.cat([s2, 
+                              s1 
+                             // ,s1_var // uncomment if in use
+                              ]).select(usedBands);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////03 CREATE CLASSIFICATION MODEL///////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------VARIABLE SELECTION-------------------------------------------------
+
+//random forest classifier
+
+// choose a classifier and its settings
+var classifier = ee.Classifier.randomForest({numberOfTrees:500,
+                                            variablesPerSplit:2,
+                                            minLeafPopulation:1,
+                                            bagFraction:0.5});
+
+
+// --------------------------------------------------------------------------------------
+// -------------------BUILD MODEL--------------------------------------------------------
+
+// load reference dataset
+var assetID = ee.String(assetID_path).cat(ee.String(assetID_reference));
+var reference_subset = ee.Collection.loadTable(assetID.getInfo());
+
+// split reference dataset in training and validation data.
+var reference_random = reference_subset.randomColumn('random');
+
+var split = 0.7;  // 70% training, 30% validation.
+var trainingPartition = reference_random.filter(ee.Filter.lt('random', split));
+var validationPartition = reference_random.filter(ee.Filter.gte('random', split));
+
+// train the classifier. 
+var model = classifier.train(trainingPartition, 'class', usedBands);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////03 CREATE PROBABILITY MODEL//////////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------VARIABLE SELECTION-------------------------------------------------
+
+//random forest classifier
+
+// choose a classifier and its settings
+var classifier_prob = ee.Classifier.randomForest({numberOfTrees:500,
+                                           // variablesPerSplit:2,
+                                           // minLeafPopulation:2,
+                                            bagFraction:0.5});
+
+
+// --------------------------------------------------------------------------------------
+// -------------------BUILD MODEL--------------------------------------------------------
+
+// remap values in two classes (oil palm / non oil palm)
+var reference_random_prob = reference_random.remap({
+  lookupIn:  [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
+  lookupOut: [0,0,0,1,1,0,0,0,0,0,0 ,0 ,0,0 ],
+  columnName: 'class'});
+
+var trainingPartition_prob = reference_random_prob.filter(ee.Filter.lt('random', split));
+var validationPartition_prob = reference_random_prob.filter(ee.Filter.gte('random', split));
+
+
+// train the classifier. 
+var model_prob = classifier_prob.setOutputMode('PROBABILITY').train(trainingPartition_prob, 'class', usedBands);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////05 APPLY CLASSIFICATION MODEL////////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------CLASSIFICATION-----------------------------------------------------
+
+// classify the image composite
+var classified = composite.classify(model); 
+
+// export classification map
+var assetID = ee.String(assetID_path).cat(ee.String('classification/classification_')).cat(ee.String(assetID_date));
+
+Export.image.toAsset({
+image: classified.uint8(),
+description:  'Classification',
+assetId: assetID.getInfo(), 
+//region: region,
+scale: 10,
+maxPixels: 1e12,
+});
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////05 APPLY PROBABILITY MODEL////////////////////////////////////////
+
+
+// --------------------------------------------------------------------------------------
+// -------------------CLASSIFICATION-----------------------------------------------------
+
+// classify the image composite
+var classified_prob = composite.classify(model_prob).multiply(100); 
+
+// export classification map
+var assetID = ee.String(assetID_path).cat(ee.String('classification/oilpalm_probability_')).cat(ee.String(assetID_date));
+
+Export.image.toAsset({
+image: classified_prob.uint8(),
+description:  'Probability',
+assetId: assetID.getInfo(), 
+//region: region,
+scale: 10,
+maxPixels: 1e12,
+});
+
+
+Map.centerObject(roi,8);
+Map.addLayer(roi);
+
+```
+
+## Visualisation of results {#D_display_results}
+
+[**D_display_results**](https://code.earthengine.google.com/774786e35d79a4efc1a8612d27a7f475)
+
+This script is visualising the results created in previous scripts. Training data (classified wrong and right), validataion data error matrix, oilpalm probability and landuse/landcover classes for 2016/17 and 2018/19.
+
+```{javascript}
+
+
+//--------------------------------CLASSIFICATIONS-------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+
+var classification2016 = ee.Image.load('users/wiesehahn/classification2016_20190617');
+var classification2018 = ee.Image.load('users/wiesehahn/jambi/classification/classification_20190618');
+
+var oilpalm_probability_2016 = ee.Image.load('users/wiesehahn/oilpalm_probability2016_20190617');
+var oilpalm_probability_2018 = ee.Image.load('users/wiesehahn/jambi/classification/oilpalm_probability_20190618');
+
+ var probability_2016 = oilpalm_probability_2016.updateMask(oilpalm_probability_2016.gt(20)).updateMask(oilpalm_probability_2016.lt(80));
+ var medium_probability_2016 = probability_2016.updateMask(probability_2016.lte(40).or(probability_2016.gt(60)));
+ var low_probability_2016 = probability_2016.updateMask(probability_2016.gt(40).and(probability_2016.lt(60)));
+ 
+ 
+ var probability_2018 = oilpalm_probability_2018.updateMask(oilpalm_probability_2018.gt(20)).updateMask(oilpalm_probability_2018.lt(80));
+ var medium_probability_2018 = probability_2018.updateMask(probability_2018.lte(40).or(probability_2018.gt(60)));
+ var low_probability_2018 = probability_2018.updateMask(probability_2018.gt(40).and(probability_2018.lt(60)));
+ 
+ 
+
+//--------------------------------STYLE AND LEGEND------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+
+
+// style and legend for 12 classes (rubber not in reference data)
+var colors = ['66ccff',
+'1D591D', 
+'309330',
+'CEA0CE', 
+'FFD1FF', 
+'B5D27D',
+'11B38E',
+'fbedd9', 
+'FB4C4C',
+'1196B3',
+'e6e06a',
+'67739d',
+'adff99',
+'ffcc99'];
+
+var names = ["0 - Water",
+  "1 - Primary Forest",
+  "2 - Secondary Forest",
+  "3 - Mature Oil Palm",
+  "4 - Immature Oil palm",
+  "5 - Shrub/orchard",
+  "6 - Plantation Forest",
+  "7 - Bare soil/ground",
+  "8 - Built-up area",
+  "9 - Rubber",
+  "10 - Coconut plantation",
+  "11 - Rice field",
+  "12 - Tea plantation",
+  "13 - Dryland agriculture"]; 
+
+var palette = ee.List(colors);
+
+// add legend
+var legend = ui.Panel({style: {position: 'bottom-left'}}); 
+  legend.add(ui.Label({   
+  value: "Land Cover Classification",   
+  style: {     
+    fontWeight: 'bold',     
+    fontSize: '16px',     
+    margin: '0 0 4px 0',     
+    padding: '0px'   
+    } 
+  })); 
+  
+// Iterate classification legend entries 
+var entry; for (var x = 0; x<14; x++){   
+  entry = [     
+    ui.Label({style:{color:colors[x],margin: '0 0 4px 0'}, value: 'o'}),
+    ui.Label({       
+      value: names[x],       
+      style: {         
+        margin: '0 0 4px 4px'  
+      }     
+    })   
+    ];   
+    legend.add(ui.Panel(entry, ui.Panel.Layout.Flow('horizontal'))); } 
+
+
+
+//--------------------------------VALIDATION DATA-------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+
+var validation_data = ee.Collection.loadTable('users/wiesehahn/jambi/validation/validation_reference_20190618');
+
+// create error matrix
+var errorMatrix = validation_data.errorMatrix('class', 'classification');
+
+// add column to style by predicted class
+var features = validation_data.map(function(f) {
+  var klass = f.get("classification");
+  return f
+      .set({style: {fillColor: palette.get(klass) }});
+});
+
+// add column to filter for differences between predicted and referenced data
+var features = features.map(function(f) {
+  var ref_class = ee.Number(f.get('class')).toInt();
+  var pred_class = ee.Number(f.get('classification')).toInt();
+  return f.set({
+    errorneous: ref_class.neq(pred_class)
+  });
+});
+
+var validation_wrong = features.filter(ee.Filter.eq('errorneous', 1));
+var validation_right = features.filter(ee.Filter.eq('errorneous', 0));
+
+
+
+//--------------------------------VISUALIZATION---------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+
+// validation
+print('Statistics refer to last classification');
+print('Validation Error Matrix', errorMatrix);
+print('Validation overall accuracy: ', errorMatrix.accuracy());
+print('Consumers Accuracy', errorMatrix.consumersAccuracy());
+print('Producers Accuracy',errorMatrix.producersAccuracy());
+
+ // mapping
+ Map.add(legend);
+ Map.centerObject(classification2016,9);
+ 
+ // classifications 
+ Map.addLayer(classification2018, {min: 0, max: 13, palette: colors}, 'classification 2018/2019 - S1+ S2 (13 classes)', true);
+ Map.addLayer(classification2016, {min: 0, max: 13, palette: colors}, 'classification 2016/2017 - S1+ S2 (13 classes)', true);
+
+ 
+ // mask classifications by probabilities 
+ 
+ /*
+ Map.addLayer(medium_probability_2018, {palette: ['FFFFFF'], opacity: 0.5}, 'mask medium probablity', false);
+ Map.addLayer(low_probability_2018, {palette: ['FFFFFF'], opacity: 0.75}, 'mask low probability', false);
+ Map.addLayer(oilpalm_probability_2018.updateMask(oilpalm_probability_2018.gt(20)).updateMask(oilpalm_probability_2018.lt(80)), 
+              {min: 20, max: 80, palette: ['FFFFFF'], opacity: 1}, 'mask low probabilities completly', false);
+ Map.addLayer(oilpalm_probability_2018.updateMask(oilpalm_probability_2018.gte(80)), 
+              {min: 80, max: 100, palette: ['cc00cc']}, 'high oilpalm probability', false);
+ Map.addLayer(oilpalm_probability_2018.updateMask(oilpalm_probability_2018.lte(20)), 
+              {min: 0, max: 20, palette: ['000000']}, 'high other probability', false); 
+  */
+  
+ Map.addLayer(oilpalm_probability_2016, {min: 0, max: 100}, 'oilpalm probability 2016', false);
+ Map.addLayer(oilpalm_probability_2018, {min: 0, max: 100}, 'oilpalm probability 2018', false);
+ 
+ 
+ // reference data
+ Map.addLayer(validation_wrong.style({pointSize:5, width: 2, color: "#ff073a", styleProperty: "style"}),{},'validation wrong', false);
+ Map.addLayer(validation_right.style({pointSize:5, width: 2, color: "#FFFFFF", styleProperty: "style"}),{},'validation right', false);
+ 
+```

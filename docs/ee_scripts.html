@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Google Earth Engine</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #ffffff; color: #1f1c1b; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; background-color: #ffffff; color: #a0a0a0; border-right: 1px solid #a0a0a0; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #1f1c1b; background-color: #ffffff; }
+code > span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code > span.dt { color: #0057ae; } /* DataType */
+code > span.dv { color: #b08000; } /* DecVal */
+code > span.bn { color: #b08000; } /* BaseN */
+code > span.fl { color: #b08000; } /* Float */
+code > span.cn { color: #aa5500; } /* Constant */
+code > span.ch { color: #924c9d; } /* Char */
+code > span.sc { color: #3daee9; } /* SpecialChar */
+code > span.st { color: #bf0303; } /* String */
+code > span.vs { color: #bf0303; } /* VerbatimString */
+code > span.ss { color: #ff5500; } /* SpecialString */
+code > span.im { color: #ff5500; } /* Import */
+code > span.co { color: #898887; } /* Comment */
+code > span.do { color: #607880; } /* Documentation */
+code > span.an { color: #ca60ca; } /* Annotation */
+code > span.cv { color: #0095ff; } /* CommentVar */
+code > span.ot { color: #006e28; } /* Other */
+code > span.fu { color: #644a9b; } /* Function */
+code > span.va { color: #0057ae; } /* Variable */
+code > span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #1f1c1b; } /* Operator */
+code > span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code > span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code > span.pp { color: #006e28; } /* Preprocessor */
+code > span.at { color: #0057ae; } /* Attribute */
+code > span.re { color: #0057ae; } /* RegionMarker */
+code > span.in { color: #b08000; } /* Information */
+code > span.wa { color: #bf0303; } /* Warning */
+code > span.al { color: #bf0303; font-weight: bold; } /* Alert */
+code > span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code > span. { color: #1f1c1b; } /* Normal */
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
+}
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h2 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h3 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h4 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h5 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.section h6 {
+  padding-top: 69px;
+  margin-top: -69px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Mapping Jambi</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="project_overview.html">Workflow</a>
+</li>
+<li>
+  <a href="ee_scripts.html">
+    <span class="fa fa-code"></span>
+     
+    Google Earth Engine
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Google Earth Engine</h1>
+
+</div>
+
+
+<p>All scripts for running the classification process are written in javascript within Google Earth Engine Editor with built-in version documentation.<br />
+They are available under following folder:<br />
+<a href="https://code.earthengine.google.com/?accept_repo=users/wiesehahn/jambi"><strong>users/wiesehahn/jambi/classification_seperate/…</strong></a></p>
+<div id="processing-scripts" class="section level1">
+<h1><span class="header-section-number">1</span> Processing Scripts</h1>
+<div id="A_reference_export" class="section level2">
+<h2><span class="header-section-number">1.1</span> Create reference data</h2>
+<p><a href="https://code.earthengine.google.com/fae4b87d9465b3a585fdc8ccfe17d6e4"><strong>A_reference_export</strong></a></p>
+<p>This script creates image composites of Sentinel-1 and Sentinel-2 data for the region of interest. The time period for image data is chosen. Predictor variables (image bands) are chosen. And parameters for filtering and merging image composites are defined. Stratified points within each reference class are created and values of predictor variables are extracted. This reference data set is then exported either as an asset to be used within Google Earth Engine or as a csv-Table to be used outside GEE (e.g. R).</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////00 VARIABLE SETTINGS/////////////////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------VARIABLE SELECTION-------------------------------------------------</span>
+
+<span class="co">// set bandnames to use in classification as prediction variables.</span>
+<span class="co">// choose from [&#39;B2&#39;,&#39;B3&#39;,&#39;B4&#39;,&#39;B5&#39;,&#39;B6&#39;,&#39;B7&#39;,&#39;B8&#39;,&#39;B8A&#39;,&#39;B11&#39;,&#39;B12&#39;,&#39;NDVI&#39;,&#39;NDWI&#39;,&#39;NBRI&#39;,&#39;NDMI&#39;,&#39;SAVI&#39;</span>
+<span class="co">//             ,&#39;VV&#39;,&#39;VH&#39;,&#39;VV_VH&#39;,&#39;VV_variance&#39;,&#39;VH_variance&#39;].</span>
+<span class="kw">var</span> usedBands <span class="op">=</span> [<span class="st">&#39;B5&#39;</span><span class="op">,</span><span class="st">&#39;B11&#39;</span><span class="op">,</span><span class="st">&#39;B12&#39;</span><span class="op">,</span><span class="st">&#39;NDVI&#39;</span><span class="op">,</span><span class="st">&#39;NBRI&#39;</span><span class="op">,</span>
+                  <span class="st">&#39;VV&#39;</span><span class="op">,</span><span class="st">&#39;VH&#39;</span><span class="op">,</span><span class="st">&#39;VV_VH&#39;</span>
+]<span class="op">;</span>
+
+
+<span class="co">// set date range for composite creation.</span>
+<span class="co">// sentinel1 </span>
+<span class="kw">var</span> s1_start <span class="op">=</span> <span class="va">ee</span>.<span class="at">Date</span>(<span class="st">&#39;2018-01-01&#39;</span>)<span class="op">;</span>
+<span class="kw">var</span> s1_end <span class="op">=</span> <span class="va">ee</span>.<span class="at">Date</span>(<span class="st">&#39;2019-12-31&#39;</span>)<span class="op">;</span>
+<span class="co">// sentinel2</span>
+<span class="kw">var</span> s2_start <span class="op">=</span> <span class="va">ee</span>.<span class="at">Date</span>(<span class="st">&#39;2018-01-01&#39;</span>)<span class="op">;</span>
+<span class="kw">var</span> s2_end <span class="op">=</span> <span class="va">ee</span>.<span class="at">Date</span>(<span class="st">&#39;2019-12-31&#39;</span>)<span class="op">;</span>
+
+
+<span class="co">// number of reference points per class (divided in validation:training 30:70)</span>
+<span class="kw">var</span> pointNumber <span class="op">=</span> <span class="dv">1500</span><span class="op">;</span>
+
+
+<span class="co">// region of interest, area for classification</span>
+<span class="co">// import region of interest (jambi) from kml file pushed to fusion tables. </span>
+<span class="kw">var</span> roi <span class="op">=</span> <span class="va">ee</span>.<span class="at">FeatureCollection</span>(<span class="st">&#39;ft:1O0ylwNlk2Mmqx7P0zSqqwhJA778oBciIt8Myhnxs&#39;</span><span class="op">,</span> <span class="st">&#39;geometry&#39;</span>)<span class="op">;</span>
+
+<span class="co">// the path and name for the reference dataset.</span>
+<span class="co">// used in create_reference to save dataset as asset.</span>
+<span class="co">// used in create_classification_model to load dataset</span>
+<span class="kw">var</span> assetID_path <span class="op">=</span> <span class="st">&#39;users/wiesehahn/jambi/&#39;</span><span class="op">;</span>
+<span class="kw">var</span> assetID_reference <span class="op">=</span> <span class="st">&#39;reference/reference_20190618&#39;</span><span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////UTILS////////////////////////////////////////////////////////////////</span>
+
+
+<span class="co">// function mask S2 clouds</span>
+<span class="kw">var</span> maskClouds <span class="op">=</span> <span class="kw">function</span>(image) <span class="op">{</span>
+  <span class="kw">var</span> qa <span class="op">=</span> <span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;QA60&#39;</span>)<span class="op">;</span>
+  <span class="co">// Bits 10 and 11 are clouds and cirrus, respectively.</span>
+  <span class="kw">var</span> cloudBitMask <span class="op">=</span> <span class="va">ee</span>.<span class="at">Number</span>(<span class="dv">2</span>).<span class="at">pow</span>(<span class="dv">10</span>).<span class="at">int</span>()<span class="op">;</span>
+  <span class="kw">var</span> cirrusBitMask <span class="op">=</span> <span class="va">ee</span>.<span class="at">Number</span>(<span class="dv">2</span>).<span class="at">pow</span>(<span class="dv">11</span>).<span class="at">int</span>()<span class="op">;</span>
+  <span class="co">// Both flags should be set to zero, indicating clear conditions.</span>
+  <span class="kw">var</span> mask <span class="op">=</span> <span class="va">qa</span>.<span class="at">bitwiseAnd</span>(cloudBitMask).<span class="at">eq</span>(<span class="dv">0</span>).<span class="at">and</span>(
+             <span class="va">qa</span>.<span class="at">bitwiseAnd</span>(cirrusBitMask).<span class="at">eq</span>(<span class="dv">0</span>))<span class="op">;</span>
+  <span class="co">// further mask bright areas indicating clouds which are not included in fisrt mask.</span>
+  <span class="co">// suggested here https://forobs.jrc.ec.europa.eu/recaredd/S2_composite.php</span>
+  <span class="kw">var</span> mask2 <span class="op">=</span> <span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;B3&#39;</span>).<span class="at">lt</span>(<span class="dv">2000</span>).<span class="at">and</span>(
+              <span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;B9&#39;</span>).<span class="at">lt</span>(<span class="dv">900</span>)).<span class="at">and</span>(
+              <span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;B2&#39;</span>).<span class="at">lt</span>(<span class="dv">1550</span>))<span class="op">;</span>
+  <span class="co">// Return the masked and scaled data.</span>
+  <span class="cf">return</span> <span class="va">image</span>.<span class="at">updateMask</span>(mask).<span class="at">updateMask</span>(mask2).<span class="at">divide</span>(<span class="dv">10000</span>)<span class="op">;</span>
+<span class="op">};</span>
+
+
+<span class="co">// function to create S1 image from collection</span>
+<span class="kw">var</span> s1col2img <span class="op">=</span> <span class="kw">function</span>(collection<span class="op">,</span> start<span class="op">,</span> end) <span class="op">{</span>
+  <span class="co">// funcion to add index (vv:vh normalized ratio)</span>
+  <span class="kw">var</span> addIndex <span class="op">=</span> <span class="kw">function</span>(image) <span class="op">{</span>
+    <span class="kw">var</span> vv_vh <span class="op">=</span> (<span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;VV&#39;</span>).<span class="at">subtract</span>(<span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;VH&#39;</span>))).<span class="at">divide</span>(<span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;VV&#39;</span>).<span class="at">add</span>(<span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;VH&#39;</span>))).<span class="at">rename</span>(<span class="st">&#39;VV_VH&#39;</span>)<span class="op">;</span> 
+  <span class="cf">return</span>(<span class="va">image</span>.<span class="at">addBands</span>(vv_vh).<span class="at">float</span>())<span class="op">;</span>
+  <span class="op">};</span>
+  
+  <span class="co">// function to mask out image edges using angles, &lt;=30deg and &gt;=45deg</span>
+  <span class="kw">var</span> mask_gt30 <span class="op">=</span> <span class="kw">function</span>(image)<span class="op">{</span>
+    <span class="kw">var</span> ang <span class="op">=</span> <span class="va">image</span>.<span class="at">select</span>([<span class="st">&#39;angle&#39;</span>])<span class="op">;</span>
+    <span class="cf">return</span> <span class="va">image</span>.<span class="at">updateMask</span>(<span class="va">ang</span>.<span class="at">gt</span>(<span class="fl">30.63993</span>))<span class="op">;</span>
+  <span class="op">};</span>
+  <span class="kw">var</span> mask_lt45 <span class="op">=</span> <span class="kw">function</span>(image)<span class="op">{</span>
+    <span class="kw">var</span> ang <span class="op">=</span> <span class="va">image</span>.<span class="at">select</span>([<span class="st">&#39;angle&#39;</span>])<span class="op">;</span>
+    <span class="cf">return</span> <span class="va">image</span>.<span class="at">updateMask</span>(<span class="va">ang</span>.<span class="at">lt</span>(<span class="fl">45.53993</span>))<span class="op">;</span>
+  <span class="op">};</span>
+
+  <span class="kw">var</span> period <span class="op">=</span> <span class="va">collection</span>.<span class="at">filterDate</span>(start<span class="op">,</span> end)<span class="op">;</span>
+  
+  <span class="kw">var</span> period_masked <span class="op">=</span> <span class="va">period</span>.<span class="at">map</span>(mask_gt30).<span class="at">map</span>(mask_lt45)<span class="op">;</span>
+  
+  <span class="kw">var</span> mean <span class="op">=</span> <span class="va">period_masked</span>.<span class="at">mean</span>()<span class="op">;</span>
+  
+  <span class="kw">var</span> mean_index <span class="op">=</span> <span class="at">addIndex</span>(mean)<span class="op">;</span>
+
+  <span class="kw">var</span> out <span class="op">=</span> <span class="va">mean_index</span>.<span class="at">clip</span>(roi)<span class="op">;</span>
+  
+  <span class="cf">return</span> out<span class="op">;</span>
+<span class="op">};</span>
+
+ 
+ 
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////01 CREATE COMPONENTS/////////////////////////////////////////////////</span>
+
+
+<span class="co">//-----------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------SENTINEL-2 IMAGE COLLECTION------------------------------------------</span>
+
+
+<span class="co">// filter S2 collection and calculate median</span>
+<span class="kw">var</span> s2 <span class="op">=</span> <span class="va">ee</span>.<span class="at">ImageCollection</span>(<span class="st">&#39;COPERNICUS/S2&#39;</span>)
+  .<span class="at">filterDate</span>(s2_start<span class="op">,</span> s2_end)
+  .<span class="at">filterBounds</span>(roi)
+  .<span class="at">map</span>(maskClouds)
+  .<span class="at">mean</span>()
+  .<span class="at">clipToCollection</span>(roi)<span class="op">;</span>
+
+<span class="co">// add indices</span>
+<span class="kw">var</span> addIndices <span class="op">=</span> <span class="kw">function</span>(image) <span class="op">{</span>
+    <span class="kw">var</span> ndvi <span class="op">=</span> <span class="va">image</span>.<span class="at">normalizedDifference</span>([<span class="st">&#39;B8&#39;</span><span class="op">,</span> <span class="st">&#39;B4&#39;</span>]).<span class="at">rename</span>(<span class="st">&quot;NDVI&quot;</span>)<span class="op">;</span> <span class="co">// normalized difference vegetation index</span>
+    <span class="kw">var</span> ndwi <span class="op">=</span> <span class="va">image</span>.<span class="at">normalizedDifference</span>([<span class="st">&#39;B3&#39;</span><span class="op">,</span> <span class="st">&#39;B8&#39;</span>]).<span class="at">rename</span>(<span class="st">&quot;NDWI&quot;</span>)<span class="op">;</span> <span class="co">// normalized difference water index</span>
+    <span class="kw">var</span> nbri <span class="op">=</span> <span class="va">image</span>.<span class="at">normalizedDifference</span>([<span class="st">&#39;B8&#39;</span><span class="op">,</span> <span class="st">&#39;B12&#39;</span>]).<span class="at">rename</span>(<span class="st">&quot;NBRI&quot;</span>)<span class="op">;</span> <span class="co">// normalized burn ratio index</span>
+    <span class="kw">var</span> ndmi <span class="op">=</span> <span class="va">image</span>.<span class="at">normalizedDifference</span>([<span class="st">&#39;B8&#39;</span><span class="op">,</span> <span class="st">&#39;B11&#39;</span>]).<span class="at">rename</span>(<span class="st">&quot;NDMI&quot;</span>)<span class="op">;</span> <span class="co">// normalized difference moisture index</span>
+    <span class="kw">var</span> savi <span class="op">=</span> <span class="va">image</span>.<span class="at">expression</span>(<span class="st">&#39;((b(&quot;B8&quot;) - b(&quot;B4&quot;)) / (b(&quot;B8&quot;) + b(&quot;B4&quot;) + 0.5)) * (1 + 0.5)&#39;</span>).<span class="at">rename</span>(<span class="st">&quot;SAVI&quot;</span>)<span class="op">;</span> <span class="co">// SoilAdjusted Total Vegetation Index </span>
+    
+  <span class="cf">return</span>(<span class="va">image</span>.<span class="at">addBands</span>(ndvi).<span class="at">addBands</span>(ndwi).<span class="at">addBands</span>(nbri).<span class="at">addBands</span>(ndmi).<span class="at">addBands</span>(savi).<span class="at">float</span>())<span class="op">;</span>
+<span class="op">};</span>
+
+s2 <span class="op">=</span> <span class="at">addIndices</span>(s2)<span class="op">;</span>
+
+
+<span class="co">//------------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------SENTINEL-1 IMAGE COLLECTION-------------------------------------------</span>
+
+
+<span class="co">// filter S1 collection and calculate median</span>
+<span class="kw">var</span> s1 <span class="op">=</span> <span class="va">ee</span>.<span class="at">ImageCollection</span>(<span class="st">&#39;COPERNICUS/S1_GRD&#39;</span>)
+    .<span class="at">filterDate</span>(s1_start<span class="op">,</span> s1_end)
+    .<span class="at">filterBounds</span>(roi)
+    <span class="co">// Filter to get images with VV and VH dual polarization.</span>
+    .<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">listContains</span>(<span class="st">&#39;transmitterReceiverPolarisation&#39;</span><span class="op">,</span> <span class="st">&#39;VH&#39;</span>))
+    .<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">listContains</span>(<span class="st">&#39;transmitterReceiverPolarisation&#39;</span><span class="op">,</span> <span class="st">&#39;VV&#39;</span>))
+    .<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">eq</span>(<span class="st">&#39;instrumentMode&#39;</span><span class="op">,</span> <span class="st">&#39;IW&#39;</span>))<span class="op">;</span>
+
+
+s1 <span class="op">=</span> <span class="at">s1col2img</span>(s1<span class="op">,</span> s1_start<span class="op">,</span> s1_end)<span class="op">;</span>
+
+<span class="co">/*</span>
+<span class="co">// calculate S1 variance</span>
+<span class="co">var s1_var = ee.ImageCollection(&#39;COPERNICUS/S1_GRD&#39;)</span>
+<span class="co">    .filterDate(s1_start, s1_end)</span>
+<span class="co">    .filterBounds(roi)</span>
+<span class="co">    // Filter to get images with VV and VH dual polarization.</span>
+<span class="co">    .filter(ee.Filter.listContains(&#39;transmitterReceiverPolarisation&#39;, &#39;VH&#39;))</span>
+<span class="co">    .filter(ee.Filter.listContains(&#39;transmitterReceiverPolarisation&#39;, &#39;VV&#39;))</span>
+<span class="co">    .filter(ee.Filter.eq(&#39;instrumentMode&#39;, &#39;IW&#39;));</span>
+
+<span class="co">// calculate S1 variance between quartals </span>
+<span class="co">var calc_var = function(imageCollection) {</span>
+<span class="co">  // ascending variance</span>
+<span class="co">  var ascending = imageCollection.filter(ee.Filter.eq(&#39;orbitProperties_pass&#39;, &#39;ASCENDING&#39;));</span>
+<span class="co">  var asc1 = per_quartal(ascending, 1, 91);</span>
+<span class="co">  var asc2 = per_quartal(ascending, 92, 182);</span>
+<span class="co">  var asc3 = per_quartal(ascending, 183, 273);</span>
+<span class="co">  var asc4 = per_quartal(ascending, 274, 365);</span>
+<span class="co">  var asc = ee.ImageCollection([asc1, asc2, asc3, asc4]);</span>
+<span class="co">  var asc_var = asc.reduce(ee.Reducer.variance());</span>
+<span class="co">  //descending variance</span>
+<span class="co">  var descending = imageCollection.filter(ee.Filter.eq(&#39;orbitProperties_pass&#39;, &#39;DESCENDING&#39;));</span>
+<span class="co">  var desc1 = per_quartal(descending, 1, 91);</span>
+<span class="co">  var desc2 = per_quartal(descending, 92, 182);</span>
+<span class="co">  var desc3 = per_quartal(descending, 183, 273);</span>
+<span class="co">  var desc4 = per_quartal(descending, 274, 365);</span>
+<span class="co">  var desc = ee.ImageCollection([desc1, desc2, desc3, desc4]);</span>
+<span class="co">  var desc_var = desc.reduce(ee.Reducer.variance());</span>
+<span class="co">  // mean orbital variance</span>
+<span class="co">  var variance = ee.ImageCollection([asc_var, desc_var])</span>
+<span class="co">  .mean()</span>
+<span class="co">  .clip(roi);</span>
+<span class="co">  // focal filter </span>
+<span class="co">  var median = variance.focal_median(50, &#39;circle&#39;, &#39;meters&#39;);</span>
+<span class="co">return median.select(&#39;VV_variance&#39;, &#39;VH_variance&#39;) ;</span>
+<span class="co">};</span>
+
+<span class="co">var s1_var = calc_var(s1_var);</span>
+<span class="co">*/</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------CREATE COMPOSITE IMAGE---------------------------------------------</span>
+
+<span class="co">// merge s1 and s2 bands to composite</span>
+<span class="kw">var</span> composite <span class="op">=</span> <span class="va">ee</span>.<span class="va">Image</span>.<span class="at">cat</span>([s2<span class="op">,</span> 
+                              s1 
+                             <span class="co">// ,s1_var // uncomment if in use</span>
+                              ]).<span class="at">select</span>(usedBands)<span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////02 CREATE REFERENCE//////////////////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------CREATE REFERENCE DATA----------------------------------------------</span>
+
+
+<span class="co">// merge reference data.</span>
+<span class="kw">var</span> reference <span class="op">=</span> <span class="va">ee</span>.<span class="at">FeatureCollection</span>([water<span class="op">,</span>
+                                      primary_forest<span class="op">,</span>
+                                      secondary_forest<span class="op">,</span>
+                                      oilpalm_mature<span class="op">,</span>
+                                      oilpalm_immature<span class="op">,</span>
+                                      bush_shrub<span class="op">,</span>
+                                      plantation_forest<span class="op">,</span>
+                                      burned_cleared<span class="op">,</span>
+                                      urban_buildings<span class="op">,</span>
+                                      coconut_plantation<span class="op">,</span>
+                                      rice<span class="op">,</span>
+                                      tea_plantation<span class="op">,</span>
+                                      dryland_agriculture
+                                      ]).<span class="at">flatten</span>()<span class="op">;</span>
+
+<span class="co">// reduce reference data to image band for stratified sampling</span>
+<span class="kw">var</span> reference_img <span class="op">=</span> reference
+                    .<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">neq</span>(<span class="st">&#39;class&#39;</span><span class="op">,</span> <span class="kw">null</span>))
+                    .<span class="at">reduceToImage</span>(<span class="op">{</span>
+                      <span class="dt">properties</span><span class="op">:</span> [<span class="st">&#39;class&#39;</span>]<span class="op">,</span>
+                      <span class="dt">reducer</span><span class="op">:</span> <span class="va">ee</span>.<span class="va">Reducer</span>.<span class="at">first</span>()
+                    <span class="op">}</span>)
+                    .<span class="at">rename</span>(<span class="st">&quot;class&quot;</span>)<span class="op">;</span>
+
+<span class="co">// get training data stratified by refrence classes </span>
+<span class="kw">var</span> stratified <span class="op">=</span> <span class="va">composite</span>.<span class="at">addBands</span>(reference_img)
+                  .<span class="at">stratifiedSample</span>(<span class="op">{</span>
+                    <span class="dt">numPoints</span><span class="op">:</span> pointNumber<span class="op">,</span>
+                    <span class="dt">classBand</span><span class="op">:</span> <span class="st">&#39;class&#39;</span><span class="op">,</span>
+                    <span class="dt">projection</span><span class="op">:</span> <span class="st">&#39;EPSG:3665&#39;</span><span class="op">,</span>
+                    <span class="dt">scale</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span>
+                    <span class="dt">tileScale</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span>
+                    <span class="dt">region</span><span class="op">:</span> <span class="va">reference</span>.<span class="at">geometry</span>(<span class="op">{</span><span class="dt">maxError</span><span class="op">:</span> <span class="dv">10</span><span class="op">}</span>)<span class="op">,</span>
+                    <span class="dt">geometries</span><span class="op">:</span> <span class="kw">true</span>
+                  <span class="op">}</span>)<span class="op">;</span>
+
+<span class="co">// export training data to avoid timeouts</span>
+<span class="kw">var</span> assetID <span class="op">=</span> <span class="va">ee</span>.<span class="at">String</span>(assetID_path).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(assetID_reference))<span class="op">;</span>
+
+<span class="va">Export</span>.<span class="va">table</span>.<span class="at">toAsset</span>(<span class="op">{</span>
+  <span class="dt">collection</span><span class="op">:</span> stratified<span class="op">,</span>
+  <span class="dt">description</span><span class="op">:</span> <span class="st">&#39;export_reference_to_asset&#39;</span><span class="op">,</span>
+  <span class="dt">assetId</span><span class="op">:</span> <span class="va">assetID</span>.<span class="at">getInfo</span>()<span class="op">}</span>)<span class="op">;</span>
+
+
+ <span class="co">// for modelling outside EarthEngine</span>
+<span class="va">Export</span>.<span class="va">table</span>.<span class="at">toDrive</span>(<span class="op">{</span>
+  <span class="dt">collection</span><span class="op">:</span> stratified<span class="op">,</span>
+  <span class="dt">description</span><span class="op">:</span> <span class="st">&#39;only_run_for_use_outside_EE&#39;</span><span class="op">}</span>)<span class="op">;</span></code></pre></div>
+</div>
+<div id="B_validation_export" class="section level2">
+<h2><span class="header-section-number">1.2</span> Export classified validation data</h2>
+<p><a href="https://code.earthengine.google.com/89666a72b0458008b37c4a7211476f6d"><strong>B_validation_export</strong></a></p>
+<p>This script splits the reference data in training and validation data (70:30). The random forest classifier is trained using training data and applied to classify the validation data, which is then exported as an asset to be used in Google Earth Engine.</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////00 VARIABLE SETTINGS/////////////////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------VARIABLE SELECTION-------------------------------------------------</span>
+
+<span class="co">// set bandnames to use in classification as prediction variables.</span>
+<span class="co">// choose from [&#39;B2&#39;,&#39;B3&#39;,&#39;B4&#39;,&#39;B5&#39;,&#39;B6&#39;,&#39;B7&#39;,&#39;B8&#39;,&#39;B8A&#39;,&#39;B11&#39;,&#39;B12&#39;,&#39;NDVI&#39;,&#39;NDWI&#39;,&#39;NBRI&#39;,&#39;NDMI&#39;,&#39;SAVI&#39;</span>
+<span class="co">//             ,&#39;VV&#39;,&#39;VH&#39;,&#39;VV_VH&#39;,&#39;VV_variance&#39;,&#39;VH_variance&#39;].</span>
+<span class="kw">var</span> usedBands <span class="op">=</span> [<span class="st">&#39;B5&#39;</span><span class="op">,</span><span class="st">&#39;B11&#39;</span><span class="op">,</span><span class="st">&#39;B12&#39;</span><span class="op">,</span><span class="st">&#39;NDVI&#39;</span><span class="op">,</span><span class="st">&#39;NBRI&#39;</span><span class="op">,</span>
+                  <span class="st">&#39;VV&#39;</span><span class="op">,</span><span class="st">&#39;VH&#39;</span><span class="op">,</span><span class="st">&#39;VV_VH&#39;</span>
+]<span class="op">;</span>
+
+
+<span class="co">// the path and name for the reference dataset.</span>
+<span class="co">// used in create_reference to save dataset as asset.</span>
+<span class="co">// used in create_classification_model to load dataset</span>
+<span class="kw">var</span> assetID_path <span class="op">=</span> <span class="st">&#39;users/wiesehahn/jambi/&#39;</span><span class="op">;</span>
+<span class="kw">var</span> assetID_reference <span class="op">=</span> <span class="st">&#39;reference/reference_20190618&#39;</span><span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////03 CREATE CLASSIFICATION MODEL///////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------VARIABLE SELECTION-------------------------------------------------</span>
+
+<span class="co">//random forest classifier</span>
+
+<span class="co">// choose a classifier and its settings</span>
+<span class="kw">var</span> classifier <span class="op">=</span> <span class="va">ee</span>.<span class="va">Classifier</span>.<span class="at">randomForest</span>(<span class="op">{</span><span class="dt">numberOfTrees</span><span class="op">:</span><span class="dv">500</span><span class="op">,</span>
+                                            <span class="dt">variablesPerSplit</span><span class="op">:</span><span class="dv">2</span><span class="op">,</span>
+                                            <span class="dt">minLeafPopulation</span><span class="op">:</span><span class="dv">1</span><span class="op">,</span>
+                                            <span class="dt">bagFraction</span><span class="op">:</span><span class="fl">0.5</span><span class="op">}</span>)<span class="op">;</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------BUILD MODEL--------------------------------------------------------</span>
+
+<span class="co">// load reference dataset</span>
+<span class="kw">var</span> assetID <span class="op">=</span> <span class="va">ee</span>.<span class="at">String</span>(assetID_path).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(assetID_reference))<span class="op">;</span>
+<span class="kw">var</span> reference_subset <span class="op">=</span> <span class="va">ee</span>.<span class="va">Collection</span>.<span class="at">loadTable</span>(<span class="va">assetID</span>.<span class="at">getInfo</span>())<span class="op">;</span>
+
+<span class="co">// split reference dataset in training and validation data.</span>
+<span class="kw">var</span> reference_random <span class="op">=</span> <span class="va">reference_subset</span>.<span class="at">randomColumn</span>(<span class="st">&#39;random&#39;</span>)<span class="op">;</span>
+
+<span class="kw">var</span> split <span class="op">=</span> <span class="fl">0.7</span><span class="op">;</span>  <span class="co">// 70% training, 30% validation.</span>
+<span class="kw">var</span> trainingPartition <span class="op">=</span> <span class="va">reference_random</span>.<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">lt</span>(<span class="st">&#39;random&#39;</span><span class="op">,</span> split))<span class="op">;</span>
+<span class="kw">var</span> validationPartition <span class="op">=</span> <span class="va">reference_random</span>.<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">gte</span>(<span class="st">&#39;random&#39;</span><span class="op">,</span> split))<span class="op">;</span>
+
+<span class="co">// train the classifier. </span>
+<span class="kw">var</span> model <span class="op">=</span> <span class="va">classifier</span>.<span class="at">train</span>(trainingPartition<span class="op">,</span> <span class="st">&#39;class&#39;</span><span class="op">,</span> usedBands)<span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////04 VALIDATE CLASSIFICATION MODEL/////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------VALIDATE MODEL-----------------------------------------------------</span>
+
+<span class="co">// classify the validation data.</span>
+<span class="kw">var</span> validation_classification <span class="op">=</span> <span class="va">validationPartition</span>.<span class="at">classify</span>(model)<span class="op">;</span>
+
+
+<span class="co">// export classified validation data</span>
+<span class="kw">var</span> assetID <span class="op">=</span> <span class="va">ee</span>.<span class="at">String</span>(assetID_path).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(<span class="st">&#39;validation/validation_&#39;</span>)).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(assetID_reference))<span class="op">;</span>
+
+<span class="va">Export</span>.<span class="va">table</span>.<span class="at">toAsset</span>(<span class="op">{</span>
+  <span class="dt">collection</span><span class="op">:</span> validation_classification<span class="op">,</span>
+  <span class="dt">description</span><span class="op">:</span> <span class="st">&#39;export_classified_validation&#39;</span><span class="op">,</span>
+  <span class="dt">assetId</span><span class="op">:</span> <span class="va">assetID</span>.<span class="at">getInfo</span>() <span class="op">}</span>)<span class="op">;</span></code></pre></div>
+</div>
+<div id="C_classification_export" class="section level2">
+<h2><span class="header-section-number">1.3</span> Export of classification</h2>
+<p><a href="https://code.earthengine.google.com/1f761abff8044184b17137bde8b07c9b"><strong>C_classification_export</strong></a></p>
+<p>This script creates the same image composite as <strong>A_reference_export</strong>. The reference data created with that script is used to train the same random forest model as in <strong>B_validation_export</strong>, which is then applied to the entire image scene. The exported output is a classified image scene and a probability map representing the certainty for each pixel to be oilpalm plantation or any other lulc class.</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////00 VARIABLE SETTINGS/////////////////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------VARIABLE SELECTION-------------------------------------------------</span>
+
+<span class="co">// set bandnames to use in classification as prediction variables.</span>
+<span class="co">// choose from [&#39;B2&#39;,&#39;B3&#39;,&#39;B4&#39;,&#39;B5&#39;,&#39;B6&#39;,&#39;B7&#39;,&#39;B8&#39;,&#39;B8A&#39;,&#39;B11&#39;,&#39;B12&#39;,&#39;NDVI&#39;,&#39;NDWI&#39;,&#39;NBRI&#39;,&#39;NDMI&#39;,&#39;SAVI&#39;</span>
+<span class="co">//             ,&#39;VV&#39;,&#39;VH&#39;,&#39;VV_VH&#39;,&#39;VV_variance&#39;,&#39;VH_variance&#39;].</span>
+<span class="kw">var</span> usedBands <span class="op">=</span> [<span class="st">&#39;B5&#39;</span><span class="op">,</span><span class="st">&#39;B11&#39;</span><span class="op">,</span><span class="st">&#39;B12&#39;</span><span class="op">,</span><span class="st">&#39;NDVI&#39;</span><span class="op">,</span><span class="st">&#39;NBRI&#39;</span><span class="op">,</span>
+                  <span class="st">&#39;VV&#39;</span><span class="op">,</span><span class="st">&#39;VH&#39;</span><span class="op">,</span><span class="st">&#39;VV_VH&#39;</span>
+]<span class="op">;</span>
+
+
+<span class="co">// set date range for composite creation.</span>
+<span class="co">// sentinel1 </span>
+<span class="kw">var</span> s1_start <span class="op">=</span> <span class="va">ee</span>.<span class="at">Date</span>(<span class="st">&#39;2018-01-01&#39;</span>)<span class="op">;</span>
+<span class="kw">var</span> s1_end <span class="op">=</span> <span class="va">ee</span>.<span class="at">Date</span>(<span class="st">&#39;2019-12-31&#39;</span>)<span class="op">;</span>
+<span class="co">// sentinel2</span>
+<span class="kw">var</span> s2_start <span class="op">=</span> <span class="va">ee</span>.<span class="at">Date</span>(<span class="st">&#39;2018-01-01&#39;</span>)<span class="op">;</span>
+<span class="kw">var</span> s2_end <span class="op">=</span> <span class="va">ee</span>.<span class="at">Date</span>(<span class="st">&#39;2019-12-31&#39;</span>)<span class="op">;</span>
+
+
+<span class="co">// region of interest, area for classification</span>
+<span class="co">// import region of interest (jambi) from kml file pushed to fusion tables. </span>
+<span class="kw">var</span> roi <span class="op">=</span> <span class="va">ee</span>.<span class="at">FeatureCollection</span>(<span class="st">&#39;ft:1O0ylwNlk2Mmqx7P0zSqqwhJA778oBciIt8Myhnxs&#39;</span><span class="op">,</span> <span class="st">&#39;geometry&#39;</span>)<span class="op">;</span>
+
+<span class="co">// the path and name for the reference dataset.</span>
+<span class="co">// used in create_reference to save dataset as asset.</span>
+<span class="co">// used in create_classification_model to load dataset</span>
+<span class="kw">var</span> assetID_path <span class="op">=</span> <span class="st">&#39;users/wiesehahn/jambi/&#39;</span><span class="op">;</span>
+<span class="kw">var</span> assetID_reference <span class="op">=</span> <span class="st">&#39;reference/reference_20190618&#39;</span><span class="op">;</span>
+
+<span class="co">// for map export name will be path/classification_date (e.g.users/wiesehahn/classification_20190521)</span>
+<span class="kw">var</span> assetID_date <span class="op">=</span> <span class="st">&#39;20190618&#39;</span><span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////UTILS////////////////////////////////////////////////////////////////</span>
+
+
+<span class="co">// function mask S2 clouds</span>
+<span class="kw">var</span> maskClouds <span class="op">=</span> <span class="kw">function</span>(image) <span class="op">{</span>
+  <span class="kw">var</span> qa <span class="op">=</span> <span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;QA60&#39;</span>)<span class="op">;</span>
+  <span class="co">// Bits 10 and 11 are clouds and cirrus, respectively.</span>
+  <span class="kw">var</span> cloudBitMask <span class="op">=</span> <span class="va">ee</span>.<span class="at">Number</span>(<span class="dv">2</span>).<span class="at">pow</span>(<span class="dv">10</span>).<span class="at">int</span>()<span class="op">;</span>
+  <span class="kw">var</span> cirrusBitMask <span class="op">=</span> <span class="va">ee</span>.<span class="at">Number</span>(<span class="dv">2</span>).<span class="at">pow</span>(<span class="dv">11</span>).<span class="at">int</span>()<span class="op">;</span>
+  <span class="co">// Both flags should be set to zero, indicating clear conditions.</span>
+  <span class="kw">var</span> mask <span class="op">=</span> <span class="va">qa</span>.<span class="at">bitwiseAnd</span>(cloudBitMask).<span class="at">eq</span>(<span class="dv">0</span>).<span class="at">and</span>(
+             <span class="va">qa</span>.<span class="at">bitwiseAnd</span>(cirrusBitMask).<span class="at">eq</span>(<span class="dv">0</span>))<span class="op">;</span>
+  <span class="co">// further mask bright areas indicating clouds which are not included in fisrt mask.</span>
+  <span class="co">// suggested here https://forobs.jrc.ec.europa.eu/recaredd/S2_composite.php</span>
+  <span class="kw">var</span> mask2 <span class="op">=</span> <span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;B3&#39;</span>).<span class="at">lt</span>(<span class="dv">2000</span>).<span class="at">and</span>(
+              <span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;B9&#39;</span>).<span class="at">lt</span>(<span class="dv">900</span>)).<span class="at">and</span>(
+              <span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;B2&#39;</span>).<span class="at">lt</span>(<span class="dv">1550</span>))<span class="op">;</span>
+  <span class="co">// Return the masked and scaled data.</span>
+  <span class="cf">return</span> <span class="va">image</span>.<span class="at">updateMask</span>(mask).<span class="at">updateMask</span>(mask2).<span class="at">divide</span>(<span class="dv">10000</span>)<span class="op">;</span>
+<span class="op">};</span>
+
+
+
+<span class="co">// function to create S1 image from collection</span>
+<span class="kw">var</span> s1col2img <span class="op">=</span> <span class="kw">function</span>(collection<span class="op">,</span> start<span class="op">,</span> end) <span class="op">{</span>
+  <span class="co">// funcion to add index (vv:vh normalized ratio)</span>
+  <span class="kw">var</span> addIndex <span class="op">=</span> <span class="kw">function</span>(image) <span class="op">{</span>
+    <span class="kw">var</span> vv_vh <span class="op">=</span> (<span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;VV&#39;</span>).<span class="at">subtract</span>(<span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;VH&#39;</span>))).<span class="at">divide</span>(<span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;VV&#39;</span>).<span class="at">add</span>(<span class="va">image</span>.<span class="at">select</span>(<span class="st">&#39;VH&#39;</span>))).<span class="at">rename</span>(<span class="st">&#39;VV_VH&#39;</span>)<span class="op">;</span> 
+  <span class="cf">return</span>(<span class="va">image</span>.<span class="at">addBands</span>(vv_vh).<span class="at">float</span>())<span class="op">;</span>
+  <span class="op">};</span>
+  
+  <span class="co">// function to mask out image edges using angles, &lt;=30deg and &gt;=45deg</span>
+  <span class="kw">var</span> mask_gt30 <span class="op">=</span> <span class="kw">function</span>(image)<span class="op">{</span>
+    <span class="kw">var</span> ang <span class="op">=</span> <span class="va">image</span>.<span class="at">select</span>([<span class="st">&#39;angle&#39;</span>])<span class="op">;</span>
+    <span class="cf">return</span> <span class="va">image</span>.<span class="at">updateMask</span>(<span class="va">ang</span>.<span class="at">gt</span>(<span class="fl">30.63993</span>))<span class="op">;</span>
+  <span class="op">};</span>
+  <span class="kw">var</span> mask_lt45 <span class="op">=</span> <span class="kw">function</span>(image)<span class="op">{</span>
+    <span class="kw">var</span> ang <span class="op">=</span> <span class="va">image</span>.<span class="at">select</span>([<span class="st">&#39;angle&#39;</span>])<span class="op">;</span>
+    <span class="cf">return</span> <span class="va">image</span>.<span class="at">updateMask</span>(<span class="va">ang</span>.<span class="at">lt</span>(<span class="fl">45.53993</span>))<span class="op">;</span>
+  <span class="op">};</span>
+
+  <span class="kw">var</span> period <span class="op">=</span> <span class="va">collection</span>.<span class="at">filterDate</span>(start<span class="op">,</span> end)<span class="op">;</span>
+  
+  <span class="kw">var</span> period_masked <span class="op">=</span> <span class="va">period</span>.<span class="at">map</span>(mask_gt30).<span class="at">map</span>(mask_lt45)<span class="op">;</span>
+  
+  <span class="kw">var</span> mean <span class="op">=</span> <span class="va">period_masked</span>.<span class="at">mean</span>()<span class="op">;</span>
+  
+  <span class="kw">var</span> mean_index <span class="op">=</span> <span class="at">addIndex</span>(mean)<span class="op">;</span>
+
+  <span class="kw">var</span> out <span class="op">=</span> <span class="va">mean_index</span>.<span class="at">clip</span>(roi)<span class="op">;</span>
+  
+  <span class="cf">return</span> out<span class="op">;</span>
+<span class="op">};</span>
+
+ 
+ 
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////01 CREATE COMPONENTS/////////////////////////////////////////////////</span>
+
+
+<span class="co">//-----------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------SENTINEL-2 IMAGE COLLECTION------------------------------------------</span>
+
+
+<span class="co">// filter S2 collection and calculate median</span>
+<span class="kw">var</span> s2 <span class="op">=</span> <span class="va">ee</span>.<span class="at">ImageCollection</span>(<span class="st">&#39;COPERNICUS/S2&#39;</span>)
+  .<span class="at">filterDate</span>(s2_start<span class="op">,</span> s2_end)
+  .<span class="at">filterBounds</span>(roi)
+  .<span class="at">map</span>(maskClouds)
+  .<span class="at">mean</span>()
+  .<span class="at">clipToCollection</span>(roi)<span class="op">;</span>
+
+<span class="co">// add indices</span>
+<span class="kw">var</span> addIndices <span class="op">=</span> <span class="kw">function</span>(image) <span class="op">{</span>
+    <span class="kw">var</span> ndvi <span class="op">=</span> <span class="va">image</span>.<span class="at">normalizedDifference</span>([<span class="st">&#39;B8&#39;</span><span class="op">,</span> <span class="st">&#39;B4&#39;</span>]).<span class="at">rename</span>(<span class="st">&quot;NDVI&quot;</span>)<span class="op">;</span> <span class="co">// normalized difference vegetation index</span>
+    <span class="kw">var</span> ndwi <span class="op">=</span> <span class="va">image</span>.<span class="at">normalizedDifference</span>([<span class="st">&#39;B3&#39;</span><span class="op">,</span> <span class="st">&#39;B8&#39;</span>]).<span class="at">rename</span>(<span class="st">&quot;NDWI&quot;</span>)<span class="op">;</span> <span class="co">// normalized difference water index</span>
+    <span class="kw">var</span> nbri <span class="op">=</span> <span class="va">image</span>.<span class="at">normalizedDifference</span>([<span class="st">&#39;B8&#39;</span><span class="op">,</span> <span class="st">&#39;B12&#39;</span>]).<span class="at">rename</span>(<span class="st">&quot;NBRI&quot;</span>)<span class="op">;</span> <span class="co">// normalized burn ratio index</span>
+    <span class="kw">var</span> ndmi <span class="op">=</span> <span class="va">image</span>.<span class="at">normalizedDifference</span>([<span class="st">&#39;B8&#39;</span><span class="op">,</span> <span class="st">&#39;B11&#39;</span>]).<span class="at">rename</span>(<span class="st">&quot;NDMI&quot;</span>)<span class="op">;</span> <span class="co">// normalized difference moisture index</span>
+    <span class="kw">var</span> savi <span class="op">=</span> <span class="va">image</span>.<span class="at">expression</span>(<span class="st">&#39;((b(&quot;B8&quot;) - b(&quot;B4&quot;)) / (b(&quot;B8&quot;) + b(&quot;B4&quot;) + 0.5)) * (1 + 0.5)&#39;</span>).<span class="at">rename</span>(<span class="st">&quot;SAVI&quot;</span>)<span class="op">;</span> <span class="co">// SoilAdjusted Total Vegetation Index </span>
+    
+  <span class="cf">return</span>(<span class="va">image</span>.<span class="at">addBands</span>(ndvi).<span class="at">addBands</span>(ndwi).<span class="at">addBands</span>(nbri).<span class="at">addBands</span>(ndmi).<span class="at">addBands</span>(savi).<span class="at">float</span>())<span class="op">;</span>
+<span class="op">};</span>
+
+s2 <span class="op">=</span> <span class="at">addIndices</span>(s2)<span class="op">;</span>
+
+
+<span class="co">//------------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------SENTINEL-1 IMAGE COLLECTION-------------------------------------------</span>
+
+
+<span class="co">// filter S1 collection and calculate median</span>
+<span class="kw">var</span> s1 <span class="op">=</span> <span class="va">ee</span>.<span class="at">ImageCollection</span>(<span class="st">&#39;COPERNICUS/S1_GRD&#39;</span>)
+    .<span class="at">filterDate</span>(s1_start<span class="op">,</span> s1_end)
+    .<span class="at">filterBounds</span>(roi)
+    <span class="co">// Filter to get images with VV and VH dual polarization.</span>
+    .<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">listContains</span>(<span class="st">&#39;transmitterReceiverPolarisation&#39;</span><span class="op">,</span> <span class="st">&#39;VH&#39;</span>))
+    .<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">listContains</span>(<span class="st">&#39;transmitterReceiverPolarisation&#39;</span><span class="op">,</span> <span class="st">&#39;VV&#39;</span>))
+    .<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">eq</span>(<span class="st">&#39;instrumentMode&#39;</span><span class="op">,</span> <span class="st">&#39;IW&#39;</span>))<span class="op">;</span>
+
+
+s1 <span class="op">=</span> <span class="at">s1col2img</span>(s1<span class="op">,</span> s1_start<span class="op">,</span> s1_end)<span class="op">;</span>
+ 
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------CREATE COMPOSITE IMAGE---------------------------------------------</span>
+
+<span class="co">// merge s1 and s2 bands to composite</span>
+<span class="kw">var</span> composite <span class="op">=</span> <span class="va">ee</span>.<span class="va">Image</span>.<span class="at">cat</span>([s2<span class="op">,</span> 
+                              s1 
+                             <span class="co">// ,s1_var // uncomment if in use</span>
+                              ]).<span class="at">select</span>(usedBands)<span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////03 CREATE CLASSIFICATION MODEL///////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------VARIABLE SELECTION-------------------------------------------------</span>
+
+<span class="co">//random forest classifier</span>
+
+<span class="co">// choose a classifier and its settings</span>
+<span class="kw">var</span> classifier <span class="op">=</span> <span class="va">ee</span>.<span class="va">Classifier</span>.<span class="at">randomForest</span>(<span class="op">{</span><span class="dt">numberOfTrees</span><span class="op">:</span><span class="dv">500</span><span class="op">,</span>
+                                            <span class="dt">variablesPerSplit</span><span class="op">:</span><span class="dv">2</span><span class="op">,</span>
+                                            <span class="dt">minLeafPopulation</span><span class="op">:</span><span class="dv">1</span><span class="op">,</span>
+                                            <span class="dt">bagFraction</span><span class="op">:</span><span class="fl">0.5</span><span class="op">}</span>)<span class="op">;</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------BUILD MODEL--------------------------------------------------------</span>
+
+<span class="co">// load reference dataset</span>
+<span class="kw">var</span> assetID <span class="op">=</span> <span class="va">ee</span>.<span class="at">String</span>(assetID_path).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(assetID_reference))<span class="op">;</span>
+<span class="kw">var</span> reference_subset <span class="op">=</span> <span class="va">ee</span>.<span class="va">Collection</span>.<span class="at">loadTable</span>(<span class="va">assetID</span>.<span class="at">getInfo</span>())<span class="op">;</span>
+
+<span class="co">// split reference dataset in training and validation data.</span>
+<span class="kw">var</span> reference_random <span class="op">=</span> <span class="va">reference_subset</span>.<span class="at">randomColumn</span>(<span class="st">&#39;random&#39;</span>)<span class="op">;</span>
+
+<span class="kw">var</span> split <span class="op">=</span> <span class="fl">0.7</span><span class="op">;</span>  <span class="co">// 70% training, 30% validation.</span>
+<span class="kw">var</span> trainingPartition <span class="op">=</span> <span class="va">reference_random</span>.<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">lt</span>(<span class="st">&#39;random&#39;</span><span class="op">,</span> split))<span class="op">;</span>
+<span class="kw">var</span> validationPartition <span class="op">=</span> <span class="va">reference_random</span>.<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">gte</span>(<span class="st">&#39;random&#39;</span><span class="op">,</span> split))<span class="op">;</span>
+
+<span class="co">// train the classifier. </span>
+<span class="kw">var</span> model <span class="op">=</span> <span class="va">classifier</span>.<span class="at">train</span>(trainingPartition<span class="op">,</span> <span class="st">&#39;class&#39;</span><span class="op">,</span> usedBands)<span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////03 CREATE PROBABILITY MODEL//////////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------VARIABLE SELECTION-------------------------------------------------</span>
+
+<span class="co">//random forest classifier</span>
+
+<span class="co">// choose a classifier and its settings</span>
+<span class="kw">var</span> classifier_prob <span class="op">=</span> <span class="va">ee</span>.<span class="va">Classifier</span>.<span class="at">randomForest</span>(<span class="op">{</span><span class="dt">numberOfTrees</span><span class="op">:</span><span class="dv">500</span><span class="op">,</span>
+                                           <span class="co">// variablesPerSplit:2,</span>
+                                           <span class="co">// minLeafPopulation:2,</span>
+                                            <span class="dt">bagFraction</span><span class="op">:</span><span class="fl">0.5</span><span class="op">}</span>)<span class="op">;</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------BUILD MODEL--------------------------------------------------------</span>
+
+<span class="co">// remap values in two classes (oil palm / non oil palm)</span>
+<span class="kw">var</span> reference_random_prob <span class="op">=</span> <span class="va">reference_random</span>.<span class="at">remap</span>(<span class="op">{</span>
+  <span class="dt">lookupIn</span><span class="op">:</span>  [<span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">,</span><span class="dv">4</span><span class="op">,</span><span class="dv">5</span><span class="op">,</span><span class="dv">6</span><span class="op">,</span><span class="dv">7</span><span class="op">,</span><span class="dv">8</span><span class="op">,</span><span class="dv">9</span><span class="op">,</span><span class="dv">10</span><span class="op">,</span><span class="dv">11</span><span class="op">,</span><span class="dv">12</span><span class="op">,</span><span class="dv">13</span>]<span class="op">,</span>
+  <span class="dt">lookupOut</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span> <span class="op">,</span><span class="dv">0</span> <span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span> ]<span class="op">,</span>
+  <span class="dt">columnName</span><span class="op">:</span> <span class="st">&#39;class&#39;</span><span class="op">}</span>)<span class="op">;</span>
+
+<span class="kw">var</span> trainingPartition_prob <span class="op">=</span> <span class="va">reference_random_prob</span>.<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">lt</span>(<span class="st">&#39;random&#39;</span><span class="op">,</span> split))<span class="op">;</span>
+<span class="kw">var</span> validationPartition_prob <span class="op">=</span> <span class="va">reference_random_prob</span>.<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">gte</span>(<span class="st">&#39;random&#39;</span><span class="op">,</span> split))<span class="op">;</span>
+
+
+<span class="co">// train the classifier. </span>
+<span class="kw">var</span> model_prob <span class="op">=</span> <span class="va">classifier_prob</span>.<span class="at">setOutputMode</span>(<span class="st">&#39;PROBABILITY&#39;</span>).<span class="at">train</span>(trainingPartition_prob<span class="op">,</span> <span class="st">&#39;class&#39;</span><span class="op">,</span> usedBands)<span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////05 APPLY CLASSIFICATION MODEL////////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------CLASSIFICATION-----------------------------------------------------</span>
+
+<span class="co">// classify the image composite</span>
+<span class="kw">var</span> classified <span class="op">=</span> <span class="va">composite</span>.<span class="at">classify</span>(model)<span class="op">;</span> 
+
+<span class="co">// export classification map</span>
+<span class="kw">var</span> assetID <span class="op">=</span> <span class="va">ee</span>.<span class="at">String</span>(assetID_path).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(<span class="st">&#39;classification/classification_&#39;</span>)).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(assetID_date))<span class="op">;</span>
+
+<span class="va">Export</span>.<span class="va">image</span>.<span class="at">toAsset</span>(<span class="op">{</span>
+<span class="dt">image</span><span class="op">:</span> <span class="va">classified</span>.<span class="at">uint8</span>()<span class="op">,</span>
+<span class="dt">description</span><span class="op">:</span>  <span class="st">&#39;Classification&#39;</span><span class="op">,</span>
+<span class="dt">assetId</span><span class="op">:</span> <span class="va">assetID</span>.<span class="at">getInfo</span>()<span class="op">,</span> 
+<span class="co">//region: region,</span>
+<span class="dt">scale</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span>
+<span class="dt">maxPixels</span><span class="op">:</span> <span class="fl">1e12</span><span class="op">,</span>
+<span class="op">}</span>)<span class="op">;</span>
+
+
+
+<span class="co">/////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="co">////////////////////05 APPLY PROBABILITY MODEL////////////////////////////////////////</span>
+
+
+<span class="co">// --------------------------------------------------------------------------------------</span>
+<span class="co">// -------------------CLASSIFICATION-----------------------------------------------------</span>
+
+<span class="co">// classify the image composite</span>
+<span class="kw">var</span> classified_prob <span class="op">=</span> <span class="va">composite</span>.<span class="at">classify</span>(model_prob).<span class="at">multiply</span>(<span class="dv">100</span>)<span class="op">;</span> 
+
+<span class="co">// export classification map</span>
+<span class="kw">var</span> assetID <span class="op">=</span> <span class="va">ee</span>.<span class="at">String</span>(assetID_path).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(<span class="st">&#39;classification/oilpalm_probability_&#39;</span>)).<span class="at">cat</span>(<span class="va">ee</span>.<span class="at">String</span>(assetID_date))<span class="op">;</span>
+
+<span class="va">Export</span>.<span class="va">image</span>.<span class="at">toAsset</span>(<span class="op">{</span>
+<span class="dt">image</span><span class="op">:</span> <span class="va">classified_prob</span>.<span class="at">uint8</span>()<span class="op">,</span>
+<span class="dt">description</span><span class="op">:</span>  <span class="st">&#39;Probability&#39;</span><span class="op">,</span>
+<span class="dt">assetId</span><span class="op">:</span> <span class="va">assetID</span>.<span class="at">getInfo</span>()<span class="op">,</span> 
+<span class="co">//region: region,</span>
+<span class="dt">scale</span><span class="op">:</span> <span class="dv">10</span><span class="op">,</span>
+<span class="dt">maxPixels</span><span class="op">:</span> <span class="fl">1e12</span><span class="op">,</span>
+<span class="op">}</span>)<span class="op">;</span>
+
+
+<span class="va">Map</span>.<span class="at">centerObject</span>(roi<span class="op">,</span><span class="dv">8</span>)<span class="op">;</span>
+<span class="va">Map</span>.<span class="at">addLayer</span>(roi)<span class="op">;</span></code></pre></div>
+</div>
+<div id="D_display_results" class="section level2">
+<h2><span class="header-section-number">1.4</span> Visualisation of results</h2>
+<p><a href="https://code.earthengine.google.com/774786e35d79a4efc1a8612d27a7f475"><strong>D_display_results</strong></a></p>
+<p>This script is visualising the results created in previous scripts. Training data (classified wrong and right), validataion data error matrix, oilpalm probability and landuse/landcover classes for 2016/17 and 2018/19.</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript">
+
+<span class="co">//--------------------------------CLASSIFICATIONS-------------------------------------------------------------------</span>
+<span class="co">//------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="kw">var</span> classification2016 <span class="op">=</span> <span class="va">ee</span>.<span class="va">Image</span>.<span class="at">load</span>(<span class="st">&#39;users/wiesehahn/classification2016_20190617&#39;</span>)<span class="op">;</span>
+<span class="kw">var</span> classification2018 <span class="op">=</span> <span class="va">ee</span>.<span class="va">Image</span>.<span class="at">load</span>(<span class="st">&#39;users/wiesehahn/jambi/classification/classification_20190618&#39;</span>)<span class="op">;</span>
+
+<span class="kw">var</span> oilpalm_probability_2016 <span class="op">=</span> <span class="va">ee</span>.<span class="va">Image</span>.<span class="at">load</span>(<span class="st">&#39;users/wiesehahn/oilpalm_probability2016_20190617&#39;</span>)<span class="op">;</span>
+<span class="kw">var</span> oilpalm_probability_2018 <span class="op">=</span> <span class="va">ee</span>.<span class="va">Image</span>.<span class="at">load</span>(<span class="st">&#39;users/wiesehahn/jambi/classification/oilpalm_probability_20190618&#39;</span>)<span class="op">;</span>
+
+ <span class="kw">var</span> probability_2016 <span class="op">=</span> <span class="va">oilpalm_probability_2016</span>.<span class="at">updateMask</span>(<span class="va">oilpalm_probability_2016</span>.<span class="at">gt</span>(<span class="dv">20</span>)).<span class="at">updateMask</span>(<span class="va">oilpalm_probability_2016</span>.<span class="at">lt</span>(<span class="dv">80</span>))<span class="op">;</span>
+ <span class="kw">var</span> medium_probability_2016 <span class="op">=</span> <span class="va">probability_2016</span>.<span class="at">updateMask</span>(<span class="va">probability_2016</span>.<span class="at">lte</span>(<span class="dv">40</span>).<span class="at">or</span>(<span class="va">probability_2016</span>.<span class="at">gt</span>(<span class="dv">60</span>)))<span class="op">;</span>
+ <span class="kw">var</span> low_probability_2016 <span class="op">=</span> <span class="va">probability_2016</span>.<span class="at">updateMask</span>(<span class="va">probability_2016</span>.<span class="at">gt</span>(<span class="dv">40</span>).<span class="at">and</span>(<span class="va">probability_2016</span>.<span class="at">lt</span>(<span class="dv">60</span>)))<span class="op">;</span>
+ 
+ 
+ <span class="kw">var</span> probability_2018 <span class="op">=</span> <span class="va">oilpalm_probability_2018</span>.<span class="at">updateMask</span>(<span class="va">oilpalm_probability_2018</span>.<span class="at">gt</span>(<span class="dv">20</span>)).<span class="at">updateMask</span>(<span class="va">oilpalm_probability_2018</span>.<span class="at">lt</span>(<span class="dv">80</span>))<span class="op">;</span>
+ <span class="kw">var</span> medium_probability_2018 <span class="op">=</span> <span class="va">probability_2018</span>.<span class="at">updateMask</span>(<span class="va">probability_2018</span>.<span class="at">lte</span>(<span class="dv">40</span>).<span class="at">or</span>(<span class="va">probability_2018</span>.<span class="at">gt</span>(<span class="dv">60</span>)))<span class="op">;</span>
+ <span class="kw">var</span> low_probability_2018 <span class="op">=</span> <span class="va">probability_2018</span>.<span class="at">updateMask</span>(<span class="va">probability_2018</span>.<span class="at">gt</span>(<span class="dv">40</span>).<span class="at">and</span>(<span class="va">probability_2018</span>.<span class="at">lt</span>(<span class="dv">60</span>)))<span class="op">;</span>
+ 
+ 
+
+<span class="co">//--------------------------------STYLE AND LEGEND------------------------------------------------------------------</span>
+<span class="co">//------------------------------------------------------------------------------------------------------------------</span>
+
+
+<span class="co">// style and legend for 12 classes (rubber not in reference data)</span>
+<span class="kw">var</span> colors <span class="op">=</span> [<span class="st">&#39;66ccff&#39;</span><span class="op">,</span>
+<span class="st">&#39;1D591D&#39;</span><span class="op">,</span> 
+<span class="st">&#39;309330&#39;</span><span class="op">,</span>
+<span class="st">&#39;CEA0CE&#39;</span><span class="op">,</span> 
+<span class="st">&#39;FFD1FF&#39;</span><span class="op">,</span> 
+<span class="st">&#39;B5D27D&#39;</span><span class="op">,</span>
+<span class="st">&#39;11B38E&#39;</span><span class="op">,</span>
+<span class="st">&#39;fbedd9&#39;</span><span class="op">,</span> 
+<span class="st">&#39;FB4C4C&#39;</span><span class="op">,</span>
+<span class="st">&#39;1196B3&#39;</span><span class="op">,</span>
+<span class="st">&#39;e6e06a&#39;</span><span class="op">,</span>
+<span class="st">&#39;67739d&#39;</span><span class="op">,</span>
+<span class="st">&#39;adff99&#39;</span><span class="op">,</span>
+<span class="st">&#39;ffcc99&#39;</span>]<span class="op">;</span>
+
+<span class="kw">var</span> names <span class="op">=</span> [<span class="st">&quot;0 - Water&quot;</span><span class="op">,</span>
+  <span class="st">&quot;1 - Primary Forest&quot;</span><span class="op">,</span>
+  <span class="st">&quot;2 - Secondary Forest&quot;</span><span class="op">,</span>
+  <span class="st">&quot;3 - Mature Oil Palm&quot;</span><span class="op">,</span>
+  <span class="st">&quot;4 - Immature Oil palm&quot;</span><span class="op">,</span>
+  <span class="st">&quot;5 - Shrub/orchard&quot;</span><span class="op">,</span>
+  <span class="st">&quot;6 - Plantation Forest&quot;</span><span class="op">,</span>
+  <span class="st">&quot;7 - Bare soil/ground&quot;</span><span class="op">,</span>
+  <span class="st">&quot;8 - Built-up area&quot;</span><span class="op">,</span>
+  <span class="st">&quot;9 - Rubber&quot;</span><span class="op">,</span>
+  <span class="st">&quot;10 - Coconut plantation&quot;</span><span class="op">,</span>
+  <span class="st">&quot;11 - Rice field&quot;</span><span class="op">,</span>
+  <span class="st">&quot;12 - Tea plantation&quot;</span><span class="op">,</span>
+  <span class="st">&quot;13 - Dryland agriculture&quot;</span>]<span class="op">;</span> 
+
+<span class="kw">var</span> palette <span class="op">=</span> <span class="va">ee</span>.<span class="at">List</span>(colors)<span class="op">;</span>
+
+<span class="co">// add legend</span>
+<span class="kw">var</span> legend <span class="op">=</span> <span class="va">ui</span>.<span class="at">Panel</span>(<span class="op">{</span><span class="dt">style</span><span class="op">:</span> <span class="op">{</span><span class="dt">position</span><span class="op">:</span> <span class="st">&#39;bottom-left&#39;</span><span class="op">}}</span>)<span class="op">;</span> 
+  <span class="va">legend</span>.<span class="at">add</span>(<span class="va">ui</span>.<span class="at">Label</span>(<span class="op">{</span>   
+  <span class="dt">value</span><span class="op">:</span> <span class="st">&quot;Land Cover Classification&quot;</span><span class="op">,</span>   
+  <span class="dt">style</span><span class="op">:</span> <span class="op">{</span>     
+    <span class="dt">fontWeight</span><span class="op">:</span> <span class="st">&#39;bold&#39;</span><span class="op">,</span>     
+    <span class="dt">fontSize</span><span class="op">:</span> <span class="st">&#39;16px&#39;</span><span class="op">,</span>     
+    <span class="dt">margin</span><span class="op">:</span> <span class="st">&#39;0 0 4px 0&#39;</span><span class="op">,</span>     
+    <span class="dt">padding</span><span class="op">:</span> <span class="st">&#39;0px&#39;</span>   
+    <span class="op">}</span> 
+  <span class="op">}</span>))<span class="op">;</span> 
+  
+<span class="co">// Iterate classification legend entries </span>
+<span class="kw">var</span> entry<span class="op">;</span> <span class="cf">for</span> (<span class="kw">var</span> x <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> x<span class="op">&lt;</span><span class="dv">14</span><span class="op">;</span> x<span class="op">++</span>)<span class="op">{</span>   
+  entry <span class="op">=</span> [     
+    <span class="va">ui</span>.<span class="at">Label</span>(<span class="op">{</span><span class="dt">style</span><span class="op">:{</span><span class="dt">color</span><span class="op">:</span>colors[x]<span class="op">,</span><span class="dt">margin</span><span class="op">:</span> <span class="st">&#39;0 0 4px 0&#39;</span><span class="op">},</span> <span class="dt">value</span><span class="op">:</span> <span class="st">&#39;o&#39;</span><span class="op">}</span>)<span class="op">,</span>
+    <span class="va">ui</span>.<span class="at">Label</span>(<span class="op">{</span>       
+      <span class="dt">value</span><span class="op">:</span> names[x]<span class="op">,</span>       
+      <span class="dt">style</span><span class="op">:</span> <span class="op">{</span>         
+        <span class="dt">margin</span><span class="op">:</span> <span class="st">&#39;0 0 4px 4px&#39;</span>  
+      <span class="op">}</span>     
+    <span class="op">}</span>)   
+    ]<span class="op">;</span>   
+    <span class="va">legend</span>.<span class="at">add</span>(<span class="va">ui</span>.<span class="at">Panel</span>(entry<span class="op">,</span> <span class="va">ui</span>.<span class="va">Panel</span>.<span class="va">Layout</span>.<span class="at">Flow</span>(<span class="st">&#39;horizontal&#39;</span>)))<span class="op">;</span> <span class="op">}</span> 
+
+
+
+<span class="co">//--------------------------------VALIDATION DATA-------------------------------------------------------------------</span>
+<span class="co">//------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="kw">var</span> validation_data <span class="op">=</span> <span class="va">ee</span>.<span class="va">Collection</span>.<span class="at">loadTable</span>(<span class="st">&#39;users/wiesehahn/jambi/validation/validation_reference_20190618&#39;</span>)<span class="op">;</span>
+
+<span class="co">// create error matrix</span>
+<span class="kw">var</span> errorMatrix <span class="op">=</span> <span class="va">validation_data</span>.<span class="at">errorMatrix</span>(<span class="st">&#39;class&#39;</span><span class="op">,</span> <span class="st">&#39;classification&#39;</span>)<span class="op">;</span>
+
+<span class="co">// add column to style by predicted class</span>
+<span class="kw">var</span> features <span class="op">=</span> <span class="va">validation_data</span>.<span class="at">map</span>(<span class="kw">function</span>(f) <span class="op">{</span>
+  <span class="kw">var</span> klass <span class="op">=</span> <span class="va">f</span>.<span class="at">get</span>(<span class="st">&quot;classification&quot;</span>)<span class="op">;</span>
+  <span class="cf">return</span> f
+      .<span class="at">set</span>(<span class="op">{</span><span class="dt">style</span><span class="op">:</span> <span class="op">{</span><span class="dt">fillColor</span><span class="op">:</span> <span class="va">palette</span>.<span class="at">get</span>(klass) <span class="op">}}</span>)<span class="op">;</span>
+<span class="op">}</span>)<span class="op">;</span>
+
+<span class="co">// add column to filter for differences between predicted and referenced data</span>
+<span class="kw">var</span> features <span class="op">=</span> <span class="va">features</span>.<span class="at">map</span>(<span class="kw">function</span>(f) <span class="op">{</span>
+  <span class="kw">var</span> ref_class <span class="op">=</span> <span class="va">ee</span>.<span class="at">Number</span>(<span class="va">f</span>.<span class="at">get</span>(<span class="st">&#39;class&#39;</span>)).<span class="at">toInt</span>()<span class="op">;</span>
+  <span class="kw">var</span> pred_class <span class="op">=</span> <span class="va">ee</span>.<span class="at">Number</span>(<span class="va">f</span>.<span class="at">get</span>(<span class="st">&#39;classification&#39;</span>)).<span class="at">toInt</span>()<span class="op">;</span>
+  <span class="cf">return</span> <span class="va">f</span>.<span class="at">set</span>(<span class="op">{</span>
+    <span class="dt">errorneous</span><span class="op">:</span> <span class="va">ref_class</span>.<span class="at">neq</span>(pred_class)
+  <span class="op">}</span>)<span class="op">;</span>
+<span class="op">}</span>)<span class="op">;</span>
+
+<span class="kw">var</span> validation_wrong <span class="op">=</span> <span class="va">features</span>.<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">eq</span>(<span class="st">&#39;errorneous&#39;</span><span class="op">,</span> <span class="dv">1</span>))<span class="op">;</span>
+<span class="kw">var</span> validation_right <span class="op">=</span> <span class="va">features</span>.<span class="at">filter</span>(<span class="va">ee</span>.<span class="va">Filter</span>.<span class="at">eq</span>(<span class="st">&#39;errorneous&#39;</span><span class="op">,</span> <span class="dv">0</span>))<span class="op">;</span>
+
+
+
+<span class="co">//--------------------------------VISUALIZATION---------------------------------------------------------------------</span>
+<span class="co">//------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="co">// validation</span>
+<span class="at">print</span>(<span class="st">&#39;Statistics refer to last classification&#39;</span>)<span class="op">;</span>
+<span class="at">print</span>(<span class="st">&#39;Validation Error Matrix&#39;</span><span class="op">,</span> errorMatrix)<span class="op">;</span>
+<span class="at">print</span>(<span class="st">&#39;Validation overall accuracy: &#39;</span><span class="op">,</span> <span class="va">errorMatrix</span>.<span class="at">accuracy</span>())<span class="op">;</span>
+<span class="at">print</span>(<span class="st">&#39;Consumers Accuracy&#39;</span><span class="op">,</span> <span class="va">errorMatrix</span>.<span class="at">consumersAccuracy</span>())<span class="op">;</span>
+<span class="at">print</span>(<span class="st">&#39;Producers Accuracy&#39;</span><span class="op">,</span><span class="va">errorMatrix</span>.<span class="at">producersAccuracy</span>())<span class="op">;</span>
+
+ <span class="co">// mapping</span>
+ <span class="va">Map</span>.<span class="at">add</span>(legend)<span class="op">;</span>
+ <span class="va">Map</span>.<span class="at">centerObject</span>(classification2016<span class="op">,</span><span class="dv">9</span>)<span class="op">;</span>
+ 
+ <span class="co">// classifications </span>
+ <span class="va">Map</span>.<span class="at">addLayer</span>(classification2018<span class="op">,</span> <span class="op">{</span><span class="dt">min</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">max</span><span class="op">:</span> <span class="dv">13</span><span class="op">,</span> <span class="dt">palette</span><span class="op">:</span> colors<span class="op">},</span> <span class="st">&#39;classification 2018/2019 - S1+ S2 (13 classes)&#39;</span><span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span>
+ <span class="va">Map</span>.<span class="at">addLayer</span>(classification2016<span class="op">,</span> <span class="op">{</span><span class="dt">min</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">max</span><span class="op">:</span> <span class="dv">13</span><span class="op">,</span> <span class="dt">palette</span><span class="op">:</span> colors<span class="op">},</span> <span class="st">&#39;classification 2016/2017 - S1+ S2 (13 classes)&#39;</span><span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span>
+
+ 
+ <span class="co">// mask classifications by probabilities </span>
+ 
+ <span class="co">/*</span>
+<span class="co"> Map.addLayer(medium_probability_2018, {palette: [&#39;FFFFFF&#39;], opacity: 0.5}, &#39;mask medium probablity&#39;, false);</span>
+<span class="co"> Map.addLayer(low_probability_2018, {palette: [&#39;FFFFFF&#39;], opacity: 0.75}, &#39;mask low probability&#39;, false);</span>
+<span class="co"> Map.addLayer(oilpalm_probability_2018.updateMask(oilpalm_probability_2018.gt(20)).updateMask(oilpalm_probability_2018.lt(80)), </span>
+<span class="co">              {min: 20, max: 80, palette: [&#39;FFFFFF&#39;], opacity: 1}, &#39;mask low probabilities completly&#39;, false);</span>
+<span class="co"> Map.addLayer(oilpalm_probability_2018.updateMask(oilpalm_probability_2018.gte(80)), </span>
+<span class="co">              {min: 80, max: 100, palette: [&#39;cc00cc&#39;]}, &#39;high oilpalm probability&#39;, false);</span>
+<span class="co"> Map.addLayer(oilpalm_probability_2018.updateMask(oilpalm_probability_2018.lte(20)), </span>
+<span class="co">              {min: 0, max: 20, palette: [&#39;000000&#39;]}, &#39;high other probability&#39;, false); </span>
+<span class="co">  */</span>
+  
+ <span class="va">Map</span>.<span class="at">addLayer</span>(oilpalm_probability_2016<span class="op">,</span> <span class="op">{</span><span class="dt">min</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">max</span><span class="op">:</span> <span class="dv">100</span><span class="op">},</span> <span class="st">&#39;oilpalm probability 2016&#39;</span><span class="op">,</span> <span class="kw">false</span>)<span class="op">;</span>
+ <span class="va">Map</span>.<span class="at">addLayer</span>(oilpalm_probability_2018<span class="op">,</span> <span class="op">{</span><span class="dt">min</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">max</span><span class="op">:</span> <span class="dv">100</span><span class="op">},</span> <span class="st">&#39;oilpalm probability 2018&#39;</span><span class="op">,</span> <span class="kw">false</span>)<span class="op">;</span>
+ 
+ 
+ <span class="co">// reference data</span>
+ <span class="va">Map</span>.<span class="at">addLayer</span>(<span class="va">validation_wrong</span>.<span class="at">style</span>(<span class="op">{</span><span class="dt">pointSize</span><span class="op">:</span><span class="dv">5</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> <span class="st">&quot;#ff073a&quot;</span><span class="op">,</span> <span class="dt">styleProperty</span><span class="op">:</span> <span class="st">&quot;style&quot;</span><span class="op">}</span>)<span class="op">,{},</span><span class="st">&#39;validation wrong&#39;</span><span class="op">,</span> <span class="kw">false</span>)<span class="op">;</span>
+ <span class="va">Map</span>.<span class="at">addLayer</span>(<span class="va">validation_right</span>.<span class="at">style</span>(<span class="op">{</span><span class="dt">pointSize</span><span class="op">:</span><span class="dv">5</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> <span class="st">&quot;#FFFFFF&quot;</span><span class="op">,</span> <span class="dt">styleProperty</span><span class="op">:</span> <span class="st">&quot;style&quot;</span><span class="op">}</span>)<span class="op">,{},</span><span class="st">&#39;validation right&#39;</span><span class="op">,</span> <span class="kw">false</span>)<span class="op">;</span>
+ </code></pre></div>
+</div>
+</div>
+
+&nbsp;
+<hr />
+<p style="text-align: center;"><span style="color: #808080;"><em>A work by Jens Wiesehahn</em></span></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="mailto:wiesehahn.jens@gmail.com" class="fa fa-envelope"></a>
+    <a href="https://github.com/wiesehahn/" class="fa fa-github"></a>
+</p>
+
+&nbsp;
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

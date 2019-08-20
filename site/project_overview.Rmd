@@ -64,23 +64,23 @@ Reference Data | Model Tuning | Classification
 
 
 ```{r, echo=FALSE, out.width = "75px"}
-knitr::include_graphics("../output_data/img/presentation/logo_earth-engine.png")
+knitr::include_graphics("https://earthengine.google.com/static/images/earth-engine-logo.png")
 ```
 `r icon::fa("plus")`
 ```{r, echo=FALSE, out.width = "50px"}
-knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/logo_google-earth-pro.png?raw=true")
+knitr::include_graphics("https://www.macupdate.com/images/icons512/55148.png")
 ```
 `r icon::fa("plus")`
 ```{r, echo=FALSE, out.width = "50px"}
-knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/tree/master/output_data/img/presentation/logo_bing-maps.png")
+knitr::include_graphics("https://secure.gravatar.com/avatar/d466c4c764058f633599bd5b53792d48?s=512&r=g&d=retro")
 ```
 &emsp;&emsp; `r icon::fa("angle-double-right", size = 2)` &emsp;
 ```{r, echo=FALSE, out.width = "75px"}
-knitr::include_graphics("/../output_data/img/presentation/logo_r.png")
+knitr::include_graphics("https://banner2.kisspng.com/20180218/khe/kisspng-rstudio-macos-clip-art-r-5a89b3da0b6081.4779308415189739140466.jpg")
 ```
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; `r icon::fa("angle-double-right", size = 2)` &emsp;
 ```{r, echo=FALSE, out.width = "75px"}
-knitr::include_graphics("/output_data/img/presentation/logo_earth-engine.png")
+knitr::include_graphics("https://www.gislounge.com/wp-content/uploads/2018/06/google-earth-engine.jpg")
 ```
 
 
@@ -118,62 +118,62 @@ Class Rubber was not classified seperately since other studies had no success tr
 
 #### water {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_water.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_water.jpg?raw=true")
 ```
 
 #### primary forest {-} 
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_primary-forest.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_primary-forest.jpg?raw=true")
 ```
 
 #### secondary forest {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_secondary-forest.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_secondary-forest.jpg?raw=true")
 ```
 
 #### oilpalm mature {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_oilpalm-mature.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_oilpalm-mature.jpg?raw=true")
 ```
 
 #### oilpalm immature {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_oilpalm-immature.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_oilpalm-immature.jpg?raw=true")
 ```
 
 #### bush shrub {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_bush-shrub.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_bush-shrub.jpg?raw=true")
 ```
 
 #### plantation forest {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_plantation-forest.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_plantation-forest.jpg?raw=true")
 ```
 
 #### burned cleared {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_burned-cleared.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_burned-cleared.jpg?raw=true")
 ```
 
 #### urban buildings {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_urban-buildings.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_urban-buildings.jpg?raw=true")
 ```
 
 #### coconut plantation {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_coconut-plantation.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_coconut-plantation.jpg?raw=true")
 ```
 
 #### rice {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_rice.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_rice.jpg?raw=true")
 ```
 
 #### tea plantation {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/examples/ge_tea-plantation.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_tea-plantation.jpg?raw=true")
 ```
 
 
@@ -195,7 +195,7 @@ Reference data is delineated in GEE with support of high resolution imagery from
 
 
 ```{r figs, echo=FALSE, out.width = "100%", fig.cap = "sample of reference data collected in GEE"}
-knitr::include_graphics(here("output_data/img/presentation/reference_banner.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/reference_banner.jpg?raw=true")
 ```
 [see in GEE](https://code.earthengine.google.com/5a3241a7c5d90f1670bf1b3c910ca701)
 
@@ -563,7 +563,7 @@ Therefore a second classification was produced to inform about per pixel classif
 A classifier was then trained on this data with its output mode set to probability.
 
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/presentation/certainty.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/certainty.jpg?raw=true")
 ```
 [see in GEE](https://code.earthengine.google.com/ae39bc061d4b551c20720a432d7b02e9)
 
@@ -572,7 +572,7 @@ knitr::include_graphics(here("output_data/img/presentation/certainty.jpg"))
 # Results
 
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/presentation/results_banner.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/results_banner.jpg?raw=true")
 ```
 [see in GEE](https://code.earthengine.google.com/f928cbe0eb9c6679c3fad8efb428306e)
 -----------------
@@ -585,7 +585,7 @@ knitr::include_graphics(here("output_data/img/presentation/results_banner.jpg"))
 
 #### bad image quality {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/problems/ge_bad-scene.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/problems/ge_bad-scene.jpg?raw=true")
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.358113,102.9531757,4277m/data=!3m1!1e3)
 
@@ -596,7 +596,7 @@ For a lot of areas in Jambi there is no appropriate reference image available. P
 
 #### land-use mosaic 1 {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/problems/ge_mosaic1.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/problems/ge_mosaic1.jpg?raw=true")
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.1448537,104.1225995,1069m/data=!3m1!1e3)
 
@@ -604,7 +604,7 @@ In many regions of Jambi province, the lulc-pattern is very heterogenious with m
 
 #### land-use mosaic 2 {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/problems/ge_mosaic2.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/problems/ge_mosaic2.jpg?raw=true")
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.7708193,101.2165027,881m/data=!3m1!1e3)
 
@@ -612,7 +612,7 @@ In some cases lulc classes are devided by other classes (e.g. intercropped with 
 
 #### similar appearance {-}
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics(here("output_data/img/reference/problems/ge_plantation.jpg"))
+knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/problems/ge_plantation.jpg?raw=true")
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.396042,102.7611715,935m/data=!3m1!1e3)
 

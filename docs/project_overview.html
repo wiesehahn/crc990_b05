@@ -505,7 +505,7 @@ div.tocify {
 <h1><span class="header-section-number">1</span> Introduction</h1>
 <div id="previous-studies" class="section level2">
 <h2><span class="header-section-number">1.1</span> Previous studies</h2>
-<p>Many studies attempted to produce land-use/land-cover maps for Jambi province. Nevertheless, these maps do not meet project demands for different reasons:</p>
+<p>Many studies attempted to produce land-use/land-cover (LuLc) maps for Jambi province. Nevertheless, these maps do not meet project demands for different reasons:</p>
 <ul>
 <li>do not cover entire province</li>
 <li>classes are delineated visually with coarse resolution</li>
@@ -535,7 +535,7 @@ div.tocify {
 </div>
 <div id="methods" class="section level1">
 <h1><span class="header-section-number">2</span> Methods</h1>
-<p>The classification process is done with Google Earth Engine and R. While the reference data was delineated in GEE, images from Bing Maps and Google Earth Pro were also used for visual interpretation of lulc-classes. As model tuning is not possible in GEE the reference data was exported to R in order to find the best model parameters. The classification itself was then done in GEE, using model parameters defined in R.</p>
+<p>The classification process is done with Google Earth Engine (GEE) and R. While the reference data was delineated in GEE, images from Bing Maps and Google Earth Pro were also used for visual interpretation of lulc-classes. As model tuning is not possible in GEE the reference data was exported to R in order to find the best model parameters. The classification itself was then done in GEE, using model parameters defined in R.</p>
 <table>
 <thead>
 <tr class="header">
@@ -553,8 +553,8 @@ div.tocify {
 <h2><span class="header-section-number">2.1</span> Reference Data</h2>
 <div id="lulc-classes-in-previous-studies" class="section level3">
 <h3><span class="header-section-number">2.1.1</span> LuLc-Classes in previous studies</h3>
-<p>Previous studies on land-cover and land-use in Jambi used different classification keys. Some classes were classified in sub-categories in other studies, while other classes were merged or were not assessed.<br />
-<span class="citation">Melati (2017)</span> used different classification schemes for different purposes (areas) by merging the 22 classes differentiated by the Ministry of Forestry. <span class="citation">Stolle et al. (2003)</span> also used many classes, while <span class="citation">Sambodo and Indriasari (2018)</span>, <span class="citation">Nurwanda, Zain, and Rustiadi (2016)</span>, and <span class="citation">Ekadinata and Vincent (2011)</span> merged some of the classes into broarder categories.</p>
+<p>Previous studies on land-cover and land-use in Jambi used different classification keys. Some classes were classified as sub-categories in other studies, while other classes were merged or were not assessed.<br />
+<span class="citation">Melati (2017)</span> used different classification schemes for different purposes (areas) by merging the 22 classes differentiated by the Ministry of Forestry. <span class="citation">Stolle et al. (2003)</span> also used many classes (14), while <span class="citation">Sambodo and Indriasari (2018)</span>, <span class="citation">Nurwanda, Zain, and Rustiadi (2016)</span>, and <span class="citation">Ekadinata and Vincent (2011)</span> merged some of the classes into broarder categories.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">classes &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;raw_data/classification-classes.csv&quot;</span>), <span class="dt">na =</span> <span class="st">&quot;NA&quot;</span>)
 dt_classes &lt;-<span class="st"> </span>classes 
 
@@ -1066,51 +1066,62 @@ Homesteads
 <p>As <span class="citation">Melati (2017)</span> suggests oil palm plantations were differentiated in mature and immature plantations. Class Rubber was not classified seperately since other studies had no success trying this (e.g. <span class="citation">Melati (2017)</span>) and because rubber trees could not be differentiated visually in high resolution imagery for reference data creation.</p>
 <div id="water" class="section level4 unnumbered">
 <h4>water</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_water.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_water.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Area covered permanently by water (short variations in dry season might occour). e.g. river, ocean, lake, pond</p>
 </div>
 <div id="primary-forest" class="section level4 unnumbered">
 <h4>primary forest</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_primary-forest.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_primary-forest.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Area covered by dense forest without detectable disturbances. Often with heterogenious stand structure and mainly further away from villages.</p>
 </div>
 <div id="secondary-forest" class="section level4 unnumbered">
 <h4>secondary forest</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_secondary-forest.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_secondary-forest.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Area covered by forest with multiple tree species, which is used by the people. Skidding trails might be visible, sometimes intercropped with other tree species (e.g. jungle rubber). Forests close to cities have a high chance to fall in this category.</p>
 </div>
 <div id="oilpalm-mature" class="section level4 unnumbered">
 <h4>oilpalm mature</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_oilpalm-mature.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_oilpalm-mature.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Productive oil palm plantations, where crown cover is more than 50% due to larger plants and closing canopy. Usually these plantations are older than ? years.</p>
 </div>
 <div id="oilpalm-immature" class="section level4 unnumbered">
 <h4>oilpalm immature</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_oilpalm-immature.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_oilpalm-immature.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Oil palm plantations in the early stage after planting. Plants are still small and crowns cover less than 50% of underlying soil.</p>
 </div>
 <div id="bush-shrub" class="section level4 unnumbered">
 <h4>bush shrub</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_bush-shrub.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_bush-shrub.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Area covered by low vegetation (&lt;5m), single trees might occour but no forest condition is present. Mainly covered by grass and small shrubs. This is often the case after areas were burned down.</p>
 </div>
 <div id="plantation-forest" class="section level4 unnumbered">
 <h4>plantation forest</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_plantation-forest.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_plantation-forest.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Area covered by trees of mainly one species (monoculture), which is planted as a timber production forest. e.g. Acacia plantation, monoculture rubber plantation</p>
 </div>
 <div id="burned-cleared" class="section level4 unnumbered">
 <h4>burned cleared</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_burned-cleared.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_burned-cleared.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Area which was burned down and where no or only very sparse vegetation has recovered in the meantime.</p>
 </div>
 <div id="urban-buildings" class="section level4 unnumbered">
 <h4>urban buildings</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_urban-buildings.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_urban-buildings.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Areas covered by houses, streets, industry and other sealed surfaces.</p>
 </div>
 <div id="coconut-plantation" class="section level4 unnumbered">
 <h4>coconut plantation</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_coconut-plantation.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_coconut-plantation.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Area covoered by coconut monoculture plantations. These plantations look similar to oil palm plantations from aerial images but are planted in smaller stripes in coastal areas.</p>
 </div>
 <div id="rice" class="section level4 unnumbered">
 <h4>rice</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_rice.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_rice.jpg?raw=true" width="100%" /> Definition: Agricultural areas for rice production. These areas are covered seasonal with water.</p>
 </div>
 <div id="tea-plantation" class="section level4 unnumbered">
 <h4>tea plantation</h4>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_tea-plantation.jpg?raw=true" width="100%" /></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_tea-plantation.jpg?raw=true" width="100%" /> <strong>Definition:</strong><br />
+Agricultural areas used for tea production. Occours only in the upland areas of Jambi.</p>
 </div>
 </div>
 <div id="data-collection" class="section level3">
@@ -1120,11 +1131,11 @@ Homesteads
 <li>medium to large sized polygons<br />
 <em>(more efficient but also less distributed with higher intracorrelation)</em><br />
 </li>
-<li>cover only one lulc-class<br />
+<li>cover only one LuLc-class<br />
 <em>(avoid mixed pixels and false references)</em></li>
 <li>based on high quality images from 2018/19<br />
 <em>(up-to-date mapping)</em></li>
-<li>have a low chance of further lulc-changes recently<br />
+<li>have a low chance of further LuLc-changes recently<br />
 <em>(avoid false references from changed classes)</em></li>
 <li>distributed in the entire region<br />
 <em>(cover regional variability)</em></li>
@@ -1136,22 +1147,35 @@ sample of reference data collected in GEE
 </p>
 </div>
 <p><a href="https://code.earthengine.google.com/5a3241a7c5d90f1670bf1b3c910ca701">see in GEE</a></p>
+<p>To generate the actual reference data a stratified sample of 1500 randomly distributed reference pixels per class was extracted from these polygons. In total 12000 reference samples are generated, which are then devided in training and validation data.</p>
+<p><a href="https://wiesehahn.github.io/crc990_b05/ee_scripts.html#11_create_reference_data"><i class="fas  fa-code "></i> Code</a></p>
 <hr />
 </div>
 </div>
 <div id="classification" class="section level2">
 <h2><span class="header-section-number">2.2</span> Classification</h2>
-<p>A supervised classification algorithm with good performance should be used in combination with good predictor variables.</p>
+<p>A supervised classification algorithm with good performance should be used in combination with informative predictor variables.</p>
 <p><strong>input variables</strong></p>
-<p>A combination of Sentinel-1 (radar) and Sentinel-2 (optical) imagery is used</p>
+<p>A combination of Sentinel-1 (radar) and Sentinel-2 (optical) imagery is used, from which a reduced number of bands and indices is needed as predictor variables. Since GEE does not provide the ability of model tuning these steps are done in R.</p>
 <p><strong>classification model</strong></p>
 <p>Decision tree models are used widely for classification problems, preliminary tests indicated that Random Forest (RF) algorithm performed better than Classification And Regression Trees (CART). Hence, a RF model was trained to classify Land-use and Land-cover.</p>
 <p><strong>classification key</strong></p>
+<p>see previous section on <a href="#lulc-classes-in-this-study">LuLc-Classes in this study</a></p>
 <hr />
 <div id="model-tuning" class="section level3">
 <h3><span class="header-section-number">2.2.1</span> Model Tuning</h3>
+<p>A number of model parameters can be changed to achieve different results. Model tuning changes these parameters to get optimal results. Overfitting might be a problem. Parameters to be changed in all classifiers are input variables (bands and indices in our case) and training data. The random forest classifier implemented in GEE uses following parameters which can be tuned:</p>
+<ul>
+<li><p>numberOfTrees (Integer, default: 1): The number of Rifle decision trees to create per class.</p></li>
+<li><p>variablesPerSplit (Integer, default: 0): The number of variables per split. If set to 0 (default), defaults to the square root of the number of variables.</p></li>
+<li><p>minLeafPopulation (Integer, default: 1): The minimum size of a terminal node.</p></li>
+<li><p>bagFraction (Float, default: 0.5): The fraction of input to bag per tree.</p></li>
+</ul>
 <div id="gridsearch-results" class="section level4">
 <h4><span class="header-section-number">2.2.1.1</span> Gridsearch Results</h4>
+<p>Since model tuning is not implemented in GEE the reference data was imported in R and a gridsearch approach was applied to calculate performance metrics for different combinations of input parameters.<br />
+The <em>number of trees</em> was held constant at a value of 500 because generally it is assumed that more trees give better performance. On the other side larger numbers also mean more processing time and chances to produce time-outs on the GEE server increase.<br />
+Parameters for which a gridsearch was done are the <em>number of variables per split</em> (called mtry in R) and the <em>minimum terminal node size</em>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
 <span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(caret)
@@ -1253,6 +1277,7 @@ filename =<span class="st"> </span><span class="kw">here</span>(<span class="st"
 rf_fit<span class="op">$</span>results <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">plot_ly</span>(<span class="dt">x=</span> <span class="op">~</span>mtry) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">add_trace</span>(<span class="dt">y =</span> <span class="op">~</span>Accuracy, 
+            <span class="dt">type =</span> <span class="st">&quot;scatter&quot;</span>,
             <span class="dt">mode =</span> <span class="st">&#39;lines+markers&#39;</span>, 
             <span class="dt">color=</span> <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(min.node.size), <span class="dt">colors =</span> <span class="kw">viridis_pal</span>(<span class="dt">option =</span> <span class="st">&quot;D&quot;</span>)(<span class="dv">3</span>),
             <span class="dt">error_y =</span> <span class="op">~</span><span class="kw">list</span>(<span class="dt">array =</span> AccuracySD),
@@ -1260,22 +1285,19 @@ rf_fit<span class="op">$</span>results <span class="op">%&gt;%</span>
             ) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">layout</span>(<span class="dt">xaxis =</span> <span class="kw">list</span>(<span class="dt">title=</span><span class="st">&quot;Randomly Selected Predictors&quot;</span>),
          <span class="dt">yaxis =</span> <span class="kw">list</span>(<span class="dt">title=</span><span class="st">&quot;Accuracy (Cross-Validation)&quot;</span>)) </code></pre></div>
-<pre><code>## No trace type specified:
-##   Based on info supplied, a &#39;scatter&#39; trace seems appropriate.
-##   Read more about this trace type -&gt; https://plot.ly/r/reference/#scatter</code></pre>
 <div class="figure">
-<div id="htmlwidget-91cc4cf1427ab37df7c9" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-91cc4cf1427ab37df7c9">{"x":{"visdat":{"1b8470873252":["function () ","plotlyVisDat"]},"cur_data":"1b8470873252","attrs":{"1b8470873252":{"x":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"y":{},"mode":"lines+markers","color":{},"colors":["#440154FF","#21908CFF","#FDE725FF"],"error_y":{},"text":{},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Randomly Selected Predictors"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Accuracy (Cross-Validation)"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[2,3,4,6,8],"y":[0.927380952380952,0.928571428571429,0.9275,0.924642857142857,0.924166666666667],"mode":"lines+markers","error_y":{"color":"rgba(68,1,84,1)","array":[0.00856628299401705,0.0107363089352926,0.0103934927410387,0.0105737401543446,0.0104990131391452]},"text":["Accuracy:  0.927380952380952 <br>AccuracySD: 0.00856628299401705","Accuracy:  0.928571428571429 <br>AccuracySD: 0.0105737401543446","Accuracy:  0.9275 <br>AccuracySD: 0.0113279576864691","Accuracy:  0.924642857142857 <br>AccuracySD: 0.00996102887486559","Accuracy:  0.924166666666667 <br>AccuracySD: 0.00978558876836044"],"type":"scatter","name":"1","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2,3,4,6,8],"y":[0.926190476190476,0.927380952380952,0.926190476190476,0.926785714285714,0.926190476190476],"mode":"lines+markers","error_y":{"color":"rgba(33,144,140,1)","array":[0.00973961838516982,0.0113279576864691,0.00954032958743756,0.0109318014615506,0.00996102887486559]},"text":["Accuracy:  0.926190476190476 <br>AccuracySD: 0.0107363089352926","Accuracy:  0.927380952380952 <br>AccuracySD: 0.0104990131391452","Accuracy:  0.926190476190476 <br>AccuracySD: 0.00954032958743756","Accuracy:  0.926785714285714 <br>AccuracySD: 0.0104426169578895","Accuracy:  0.926190476190476 <br>AccuracySD: 0.0104539205335869"],"type":"scatter","name":"5","marker":{"color":"rgba(33,144,140,1)","line":{"color":"rgba(33,144,140,1)"}},"textfont":{"color":"rgba(33,144,140,1)"},"error_x":{"color":"rgba(33,144,140,1)"},"line":{"color":"rgba(33,144,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2,3,4,6,8],"y":[0.923809523809524,0.925714285714286,0.924880952380952,0.924166666666667,0.923571428571429],"mode":"lines+markers","error_y":{"color":"rgba(253,231,37,1)","array":[0.0104426169578895,0.0109260380229206,0.00978558876836044,0.0104539205335869,0.0107186939784979]},"text":["Accuracy:  0.923809523809524 <br>AccuracySD: 0.0103934927410387","Accuracy:  0.925714285714286 <br>AccuracySD: 0.00973961838516982","Accuracy:  0.924880952380952 <br>AccuracySD: 0.0109318014615506","Accuracy:  0.924166666666667 <br>AccuracySD: 0.0109260380229206","Accuracy:  0.923571428571429 <br>AccuracySD: 0.0107186939784979"],"type":"scatter","name":"10","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+<div id="htmlwidget-3c883aa7c0d23eaf0ceb" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3c883aa7c0d23eaf0ceb">{"x":{"visdat":{"4b8ff51980":["function () ","plotlyVisDat"]},"cur_data":"4b8ff51980","attrs":{"4b8ff51980":{"x":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"y":{},"type":"scatter","mode":"lines+markers","color":{},"colors":["#440154FF","#21908CFF","#FDE725FF"],"error_y":{},"text":{},"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"Randomly Selected Predictors"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Accuracy (Cross-Validation)"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[2,3,4,6,8],"y":[0.927380952380952,0.928571428571429,0.9275,0.924642857142857,0.924166666666667],"type":"scatter","mode":"lines+markers","error_y":{"color":"rgba(68,1,84,1)","array":[0.00856628299401705,0.0107363089352926,0.0103934927410387,0.0105737401543446,0.0104990131391452]},"text":["Accuracy:  0.927380952380952 <br>AccuracySD: 0.00856628299401705","Accuracy:  0.928571428571429 <br>AccuracySD: 0.0105737401543446","Accuracy:  0.9275 <br>AccuracySD: 0.0113279576864691","Accuracy:  0.924642857142857 <br>AccuracySD: 0.00996102887486559","Accuracy:  0.924166666666667 <br>AccuracySD: 0.00978558876836044"],"name":"1","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2,3,4,6,8],"y":[0.926190476190476,0.927380952380952,0.926190476190476,0.926785714285714,0.926190476190476],"type":"scatter","mode":"lines+markers","error_y":{"color":"rgba(33,144,140,1)","array":[0.00973961838516982,0.0113279576864691,0.00954032958743756,0.0109318014615506,0.00996102887486559]},"text":["Accuracy:  0.926190476190476 <br>AccuracySD: 0.0107363089352926","Accuracy:  0.927380952380952 <br>AccuracySD: 0.0104990131391452","Accuracy:  0.926190476190476 <br>AccuracySD: 0.00954032958743756","Accuracy:  0.926785714285714 <br>AccuracySD: 0.0104426169578895","Accuracy:  0.926190476190476 <br>AccuracySD: 0.0104539205335869"],"name":"5","marker":{"color":"rgba(33,144,140,1)","line":{"color":"rgba(33,144,140,1)"}},"textfont":{"color":"rgba(33,144,140,1)"},"error_x":{"color":"rgba(33,144,140,1)"},"line":{"color":"rgba(33,144,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2,3,4,6,8],"y":[0.923809523809524,0.925714285714286,0.924880952380952,0.924166666666667,0.923571428571429],"type":"scatter","mode":"lines+markers","error_y":{"color":"rgba(253,231,37,1)","array":[0.0104426169578895,0.0109260380229206,0.00978558876836044,0.0104539205335869,0.0107186939784979]},"text":["Accuracy:  0.923809523809524 <br>AccuracySD: 0.0103934927410387","Accuracy:  0.925714285714286 <br>AccuracySD: 0.00973961838516982","Accuracy:  0.924880952380952 <br>AccuracySD: 0.0109318014615506","Accuracy:  0.924166666666667 <br>AccuracySD: 0.0109260380229206","Accuracy:  0.923571428571429 <br>AccuracySD: 0.0107186939784979"],"name":"10","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
 <p class="caption">
 Gridsearch result for number of predictor variables and minimal node size
 </p>
 </div>
-<p>Differences are not very pronounced.</p>
+<p>As we can see the differences are not very pronounced. Hence, a simpler model results in similar performance. Based on these results we can simplify our model in terms of minimal node size and variables per split without deteriorating the results.</p>
 <hr />
 </div>
 <div id="model-simplification" class="section level4">
 <h4><span class="header-section-number">2.2.1.2</span> Model Simplification</h4>
-<p>simplest model with high accuracy (max 2% difference to best model)</p>
+<p>Here we search for the simplest model without deteriorating the performance (max 2% difference to best model).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get simplest model with similar accuracy</span>
 whichTwoPct &lt;-<span class="st"> </span><span class="kw">tolerance</span>(rf_fit<span class="op">$</span>results, <span class="dt">metric =</span> <span class="st">&quot;Accuracy&quot;</span>, 
                          <span class="dt">tol =</span> <span class="dv">2</span>, <span class="dt">maximize =</span> <span class="ot">TRUE</span>)  
@@ -1285,24 +1307,9 @@ rf_fit<span class="op">$</span>results[whichTwoPct,]</code></pre></div>
 ## 1    2      gini             1 0.927381 0.9207792 0.008566283 0.009345036</code></pre>
 <hr />
 </div>
-<div id="variable-importance" class="section level4">
-<h4><span class="header-section-number">2.2.1.3</span> Variable Importance</h4>
-<p>In model fitting a relative variable importance is calculated to give an impression which predictor variables are valuable and which are less valuable for the prediction process. Nevertheless, correlation between variables is not taken into account.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># variable importance</span>
-imp &lt;-<span class="st"> </span><span class="kw">varImp</span>(rf_fit)
-
-<span class="kw">plot</span>(imp)</code></pre></div>
-<div class="figure">
-<img src="project_overview_files/figure-html/gridsearch_importance-1.png" alt="Relative variable importance" width="672" />
-<p class="caption">
-Relative variable importance
-</p>
-</div>
-<hr />
-</div>
 <div id="model-validation" class="section level4">
-<h4><span class="header-section-number">2.2.1.4</span> Model Validation</h4>
-<p>The validation data is classified with the best model obtained by gridsearch. Its confusion matrix is calculated as a value of prediction accuracy.</p>
+<h4><span class="header-section-number">2.2.1.3</span> Model Validation</h4>
+<p>To have a closer look at the model performance the validation data is classified with the best model obtained by gridsearch. Its confusion matrix is calculated as a value of prediction accuracy.</p>
 <p><br></p>
 <p><strong>Error Matrix</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># validation</span>
@@ -1376,7 +1383,7 @@ class
 <span style=" font-weight: bold;    ">water - 0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">299</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">300</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1420,13 +1427,10 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">278</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">277</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 185, 127, 1) !important;">11</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 204, 143, 1) !important;">8</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1435,7 +1439,10 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1444,7 +1451,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1461,19 +1468,19 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 185, 127, 1) !important;">11</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 154, 106, 1) !important;">16</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">281</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">288</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
@@ -1502,31 +1509,31 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">292</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">296</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 204, 143, 1) !important;">8</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1546,25 +1553,13 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">293</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">287</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
@@ -1574,6 +1569,18 @@ class
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 </tr>
 <tr>
@@ -1581,27 +1588,6 @@ class
 <span style=" font-weight: bold;    ">shrubland - 5</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">292</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
@@ -1611,10 +1597,31 @@ class
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">293</span>
+</td>
+<td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
 </td>
 </tr>
 <tr>
@@ -1625,7 +1632,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1640,7 +1647,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">298</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">295</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1681,13 +1688,13 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">300</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">296</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1728,7 +1735,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">300</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">298</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1748,16 +1755,16 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 192, 132, 1) !important;">10</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1792,22 +1799,22 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1833,16 +1840,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -1860,7 +1858,16 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">298</span>
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">297</span>
 </td>
 </tr>
 </tbody>
@@ -1869,13 +1876,30 @@ class
 <p><strong>Respective Accuracy</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(cm<span class="op">$</span>overall[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</code></pre></div>
 <pre><code>##      Accuracy         Kappa AccuracyLower AccuracyUpper 
-##     0.9786111     0.9766667     0.9733392     0.9830843</code></pre>
+##     0.9775000     0.9754545     0.9721113     0.9820926</code></pre>
+<hr />
+</div>
+<div id="variable-importance" class="section level4">
+<h4><span class="header-section-number">2.2.1.4</span> Variable Importance</h4>
+<p>As determined before, model parameters <em>minimal node size</em> and <em>variables per split</em> have limited influence on model performance. As a consequence it is likely that the choice of predictor variables is important for model performance.</p>
+<p>In model fitting a relative variable importance is calculated to give an impression which predictor variables are valuable and which are less valuable for the prediction process. Nevertheless, correlation between variables is not taken into account.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># variable importance</span>
+imp &lt;-<span class="st"> </span><span class="kw">varImp</span>(rf_fit)
+
+<span class="kw">plot</span>(imp)</code></pre></div>
+<div class="figure">
+<img src="project_overview_files/figure-html/gridsearch_importance-1.png" alt="Relative variable importance" width="672" />
+<p class="caption">
+Relative variable importance
+</p>
+</div>
+<p>As we can see the importance metric varies between predictor variables, suggesting that the choice of predictor variables very much influences our model. While more predictor variables might add information they are also complicating the model and might even introduce noise. Hence, a reduction of predictor variables can enhance our model.</p>
 <hr />
 </div>
 </div>
 <div id="feature-selection" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Feature Selection</h3>
-<p>To further simplify the prediction model a Recursive Feature Elimitaion (rfe) is applied. This will eliminate worst performing predictor variables (chosen by importance) at each step and keep the best performing variables.</p>
+<p>To further simplify the prediction model a Recursive Feature Elimitaion (rfe) is applied. This will eliminate worst performing predictor variables (chosen by importance) at each step and keep the best performing variables to end up in a reduced number of predictor variables which perfom best in model prediction.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># perform reverse feature selection with all variables</span>
 filename =<span class="st"> </span><span class="kw">here</span>(<span class="st">&quot;output_data/model/rfProfile_all.rds&quot;</span>)
 <span class="cf">if</span> (<span class="kw">file.exists</span>(filename)){
@@ -1923,10 +1947,10 @@ filename =<span class="st"> </span><span class="kw">here</span>(<span class="st"
 <hr />
 <div id="number-of-features" class="section level4">
 <h4><span class="header-section-number">2.2.2.1</span> Number of Features</h4>
-The best model in regards to predictor variables uses 18 out of 19 variables, all except for <em>VV_variance</em>. However, one can see that the model performs equally good with less predictor variables.
+The best model in regards to predictor variables uses 18 out of 19 variables, all except for <em>VV_variance</em>. However, we can see that the model performs equally good with less predictor variables.
 <div class="figure">
-<div id="htmlwidget-1762f8d2e8a16bb00d3d" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1762f8d2e8a16bb00d3d">{"x":{"visdat":{"1b8450fc5e24":["function () ","plotlyVisDat"]},"cur_data":"1b8450fc5e24","attrs":{"1b8450fc5e24":{"y":{},"color":{},"colors":["#440154FF","#481668FF","#482878FF","#443A83FF","#3E4A89FF","#375A8CFF","#31688EFF","#2B758EFF","#26828EFF","#21908CFF","#1F9E89FF","#25AB82FF","#35B779FF","#4EC36BFF","#6DCD59FF","#8FD744FF","#B4DE2CFF","#DAE319FF","#FDE725FF"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"Accuracy"},"xaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"y":[0.28452380952381,0.304761904761905,0.286904761904762,0.30952380952381,0.297619047619048,0.289285714285714,0.291666666666667,0.285714285714286,0.276190476190476,0.298809523809524,0.283333333333333,0.283333333333333,0.310714285714286,0.29047619047619,0.28452380952381,0.286904761904762,0.283333333333333,0.29047619047619,0.276190476190476,0.31547619047619,0.271428571428571,0.302380952380952,0.31547619047619,0.288095238095238,0.29047619047619,0.296428571428571,0.276190476190476,0.278571428571429,0.301190476190476,0.288095238095238,0.310714285714286,0.288095238095238,0.294047619047619,0.276190476190476,0.289285714285714,0.29047619047619,0.295238095238095,0.304761904761905,0.277380952380952,0.279761904761905,0.280952380952381,0.301190476190476,0.289285714285714,0.295238095238095,0.29047619047619,0.292857142857143,0.295238095238095,0.294047619047619,0.304761904761905,0.302380952380952],"type":"box","name":"1","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.517857142857143,0.496428571428571,0.529761904761905,0.526190476190476,0.509523809523809,0.536904761904762,0.520238095238095,0.509523809523809,0.530952380952381,0.523809523809524,0.536904761904762,0.555952380952381,0.529761904761905,0.526190476190476,0.466666666666667,0.542857142857143,0.542857142857143,0.521428571428571,0.503571428571429,0.525,0.511904761904762,0.529761904761905,0.509523809523809,0.521428571428571,0.501190476190476,0.533333333333333,0.522619047619048,0.521428571428571,0.552380952380952,0.519047619047619,0.530952380952381,0.527380952380952,0.520238095238095,0.508333333333333,0.53452380952381,0.514285714285714,0.528571428571429,0.532142857142857,0.523809523809524,0.517857142857143,0.514285714285714,0.544047619047619,0.53452380952381,0.517857142857143,0.485714285714286,0.532142857142857,0.522619047619048,0.519047619047619,0.502380952380952,0.552380952380952],"type":"box","name":"2","marker":{"color":"rgba(72,22,104,1)","line":{"color":"rgba(72,22,104,1)"}},"line":{"color":"rgba(72,22,104,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.701190476190476,0.672619047619048,0.697619047619048,0.688095238095238,0.667857142857143,0.667857142857143,0.688095238095238,0.702380952380952,0.76547619047619,0.696428571428571,0.701190476190476,0.701190476190476,0.771428571428571,0.689285714285714,0.754761904761905,0.667857142857143,0.678571428571429,0.703571428571429,0.663095238095238,0.672619047619048,0.764285714285714,0.696428571428571,0.685714285714286,0.696428571428571,0.680952380952381,0.692857142857143,0.680952380952381,0.677380952380952,0.678571428571429,0.688095238095238,0.685714285714286,0.69047619047619,0.691666666666667,0.667857142857143,0.760714285714286,0.691666666666667,0.669047619047619,0.657142857142857,0.686904761904762,0.697619047619048,0.654761904761905,0.778571428571429,0.68452380952381,0.676190476190476,0.692857142857143,0.761904761904762,0.685714285714286,0.673809523809524,0.673809523809524,0.694047619047619],"type":"box","name":"3","marker":{"color":"rgba(72,40,120,1)","line":{"color":"rgba(72,40,120,1)"}},"line":{"color":"rgba(72,40,120,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.833333333333333,0.825,0.807142857142857,0.833333333333333,0.798809523809524,0.802380952380952,0.821428571428571,0.839285714285714,0.823809523809524,0.846428571428571,0.839285714285714,0.836904761904762,0.833333333333333,0.827380952380952,0.825,0.819047619047619,0.823809523809524,0.814285714285714,0.804761904761905,0.832142857142857,0.832142857142857,0.839285714285714,0.794047619047619,0.832142857142857,0.823809523809524,0.823809523809524,0.821428571428571,0.819047619047619,0.819047619047619,0.861904761904762,0.814285714285714,0.839285714285714,0.822619047619048,0.84047619047619,0.833333333333333,0.827380952380952,0.802380952380952,0.825,0.817857142857143,0.826190476190476,0.821428571428571,0.835714285714286,0.830952380952381,0.839285714285714,0.821428571428571,0.827380952380952,0.811904761904762,0.804761904761905,0.796428571428571,0.829761904761905],"type":"box","name":"4","marker":{"color":"rgba(68,58,131,1)","line":{"color":"rgba(68,58,131,1)"}},"line":{"color":"rgba(68,58,131,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.83452380952381,0.882142857142857,0.875,0.825,0.798809523809524,0.797619047619048,0.860714285714286,0.829761904761905,0.823809523809524,0.896428571428571,0.885714285714286,0.84047619047619,0.832142857142857,0.822619047619048,0.822619047619048,0.822619047619048,0.875,0.807142857142857,0.865476190476191,0.882142857142857,0.878571428571429,0.833333333333333,0.796428571428571,0.828571428571429,0.813095238095238,0.825,0.879761904761905,0.880952380952381,0.885714285714286,0.9,0.813095238095238,0.882142857142857,0.816666666666667,0.878571428571429,0.828571428571429,0.889285714285714,0.803571428571429,0.820238095238095,0.876190476190476,0.894047619047619,0.878571428571429,0.830952380952381,0.873809523809524,0.89047619047619,0.866666666666667,0.878571428571429,0.811904761904762,0.866666666666667,0.861904761904762,0.89047619047619],"type":"box","name":"5","marker":{"color":"rgba(62,74,137,1)","line":{"color":"rgba(62,74,137,1)"}},"line":{"color":"rgba(62,74,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.879761904761905,0.876190476190476,0.875,0.872619047619048,0.869047619047619,0.85952380952381,0.864285714285714,0.870238095238095,0.884523809523809,0.891666666666667,0.880952380952381,0.870238095238095,0.886904761904762,0.879761904761905,0.879761904761905,0.879761904761905,0.867857142857143,0.867857142857143,0.860714285714286,0.872619047619048,0.871428571428571,0.876190476190476,0.853571428571429,0.888095238095238,0.869047619047619,0.858333333333333,0.876190476190476,0.870238095238095,0.883333333333333,0.898809523809524,0.869047619047619,0.883333333333333,0.870238095238095,0.878571428571429,0.886904761904762,0.883333333333333,0.860714285714286,0.867857142857143,0.871428571428571,0.889285714285714,0.878571428571429,0.888095238095238,0.873809523809524,0.880952380952381,0.867857142857143,0.884523809523809,0.871428571428571,0.863095238095238,0.860714285714286,0.888095238095238],"type":"box","name":"6","marker":{"color":"rgba(55,90,140,1)","line":{"color":"rgba(55,90,140,1)"}},"line":{"color":"rgba(55,90,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.902380952380952,0.903571428571429,0.9,0.888095238095238,0.882142857142857,0.883333333333333,0.902380952380952,0.885714285714286,0.898809523809524,0.91547619047619,0.904761904761905,0.89047619047619,0.908333333333333,0.901190476190476,0.888095238095238,0.897619047619048,0.913095238095238,0.905952380952381,0.878571428571429,0.898809523809524,0.885714285714286,0.892857142857143,0.892857142857143,0.910714285714286,0.897619047619048,0.892857142857143,0.886904761904762,0.897619047619048,0.90952380952381,0.904761904761905,0.897619047619048,0.896428571428571,0.895238095238095,0.895238095238095,0.904761904761905,0.901190476190476,0.894047619047619,0.898809523809524,0.895238095238095,0.91547619047619,0.892857142857143,0.914285714285714,0.898809523809524,0.889285714285714,0.894047619047619,0.908333333333333,0.902380952380952,0.898809523809524,0.89047619047619,0.91547619047619],"type":"box","name":"7","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"line":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.901190476190476,0.908333333333333,0.921428571428571,0.919047619047619,0.90952380952381,0.901190476190476,0.907142857142857,0.898809523809524,0.916666666666667,0.922619047619048,0.919047619047619,0.896428571428571,0.907142857142857,0.91547619047619,0.904761904761905,0.913095238095238,0.908333333333333,0.907142857142857,0.907142857142857,0.903571428571429,0.910714285714286,0.903571428571429,0.905952380952381,0.913095238095238,0.908333333333333,0.904761904761905,0.9,0.911904761904762,0.91547619047619,0.911904761904762,0.9,0.910714285714286,0.91547619047619,0.897619047619048,0.908333333333333,0.908333333333333,0.907142857142857,0.920238095238095,0.917857142857143,0.920238095238095,0.905952380952381,0.920238095238095,0.90952380952381,0.903571428571429,0.919047619047619,0.925,0.905952380952381,0.901190476190476,0.9,0.920238095238095],"type":"box","name":"8","marker":{"color":"rgba(43,117,142,1)","line":{"color":"rgba(43,117,142,1)"}},"line":{"color":"rgba(43,117,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.911904761904762,0.920238095238095,0.928571428571429,0.919047619047619,0.91547619047619,0.904761904761905,0.916666666666667,0.905952380952381,0.917857142857143,0.921428571428571,0.922619047619048,0.903571428571429,0.913095238095238,0.917857142857143,0.913095238095238,0.90952380952381,0.923809523809524,0.914285714285714,0.90952380952381,0.920238095238095,0.922619047619048,0.907142857142857,0.910714285714286,0.917857142857143,0.914285714285714,0.917857142857143,0.898809523809524,0.917857142857143,0.914285714285714,0.920238095238095,0.905952380952381,0.921428571428571,0.923809523809524,0.901190476190476,0.90952380952381,0.911904761904762,0.913095238095238,0.920238095238095,0.919047619047619,0.922619047619048,0.911904761904762,0.922619047619048,0.914285714285714,0.90952380952381,0.921428571428571,0.930952380952381,0.908333333333333,0.903571428571429,0.905952380952381,0.929761904761905],"type":"box","name":"9","marker":{"color":"rgba(38,130,142,1)","line":{"color":"rgba(38,130,142,1)"}},"line":{"color":"rgba(38,130,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.905952380952381,0.923809523809524,0.928571428571429,0.91547619047619,0.91547619047619,0.907142857142857,0.910714285714286,0.904761904761905,0.922619047619048,0.919047619047619,0.921428571428571,0.901190476190476,0.910714285714286,0.91547619047619,0.916666666666667,0.914285714285714,0.921428571428571,0.91547619047619,0.91547619047619,0.913095238095238,0.921428571428571,0.910714285714286,0.91547619047619,0.919047619047619,0.913095238095238,0.911904761904762,0.904761904761905,0.921428571428571,0.920238095238095,0.914285714285714,0.90952380952381,0.920238095238095,0.919047619047619,0.903571428571429,0.910714285714286,0.916666666666667,0.914285714285714,0.923809523809524,0.920238095238095,0.919047619047619,0.911904761904762,0.925,0.914285714285714,0.90952380952381,0.916666666666667,0.930952380952381,0.9,0.907142857142857,0.911904761904762,0.925],"type":"box","name":"10","marker":{"color":"rgba(33,144,140,1)","line":{"color":"rgba(33,144,140,1)"}},"line":{"color":"rgba(33,144,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.90952380952381,0.920238095238095,0.932142857142857,0.917857142857143,0.914285714285714,0.916666666666667,0.913095238095238,0.914285714285714,0.921428571428571,0.916666666666667,0.922619047619048,0.902380952380952,0.911904761904762,0.922619047619048,0.920238095238095,0.919047619047619,0.927380952380952,0.911904761904762,0.916666666666667,0.923809523809524,0.925,0.914285714285714,0.916666666666667,0.919047619047619,0.925,0.914285714285714,0.905952380952381,0.917857142857143,0.926190476190476,0.923809523809524,0.904761904761905,0.913095238095238,0.920238095238095,0.907142857142857,0.922619047619048,0.916666666666667,0.919047619047619,0.927380952380952,0.922619047619048,0.926190476190476,0.91547619047619,0.930952380952381,0.922619047619048,0.911904761904762,0.920238095238095,0.929761904761905,0.905952380952381,0.90952380952381,0.917857142857143,0.928571428571429],"type":"box","name":"11","marker":{"color":"rgba(31,158,137,1)","line":{"color":"rgba(31,158,137,1)"}},"line":{"color":"rgba(31,158,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.908333333333333,0.925,0.936904761904762,0.929761904761905,0.926190476190476,0.922619047619048,0.914285714285714,0.907142857142857,0.917857142857143,0.927380952380952,0.930952380952381,0.901190476190476,0.90952380952381,0.919047619047619,0.920238095238095,0.925,0.925,0.920238095238095,0.917857142857143,0.929761904761905,0.922619047619048,0.916666666666667,0.921428571428571,0.917857142857143,0.921428571428571,0.916666666666667,0.9,0.916666666666667,0.935714285714286,0.929761904761905,0.913095238095238,0.916666666666667,0.922619047619048,0.914285714285714,0.925,0.91547619047619,0.927380952380952,0.927380952380952,0.920238095238095,0.920238095238095,0.910714285714286,0.932142857142857,0.920238095238095,0.911904761904762,0.919047619047619,0.925,0.90952380952381,0.90952380952381,0.916666666666667,0.936904761904762],"type":"box","name":"12","marker":{"color":"rgba(37,171,130,1)","line":{"color":"rgba(37,171,130,1)"}},"line":{"color":"rgba(37,171,130,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.922619047619048,0.932142857142857,0.925,0.921428571428571,0.927380952380952,0.91547619047619,0.91547619047619,0.926190476190476,0.927380952380952,0.930952380952381,0.908333333333333,0.921428571428571,0.920238095238095,0.921428571428571,0.927380952380952,0.933333333333333,0.919047619047619,0.917857142857143,0.927380952380952,0.922619047619048,0.913095238095238,0.91547619047619,0.921428571428571,0.922619047619048,0.910714285714286,0.911904761904762,0.920238095238095,0.939285714285714,0.930952380952381,0.91547619047619,0.91547619047619,0.919047619047619,0.908333333333333,0.921428571428571,0.925,0.921428571428571,0.928571428571429,0.929761904761905,0.926190476190476,0.908333333333333,0.928571428571429,0.914285714285714,0.917857142857143,0.925,0.933333333333333,0.917857142857143,0.905952380952381,0.917857142857143,0.935714285714286],"type":"box","name":"13","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"line":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.917857142857143,0.926190476190476,0.928571428571429,0.919047619047619,0.921428571428571,0.925,0.91547619047619,0.916666666666667,0.929761904761905,0.929761904761905,0.93452380952381,0.905952380952381,0.922619047619048,0.923809523809524,0.926190476190476,0.930952380952381,0.933333333333333,0.920238095238095,0.919047619047619,0.923809523809524,0.926190476190476,0.914285714285714,0.920238095238095,0.925,0.925,0.91547619047619,0.913095238095238,0.917857142857143,0.94047619047619,0.935714285714286,0.919047619047619,0.91547619047619,0.926190476190476,0.911904761904762,0.927380952380952,0.921428571428571,0.921428571428571,0.933333333333333,0.933333333333333,0.926190476190476,0.910714285714286,0.925,0.928571428571429,0.925,0.923809523809524,0.928571428571429,0.913095238095238,0.905952380952381,0.91547619047619,0.936904761904762],"type":"box","name":"14","marker":{"color":"rgba(78,195,107,1)","line":{"color":"rgba(78,195,107,1)"}},"line":{"color":"rgba(78,195,107,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.916666666666667,0.932142857142857,0.930952380952381,0.917857142857143,0.921428571428571,0.926190476190476,0.919047619047619,0.919047619047619,0.929761904761905,0.930952380952381,0.933333333333333,0.908333333333333,0.927380952380952,0.929761904761905,0.922619047619048,0.933333333333333,0.936904761904762,0.927380952380952,0.923809523809524,0.927380952380952,0.928571428571429,0.916666666666667,0.925,0.921428571428571,0.927380952380952,0.913095238095238,0.914285714285714,0.923809523809524,0.939285714285714,0.938095238095238,0.920238095238095,0.917857142857143,0.922619047619048,0.917857142857143,0.927380952380952,0.923809523809524,0.920238095238095,0.936904761904762,0.927380952380952,0.928571428571429,0.914285714285714,0.929761904761905,0.929761904761905,0.921428571428571,0.922619047619048,0.936904761904762,0.923809523809524,0.914285714285714,0.914285714285714,0.930952380952381],"type":"box","name":"15","marker":{"color":"rgba(109,205,89,1)","line":{"color":"rgba(109,205,89,1)"}},"line":{"color":"rgba(109,205,89,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.930952380952381,0.936904761904762,0.929761904761905,0.921428571428571,0.932142857142857,0.919047619047619,0.920238095238095,0.930952380952381,0.932142857142857,0.936904761904762,0.908333333333333,0.922619047619048,0.923809523809524,0.927380952380952,0.932142857142857,0.933333333333333,0.926190476190476,0.926190476190476,0.928571428571429,0.926190476190476,0.923809523809524,0.922619047619048,0.927380952380952,0.927380952380952,0.921428571428571,0.917857142857143,0.926190476190476,0.942857142857143,0.93452380952381,0.917857142857143,0.922619047619048,0.927380952380952,0.916666666666667,0.928571428571429,0.926190476190476,0.928571428571429,0.933333333333333,0.935714285714286,0.933333333333333,0.91547619047619,0.929761904761905,0.93452380952381,0.920238095238095,0.921428571428571,0.938095238095238,0.925,0.919047619047619,0.926190476190476,0.933333333333333],"type":"box","name":"16","marker":{"color":"rgba(143,215,68,1)","line":{"color":"rgba(143,215,68,1)"}},"line":{"color":"rgba(143,215,68,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.93452380952381,0.936904761904762,0.929761904761905,0.921428571428571,0.932142857142857,0.920238095238095,0.920238095238095,0.928571428571429,0.935714285714286,0.938095238095238,0.913095238095238,0.925,0.921428571428571,0.93452380952381,0.933333333333333,0.932142857142857,0.929761904761905,0.926190476190476,0.927380952380952,0.925,0.926190476190476,0.916666666666667,0.929761904761905,0.926190476190476,0.923809523809524,0.911904761904762,0.925,0.941666666666667,0.939285714285714,0.91547619047619,0.919047619047619,0.929761904761905,0.916666666666667,0.932142857142857,0.925,0.928571428571429,0.939285714285714,0.93452380952381,0.933333333333333,0.914285714285714,0.928571428571429,0.929761904761905,0.921428571428571,0.920238095238095,0.94047619047619,0.925,0.91547619047619,0.922619047619048,0.935714285714286],"type":"box","name":"17","marker":{"color":"rgba(180,222,44,1)","line":{"color":"rgba(180,222,44,1)"}},"line":{"color":"rgba(180,222,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.921428571428571,0.93452380952381,0.93452380952381,0.933333333333333,0.922619047619048,0.932142857142857,0.91547619047619,0.917857142857143,0.923809523809524,0.936904761904762,0.935714285714286,0.907142857142857,0.927380952380952,0.922619047619048,0.93452380952381,0.938095238095238,0.933333333333333,0.925,0.925,0.926190476190476,0.925,0.923809523809524,0.914285714285714,0.929761904761905,0.922619047619048,0.916666666666667,0.91547619047619,0.925,0.939285714285714,0.938095238095238,0.917857142857143,0.925,0.929761904761905,0.920238095238095,0.927380952380952,0.922619047619048,0.927380952380952,0.939285714285714,0.935714285714286,0.93452380952381,0.921428571428571,0.926190476190476,0.93452380952381,0.919047619047619,0.927380952380952,0.939285714285714,0.933333333333333,0.919047619047619,0.920238095238095,0.935714285714286],"type":"box","name":"18","marker":{"color":"rgba(218,227,25,1)","line":{"color":"rgba(218,227,25,1)"}},"line":{"color":"rgba(218,227,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.913095238095238,0.93452380952381,0.935714285714286,0.932142857142857,0.920238095238095,0.933333333333333,0.919047619047619,0.916666666666667,0.928571428571429,0.932142857142857,0.936904761904762,0.911904761904762,0.926190476190476,0.922619047619048,0.935714285714286,0.935714285714286,0.932142857142857,0.923809523809524,0.922619047619048,0.925,0.927380952380952,0.923809523809524,0.914285714285714,0.925,0.929761904761905,0.916666666666667,0.916666666666667,0.926190476190476,0.944047619047619,0.938095238095238,0.917857142857143,0.917857142857143,0.928571428571429,0.920238095238095,0.932142857142857,0.922619047619048,0.927380952380952,0.936904761904762,0.93452380952381,0.935714285714286,0.91547619047619,0.927380952380952,0.935714285714286,0.920238095238095,0.921428571428571,0.938095238095238,0.928571428571429,0.927380952380952,0.926190476190476,0.933333333333333],"type":"box","name":"19","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+<div id="htmlwidget-5ba5c4fb1d93e71f8756" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5ba5c4fb1d93e71f8756">{"x":{"visdat":{"4b8795428fe":["function () ","plotlyVisDat"]},"cur_data":"4b8795428fe","attrs":{"4b8795428fe":{"y":{},"color":{},"colors":["#440154FF","#481668FF","#482878FF","#443A83FF","#3E4A89FF","#375A8CFF","#31688EFF","#2B758EFF","#26828EFF","#21908CFF","#1F9E89FF","#25AB82FF","#35B779FF","#4EC36BFF","#6DCD59FF","#8FD744FF","#B4DE2CFF","#DAE319FF","#FDE725FF"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"Accuracy"},"xaxis":{"domain":[0,1],"automargin":true},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"y":[0.28452380952381,0.304761904761905,0.286904761904762,0.30952380952381,0.297619047619048,0.289285714285714,0.291666666666667,0.285714285714286,0.276190476190476,0.298809523809524,0.283333333333333,0.283333333333333,0.310714285714286,0.29047619047619,0.28452380952381,0.286904761904762,0.283333333333333,0.29047619047619,0.276190476190476,0.31547619047619,0.271428571428571,0.302380952380952,0.31547619047619,0.288095238095238,0.29047619047619,0.296428571428571,0.276190476190476,0.278571428571429,0.301190476190476,0.288095238095238,0.310714285714286,0.288095238095238,0.294047619047619,0.276190476190476,0.289285714285714,0.29047619047619,0.295238095238095,0.304761904761905,0.277380952380952,0.279761904761905,0.280952380952381,0.301190476190476,0.289285714285714,0.295238095238095,0.29047619047619,0.292857142857143,0.295238095238095,0.294047619047619,0.304761904761905,0.302380952380952],"type":"box","name":"1","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"line":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.517857142857143,0.496428571428571,0.529761904761905,0.526190476190476,0.509523809523809,0.536904761904762,0.520238095238095,0.509523809523809,0.530952380952381,0.523809523809524,0.536904761904762,0.555952380952381,0.529761904761905,0.526190476190476,0.466666666666667,0.542857142857143,0.542857142857143,0.521428571428571,0.503571428571429,0.525,0.511904761904762,0.529761904761905,0.509523809523809,0.521428571428571,0.501190476190476,0.533333333333333,0.522619047619048,0.521428571428571,0.552380952380952,0.519047619047619,0.530952380952381,0.527380952380952,0.520238095238095,0.508333333333333,0.53452380952381,0.514285714285714,0.528571428571429,0.532142857142857,0.523809523809524,0.517857142857143,0.514285714285714,0.544047619047619,0.53452380952381,0.517857142857143,0.485714285714286,0.532142857142857,0.522619047619048,0.519047619047619,0.502380952380952,0.552380952380952],"type":"box","name":"2","marker":{"color":"rgba(72,22,104,1)","line":{"color":"rgba(72,22,104,1)"}},"line":{"color":"rgba(72,22,104,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.701190476190476,0.672619047619048,0.697619047619048,0.688095238095238,0.667857142857143,0.667857142857143,0.688095238095238,0.702380952380952,0.76547619047619,0.696428571428571,0.701190476190476,0.701190476190476,0.771428571428571,0.689285714285714,0.754761904761905,0.667857142857143,0.678571428571429,0.703571428571429,0.663095238095238,0.672619047619048,0.764285714285714,0.696428571428571,0.685714285714286,0.696428571428571,0.680952380952381,0.692857142857143,0.680952380952381,0.677380952380952,0.678571428571429,0.688095238095238,0.685714285714286,0.69047619047619,0.691666666666667,0.667857142857143,0.760714285714286,0.691666666666667,0.669047619047619,0.657142857142857,0.686904761904762,0.697619047619048,0.654761904761905,0.778571428571429,0.68452380952381,0.676190476190476,0.692857142857143,0.761904761904762,0.685714285714286,0.673809523809524,0.673809523809524,0.694047619047619],"type":"box","name":"3","marker":{"color":"rgba(72,40,120,1)","line":{"color":"rgba(72,40,120,1)"}},"line":{"color":"rgba(72,40,120,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.833333333333333,0.825,0.807142857142857,0.833333333333333,0.798809523809524,0.802380952380952,0.821428571428571,0.839285714285714,0.823809523809524,0.846428571428571,0.839285714285714,0.836904761904762,0.833333333333333,0.827380952380952,0.825,0.819047619047619,0.823809523809524,0.814285714285714,0.804761904761905,0.832142857142857,0.832142857142857,0.839285714285714,0.794047619047619,0.832142857142857,0.823809523809524,0.823809523809524,0.821428571428571,0.819047619047619,0.819047619047619,0.861904761904762,0.814285714285714,0.839285714285714,0.822619047619048,0.84047619047619,0.833333333333333,0.827380952380952,0.802380952380952,0.825,0.817857142857143,0.826190476190476,0.821428571428571,0.835714285714286,0.830952380952381,0.839285714285714,0.821428571428571,0.827380952380952,0.811904761904762,0.804761904761905,0.796428571428571,0.829761904761905],"type":"box","name":"4","marker":{"color":"rgba(68,58,131,1)","line":{"color":"rgba(68,58,131,1)"}},"line":{"color":"rgba(68,58,131,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.83452380952381,0.882142857142857,0.875,0.825,0.798809523809524,0.797619047619048,0.860714285714286,0.829761904761905,0.823809523809524,0.896428571428571,0.885714285714286,0.84047619047619,0.832142857142857,0.822619047619048,0.822619047619048,0.822619047619048,0.875,0.807142857142857,0.865476190476191,0.882142857142857,0.878571428571429,0.833333333333333,0.796428571428571,0.828571428571429,0.813095238095238,0.825,0.879761904761905,0.880952380952381,0.885714285714286,0.9,0.813095238095238,0.882142857142857,0.816666666666667,0.878571428571429,0.828571428571429,0.889285714285714,0.803571428571429,0.820238095238095,0.876190476190476,0.894047619047619,0.878571428571429,0.830952380952381,0.873809523809524,0.89047619047619,0.866666666666667,0.878571428571429,0.811904761904762,0.866666666666667,0.861904761904762,0.89047619047619],"type":"box","name":"5","marker":{"color":"rgba(62,74,137,1)","line":{"color":"rgba(62,74,137,1)"}},"line":{"color":"rgba(62,74,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.879761904761905,0.876190476190476,0.875,0.872619047619048,0.869047619047619,0.85952380952381,0.864285714285714,0.870238095238095,0.884523809523809,0.891666666666667,0.880952380952381,0.870238095238095,0.886904761904762,0.879761904761905,0.879761904761905,0.879761904761905,0.867857142857143,0.867857142857143,0.860714285714286,0.872619047619048,0.871428571428571,0.876190476190476,0.853571428571429,0.888095238095238,0.869047619047619,0.858333333333333,0.876190476190476,0.870238095238095,0.883333333333333,0.898809523809524,0.869047619047619,0.883333333333333,0.870238095238095,0.878571428571429,0.886904761904762,0.883333333333333,0.860714285714286,0.867857142857143,0.871428571428571,0.889285714285714,0.878571428571429,0.888095238095238,0.873809523809524,0.880952380952381,0.867857142857143,0.884523809523809,0.871428571428571,0.863095238095238,0.860714285714286,0.888095238095238],"type":"box","name":"6","marker":{"color":"rgba(55,90,140,1)","line":{"color":"rgba(55,90,140,1)"}},"line":{"color":"rgba(55,90,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.902380952380952,0.903571428571429,0.9,0.888095238095238,0.882142857142857,0.883333333333333,0.902380952380952,0.885714285714286,0.898809523809524,0.91547619047619,0.904761904761905,0.89047619047619,0.908333333333333,0.901190476190476,0.888095238095238,0.897619047619048,0.913095238095238,0.905952380952381,0.878571428571429,0.898809523809524,0.885714285714286,0.892857142857143,0.892857142857143,0.910714285714286,0.897619047619048,0.892857142857143,0.886904761904762,0.897619047619048,0.90952380952381,0.904761904761905,0.897619047619048,0.896428571428571,0.895238095238095,0.895238095238095,0.904761904761905,0.901190476190476,0.894047619047619,0.898809523809524,0.895238095238095,0.91547619047619,0.892857142857143,0.914285714285714,0.898809523809524,0.889285714285714,0.894047619047619,0.908333333333333,0.902380952380952,0.898809523809524,0.89047619047619,0.91547619047619],"type":"box","name":"7","marker":{"color":"rgba(49,104,142,1)","line":{"color":"rgba(49,104,142,1)"}},"line":{"color":"rgba(49,104,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.901190476190476,0.908333333333333,0.921428571428571,0.919047619047619,0.90952380952381,0.901190476190476,0.907142857142857,0.898809523809524,0.916666666666667,0.922619047619048,0.919047619047619,0.896428571428571,0.907142857142857,0.91547619047619,0.904761904761905,0.913095238095238,0.908333333333333,0.907142857142857,0.907142857142857,0.903571428571429,0.910714285714286,0.903571428571429,0.905952380952381,0.913095238095238,0.908333333333333,0.904761904761905,0.9,0.911904761904762,0.91547619047619,0.911904761904762,0.9,0.910714285714286,0.91547619047619,0.897619047619048,0.908333333333333,0.908333333333333,0.907142857142857,0.920238095238095,0.917857142857143,0.920238095238095,0.905952380952381,0.920238095238095,0.90952380952381,0.903571428571429,0.919047619047619,0.925,0.905952380952381,0.901190476190476,0.9,0.920238095238095],"type":"box","name":"8","marker":{"color":"rgba(43,117,142,1)","line":{"color":"rgba(43,117,142,1)"}},"line":{"color":"rgba(43,117,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.911904761904762,0.920238095238095,0.928571428571429,0.919047619047619,0.91547619047619,0.904761904761905,0.916666666666667,0.905952380952381,0.917857142857143,0.921428571428571,0.922619047619048,0.903571428571429,0.913095238095238,0.917857142857143,0.913095238095238,0.90952380952381,0.923809523809524,0.914285714285714,0.90952380952381,0.920238095238095,0.922619047619048,0.907142857142857,0.910714285714286,0.917857142857143,0.914285714285714,0.917857142857143,0.898809523809524,0.917857142857143,0.914285714285714,0.920238095238095,0.905952380952381,0.921428571428571,0.923809523809524,0.901190476190476,0.90952380952381,0.911904761904762,0.913095238095238,0.920238095238095,0.919047619047619,0.922619047619048,0.911904761904762,0.922619047619048,0.914285714285714,0.90952380952381,0.921428571428571,0.930952380952381,0.908333333333333,0.903571428571429,0.905952380952381,0.929761904761905],"type":"box","name":"9","marker":{"color":"rgba(38,130,142,1)","line":{"color":"rgba(38,130,142,1)"}},"line":{"color":"rgba(38,130,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.905952380952381,0.923809523809524,0.928571428571429,0.91547619047619,0.91547619047619,0.907142857142857,0.910714285714286,0.904761904761905,0.922619047619048,0.919047619047619,0.921428571428571,0.901190476190476,0.910714285714286,0.91547619047619,0.916666666666667,0.914285714285714,0.921428571428571,0.91547619047619,0.91547619047619,0.913095238095238,0.921428571428571,0.910714285714286,0.91547619047619,0.919047619047619,0.913095238095238,0.911904761904762,0.904761904761905,0.921428571428571,0.920238095238095,0.914285714285714,0.90952380952381,0.920238095238095,0.919047619047619,0.903571428571429,0.910714285714286,0.916666666666667,0.914285714285714,0.923809523809524,0.920238095238095,0.919047619047619,0.911904761904762,0.925,0.914285714285714,0.90952380952381,0.916666666666667,0.930952380952381,0.9,0.907142857142857,0.911904761904762,0.925],"type":"box","name":"10","marker":{"color":"rgba(33,144,140,1)","line":{"color":"rgba(33,144,140,1)"}},"line":{"color":"rgba(33,144,140,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.90952380952381,0.920238095238095,0.932142857142857,0.917857142857143,0.914285714285714,0.916666666666667,0.913095238095238,0.914285714285714,0.921428571428571,0.916666666666667,0.922619047619048,0.902380952380952,0.911904761904762,0.922619047619048,0.920238095238095,0.919047619047619,0.927380952380952,0.911904761904762,0.916666666666667,0.923809523809524,0.925,0.914285714285714,0.916666666666667,0.919047619047619,0.925,0.914285714285714,0.905952380952381,0.917857142857143,0.926190476190476,0.923809523809524,0.904761904761905,0.913095238095238,0.920238095238095,0.907142857142857,0.922619047619048,0.916666666666667,0.919047619047619,0.927380952380952,0.922619047619048,0.926190476190476,0.91547619047619,0.930952380952381,0.922619047619048,0.911904761904762,0.920238095238095,0.929761904761905,0.905952380952381,0.90952380952381,0.917857142857143,0.928571428571429],"type":"box","name":"11","marker":{"color":"rgba(31,158,137,1)","line":{"color":"rgba(31,158,137,1)"}},"line":{"color":"rgba(31,158,137,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.908333333333333,0.925,0.936904761904762,0.929761904761905,0.926190476190476,0.922619047619048,0.914285714285714,0.907142857142857,0.917857142857143,0.927380952380952,0.930952380952381,0.901190476190476,0.90952380952381,0.919047619047619,0.920238095238095,0.925,0.925,0.920238095238095,0.917857142857143,0.929761904761905,0.922619047619048,0.916666666666667,0.921428571428571,0.917857142857143,0.921428571428571,0.916666666666667,0.9,0.916666666666667,0.935714285714286,0.929761904761905,0.913095238095238,0.916666666666667,0.922619047619048,0.914285714285714,0.925,0.91547619047619,0.927380952380952,0.927380952380952,0.920238095238095,0.920238095238095,0.910714285714286,0.932142857142857,0.920238095238095,0.911904761904762,0.919047619047619,0.925,0.90952380952381,0.90952380952381,0.916666666666667,0.936904761904762],"type":"box","name":"12","marker":{"color":"rgba(37,171,130,1)","line":{"color":"rgba(37,171,130,1)"}},"line":{"color":"rgba(37,171,130,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.922619047619048,0.932142857142857,0.925,0.921428571428571,0.927380952380952,0.91547619047619,0.91547619047619,0.926190476190476,0.927380952380952,0.930952380952381,0.908333333333333,0.921428571428571,0.920238095238095,0.921428571428571,0.927380952380952,0.933333333333333,0.919047619047619,0.917857142857143,0.927380952380952,0.922619047619048,0.913095238095238,0.91547619047619,0.921428571428571,0.922619047619048,0.910714285714286,0.911904761904762,0.920238095238095,0.939285714285714,0.930952380952381,0.91547619047619,0.91547619047619,0.919047619047619,0.908333333333333,0.921428571428571,0.925,0.921428571428571,0.928571428571429,0.929761904761905,0.926190476190476,0.908333333333333,0.928571428571429,0.914285714285714,0.917857142857143,0.925,0.933333333333333,0.917857142857143,0.905952380952381,0.917857142857143,0.935714285714286],"type":"box","name":"13","marker":{"color":"rgba(53,183,121,1)","line":{"color":"rgba(53,183,121,1)"}},"line":{"color":"rgba(53,183,121,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.917857142857143,0.926190476190476,0.928571428571429,0.919047619047619,0.921428571428571,0.925,0.91547619047619,0.916666666666667,0.929761904761905,0.929761904761905,0.93452380952381,0.905952380952381,0.922619047619048,0.923809523809524,0.926190476190476,0.930952380952381,0.933333333333333,0.920238095238095,0.919047619047619,0.923809523809524,0.926190476190476,0.914285714285714,0.920238095238095,0.925,0.925,0.91547619047619,0.913095238095238,0.917857142857143,0.94047619047619,0.935714285714286,0.919047619047619,0.91547619047619,0.926190476190476,0.911904761904762,0.927380952380952,0.921428571428571,0.921428571428571,0.933333333333333,0.933333333333333,0.926190476190476,0.910714285714286,0.925,0.928571428571429,0.925,0.923809523809524,0.928571428571429,0.913095238095238,0.905952380952381,0.91547619047619,0.936904761904762],"type":"box","name":"14","marker":{"color":"rgba(78,195,107,1)","line":{"color":"rgba(78,195,107,1)"}},"line":{"color":"rgba(78,195,107,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.916666666666667,0.932142857142857,0.930952380952381,0.917857142857143,0.921428571428571,0.926190476190476,0.919047619047619,0.919047619047619,0.929761904761905,0.930952380952381,0.933333333333333,0.908333333333333,0.927380952380952,0.929761904761905,0.922619047619048,0.933333333333333,0.936904761904762,0.927380952380952,0.923809523809524,0.927380952380952,0.928571428571429,0.916666666666667,0.925,0.921428571428571,0.927380952380952,0.913095238095238,0.914285714285714,0.923809523809524,0.939285714285714,0.938095238095238,0.920238095238095,0.917857142857143,0.922619047619048,0.917857142857143,0.927380952380952,0.923809523809524,0.920238095238095,0.936904761904762,0.927380952380952,0.928571428571429,0.914285714285714,0.929761904761905,0.929761904761905,0.921428571428571,0.922619047619048,0.936904761904762,0.923809523809524,0.914285714285714,0.914285714285714,0.930952380952381],"type":"box","name":"15","marker":{"color":"rgba(109,205,89,1)","line":{"color":"rgba(109,205,89,1)"}},"line":{"color":"rgba(109,205,89,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.930952380952381,0.936904761904762,0.929761904761905,0.921428571428571,0.932142857142857,0.919047619047619,0.920238095238095,0.930952380952381,0.932142857142857,0.936904761904762,0.908333333333333,0.922619047619048,0.923809523809524,0.927380952380952,0.932142857142857,0.933333333333333,0.926190476190476,0.926190476190476,0.928571428571429,0.926190476190476,0.923809523809524,0.922619047619048,0.927380952380952,0.927380952380952,0.921428571428571,0.917857142857143,0.926190476190476,0.942857142857143,0.93452380952381,0.917857142857143,0.922619047619048,0.927380952380952,0.916666666666667,0.928571428571429,0.926190476190476,0.928571428571429,0.933333333333333,0.935714285714286,0.933333333333333,0.91547619047619,0.929761904761905,0.93452380952381,0.920238095238095,0.921428571428571,0.938095238095238,0.925,0.919047619047619,0.926190476190476,0.933333333333333],"type":"box","name":"16","marker":{"color":"rgba(143,215,68,1)","line":{"color":"rgba(143,215,68,1)"}},"line":{"color":"rgba(143,215,68,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.91547619047619,0.93452380952381,0.936904761904762,0.929761904761905,0.921428571428571,0.932142857142857,0.920238095238095,0.920238095238095,0.928571428571429,0.935714285714286,0.938095238095238,0.913095238095238,0.925,0.921428571428571,0.93452380952381,0.933333333333333,0.932142857142857,0.929761904761905,0.926190476190476,0.927380952380952,0.925,0.926190476190476,0.916666666666667,0.929761904761905,0.926190476190476,0.923809523809524,0.911904761904762,0.925,0.941666666666667,0.939285714285714,0.91547619047619,0.919047619047619,0.929761904761905,0.916666666666667,0.932142857142857,0.925,0.928571428571429,0.939285714285714,0.93452380952381,0.933333333333333,0.914285714285714,0.928571428571429,0.929761904761905,0.921428571428571,0.920238095238095,0.94047619047619,0.925,0.91547619047619,0.922619047619048,0.935714285714286],"type":"box","name":"17","marker":{"color":"rgba(180,222,44,1)","line":{"color":"rgba(180,222,44,1)"}},"line":{"color":"rgba(180,222,44,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.921428571428571,0.93452380952381,0.93452380952381,0.933333333333333,0.922619047619048,0.932142857142857,0.91547619047619,0.917857142857143,0.923809523809524,0.936904761904762,0.935714285714286,0.907142857142857,0.927380952380952,0.922619047619048,0.93452380952381,0.938095238095238,0.933333333333333,0.925,0.925,0.926190476190476,0.925,0.923809523809524,0.914285714285714,0.929761904761905,0.922619047619048,0.916666666666667,0.91547619047619,0.925,0.939285714285714,0.938095238095238,0.917857142857143,0.925,0.929761904761905,0.920238095238095,0.927380952380952,0.922619047619048,0.927380952380952,0.939285714285714,0.935714285714286,0.93452380952381,0.921428571428571,0.926190476190476,0.93452380952381,0.919047619047619,0.927380952380952,0.939285714285714,0.933333333333333,0.919047619047619,0.920238095238095,0.935714285714286],"type":"box","name":"18","marker":{"color":"rgba(218,227,25,1)","line":{"color":"rgba(218,227,25,1)"}},"line":{"color":"rgba(218,227,25,1)"},"xaxis":"x","yaxis":"y","frame":null},{"y":[0.913095238095238,0.93452380952381,0.935714285714286,0.932142857142857,0.920238095238095,0.933333333333333,0.919047619047619,0.916666666666667,0.928571428571429,0.932142857142857,0.936904761904762,0.911904761904762,0.926190476190476,0.922619047619048,0.935714285714286,0.935714285714286,0.932142857142857,0.923809523809524,0.922619047619048,0.925,0.927380952380952,0.923809523809524,0.914285714285714,0.925,0.929761904761905,0.916666666666667,0.916666666666667,0.926190476190476,0.944047619047619,0.938095238095238,0.917857142857143,0.917857142857143,0.928571428571429,0.920238095238095,0.932142857142857,0.922619047619048,0.927380952380952,0.936904761904762,0.93452380952381,0.935714285714286,0.91547619047619,0.927380952380952,0.935714285714286,0.920238095238095,0.921428571428571,0.938095238095238,0.928571428571429,0.927380952380952,0.926190476190476,0.933333333333333],"type":"box","name":"19","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"line":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
 <p class="caption">
 Model performance by number of features evaluated with Recursive Feature Elimitaion
 </p>
@@ -1940,7 +1964,7 @@ Model performance by number of features evaluated with Recursive Feature Elimita
 </div>
 <div id="model-simplification-1" class="section level4">
 <h4><span class="header-section-number">2.2.2.2</span> Model Simplification</h4>
-<p>To simplify the model without loosing prediction accuracy we search for a model with less predictor variables, which has the same accury (max 2 % difference in accuracy).</p>
+<p>To simplify the model without loosing prediction accuracy we search for a model with less predictor variables, which has the same accuracy as the best performing model (max 2 % difference in accuracy).</p>
 <pre><code>##   Variables  Accuracy     Kappa AccuracySD     KappaSD
 ## 8         8 0.9098095 0.9016104 0.00739575 0.008068091</code></pre>
 <p>A model using the following 8 prediction variables instead of all 18 variables has almost the same accuracy.</p>
@@ -1974,7 +1998,7 @@ bestVar</code></pre></div>
 <hr />
 <div id="model-validation-1" class="section level4">
 <h4><span class="header-section-number">2.2.3.1</span> Model Validation</h4>
-<p>Applying the final model to the validation data set the error matrix looks like this.</p>
+<p>Applying the final model to predict LuLc classes for the validation data set, the error matrix looks like this:</p>
 <p><br></p>
 <p><strong>Error Matrix</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ranger)
@@ -2059,7 +2083,7 @@ class
 <span style=" font-weight: bold;    ">water - 0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">298</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">300</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2089,7 +2113,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+<span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2103,22 +2127,22 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">218</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">217</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(218, 71, 106, 1) !important;">31</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(187, 57, 120, 1) !important;">37</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2133,7 +2157,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 </tr>
 <tr>
@@ -2144,19 +2168,19 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(121, 34, 130, 1) !important;">49</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(116, 32, 129, 1) !important;">50</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">246</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">236</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
@@ -2168,7 +2192,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 167, 114, 1) !important;">14</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 147, 103, 1) !important;">17</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2185,22 +2209,19 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">272</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">268</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(251, 136, 97, 1) !important;">19</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 147, 103, 1) !important;">17</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2209,7 +2230,10 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 209, 148, 1) !important;">7</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2232,31 +2256,31 @@ class
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 140, 99, 1) !important;">18</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(251, 136, 97, 1) !important;">19</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">269</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">265</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
 </td>
 </tr>
 <tr>
@@ -2276,28 +2300,28 @@ class
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 <td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">274</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">279</span>
-</td>
-<td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 204, 143, 1) !important;">8</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
 </td>
 </tr>
 <tr>
@@ -2308,7 +2332,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
@@ -2323,7 +2347,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">295</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">292</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2352,22 +2376,22 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">291</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">284</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
@@ -2376,7 +2400,7 @@ class
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 235, 172, 1) !important;">3</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
@@ -2399,7 +2423,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2411,13 +2435,13 @@ class
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">292</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">291</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2431,19 +2455,19 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(232, 83, 98, 1) !important;">28</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(238, 92, 94, 1) !important;">26</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 160, 110, 1) !important;">15</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(251, 136, 97, 1) !important;">19</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 204, 143, 1) !important;">8</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 198, 138, 1) !important;">9</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2455,7 +2479,7 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">248</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">245</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
@@ -2469,28 +2493,28 @@ class
 <span style=" font-weight: bold;    ">rice - 11</span>
 </td>
 <td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 204, 143, 1) !important;">8</span>
 </td>
 <td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 185, 127, 1) !important;">11</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
@@ -2513,37 +2537,37 @@ class
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
-</td>
-<td style="text-align:center;">
 <span style="     color: grey !important;">0</span>
 </td>
 <td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 247, 185, 1) !important;">1</span>
 </td>
 <td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 228, 166, 1) !important;">4</span>
+</td>
+<td style="text-align:center;">
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(254, 216, 154, 1) !important;">6</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
+<span style="     color: grey !important;">0</span>
+</td>
+<td style="text-align:center;">
 <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(252, 240, 178, 1) !important;">2</span>
 </td>
 <td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(253, 222, 160, 1) !important;">5</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style="     color: grey !important;">0</span>
-</td>
-<td style="text-align:center;">
-<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">291</span>
+<span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: green !important;">285</span>
 </td>
 </tr>
 </tbody>
@@ -2552,25 +2576,36 @@ class
 <p><strong>Respective Accuracy</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(cm<span class="op">$</span>overall[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</code></pre></div>
 <pre><code>##      Accuracy         Kappa AccuracyLower AccuracyUpper 
-##     0.9147222     0.9069697     0.9051195     0.9236450</code></pre>
+##     0.9030556     0.8942424     0.8929214     0.9125296</code></pre>
+<p>If we compare the accuracy calculated for this model with the accuracy calculated for the previous model (using all predictor variables) we can see that it dropped by more than the defined 2%. Why is this?</p>
+<ul>
+<li><p>One reason might be that we optimized the model parameters (<em>minimal node size</em> and <em>variables per split</em>) for a model using all predictor variables. To check this we should apply the gridsearch to our simplified model.</p></li>
+<li><p>Another reason might be that we calculated model performance based on cross-validated traing data in model tuning, while we used validation data for calculating the error matrices. Hence, using all predictor variables might result in overfitting on training data.</p></li>
+</ul>
 </div>
 </div>
 <div id="classification-reliability" class="section level3">
 <h3><span class="header-section-number">2.2.4</span> Classification Reliability</h3>
-<p>The model validation provides us with values for overall model performance, but cannot give us regional performance values. Therefore a second classification was produced to inform about per pixel classification certainty. Since classification probability can only be calculated for a two-class classifier and the project focus is put on oilpalm plantations, the lulc-classes in the training dataset were merged into following classes:</p>
+<p>The model validation provides us with values for overall model performance, but cannot give us regional performance values. Therefore a second classification was produced to inform about per pixel classification certainty. Since classification probability can only be calculated for a two-class classifier and the project focus is put on oilpalm plantations, the LuLc-classes in the training dataset were merged into following classes:</p>
 <ol style="list-style-type: decimal">
 <li><strong>Oilpalm plantation (mature and immature)</strong></li>
 <li><strong>other classes</strong></li>
 </ol>
 <p>A classifier was then trained on this data with its output mode set to probability.</p>
 <p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/certainty.jpg?raw=true" width="100%" /> <a href="https://code.earthengine.google.com/ae39bc061d4b551c20720a432d7b02e9">see in GEE</a></p>
+<p><strong>dark purple</strong> - high certainty for <strong>other classes</strong></p>
+<p><strong>yellow</strong> - high certainty for <strong>oilpalm plantation</strong></p>
+<p><strong>pink/red</strong> - low certainty for <strong>any class</strong></p>
 <hr />
 </div>
 </div>
 </div>
 <div id="results" class="section level1">
 <h1><span class="header-section-number">3</span> Results</h1>
-<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/results_banner.jpg?raw=true" width="100%" /> <a href="https://code.earthengine.google.com/f928cbe0eb9c6679c3fad8efb428306e">see in GEE</a> —————–</p>
+<p>Using the final model from previous steps we perform the classification itself in GEE.</p>
+<p><a href="https://wiesehahn.github.io/crc990_b05/ee_scripts.html#13_export_of_classification"><i class="fas  fa-code "></i> Code</a></p>
+<p><img src="https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/results_banner.jpg?raw=true" width="100%" /> <a href="https://code.earthengine.google.com/f928cbe0eb9c6679c3fad8efb428306e">see in GEE</a></p>
+<hr />
 </div>
 <div id="problems" class="section level1">
 <h1><span class="header-section-number">4</span> Problems</h1>

@@ -26,7 +26,7 @@ Work as part of the [*Collaborative Research Centre 990: Ecological and Socioeco
 
 ## Previous studies
 
-Many studies attempted to produce land-use/land-cover maps for Jambi province. Nevertheless, these maps do not meet project demands for different reasons:
+Many studies attempted to produce land-use/land-cover (LuLc) maps for Jambi province. Nevertheless, these maps do not meet project demands for different reasons:
 
 - do not cover entire province 
 - classes are delineated visually with coarse resolution
@@ -57,7 +57,7 @@ Ideally a similar map with same classes can be produced for past years to:
 
 # Methods
 
-The classification process is done with Google Earth Engine and R. While the reference data was delineated in GEE, images from Bing Maps and Google Earth Pro were also used for visual interpretation of lulc-classes. As model tuning is not possible in GEE the reference data was exported to R in order to find the best model parameters. The classification itself was then done in GEE, using model parameters defined in R. 
+The classification process is done with Google Earth Engine (GEE) and R. While the reference data was delineated in GEE, images from Bing Maps and Google Earth Pro were also used for visual interpretation of lulc-classes. As model tuning is not possible in GEE the reference data was exported to R in order to find the best model parameters. The classification itself was then done in GEE, using model parameters defined in R. 
 
 Reference Data | Model Tuning | Classification
 --- | --- | ---
@@ -90,8 +90,8 @@ knitr::include_graphics("https://static1.squarespace.com/static/56df0fad746fb935
 
 ### LuLc-Classes in previous studies
 
-Previous studies on land-cover and land-use in Jambi used different classification keys. Some classes were classified in sub-categories in other studies, while other classes were merged or were not assessed.  
-@Melati2017 used different classification schemes for different purposes (areas) by merging the 22 classes differentiated by the Ministry of Forestry. @Stolle2003 also used many classes, while @Sambodo2018, @Nurwanda2016, and @Ekadinata2011 merged some of the classes into broarder categories. 
+Previous studies on land-cover and land-use in Jambi used different classification keys. Some classes were classified as sub-categories in other studies, while other classes were merged or were not assessed.  
+@Melati2017 used different classification schemes for different purposes (areas) by merging the 22 classes differentiated by the Ministry of Forestry. @Stolle2003 also used many classes (14), while @Sambodo2018, @Nurwanda2016, and @Ekadinata2011 merged some of the classes into broarder categories. 
 
 ```{r read_classes, message=FALSE, warning=FALSE}
 classes <- read_csv(here("raw_data/classification-classes.csv"), na = "NA")
@@ -120,61 +120,86 @@ Class Rubber was not classified seperately since other studies had no success tr
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_water.jpg?raw=true")
 ```
+**Definition:**  
+Area covered permanently by water (short variations in dry season might occour).
+e.g. river, ocean, lake, pond
 
 #### primary forest {-} 
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_primary-forest.jpg?raw=true")
 ```
+**Definition:**  
+Area covered by dense forest without detectable disturbances. Often with heterogenious stand structure and mainly further away from villages.
 
 #### secondary forest {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_secondary-forest.jpg?raw=true")
 ```
+**Definition:**  
+Area covered by forest with multiple tree species, which is used by the people. Skidding trails might be visible, sometimes intercropped with other tree species (e.g. jungle rubber). Forests close to cities have a high chance to fall in this category.
 
 #### oilpalm mature {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_oilpalm-mature.jpg?raw=true")
 ```
+**Definition:**  
+Productive oil palm plantations, where crown cover is more than 50% due to larger plants and closing canopy. Usually these plantations are older than ? years.
 
 #### oilpalm immature {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_oilpalm-immature.jpg?raw=true")
 ```
+**Definition:**  
+Oil palm plantations in the early stage after planting. Plants are still small and crowns cover less than 50% of underlying soil. 
 
 #### bush shrub {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_bush-shrub.jpg?raw=true")
 ```
+**Definition:**  
+Area covered by low vegetation (<5m), single trees might occour but no forest condition is present. Mainly covered by grass and small shrubs. This is often the case after areas were burned down.
 
 #### plantation forest {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_plantation-forest.jpg?raw=true")
 ```
+**Definition:**  
+Area covered by trees of mainly one species (monoculture), which is planted as a timber production forest. 
+e.g. Acacia plantation, monoculture rubber plantation
 
 #### burned cleared {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_burned-cleared.jpg?raw=true")
 ```
+**Definition:**  
+Area which was burned down and where no or only very sparse vegetation has recovered in the meantime.
 
 #### urban buildings {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_urban-buildings.jpg?raw=true")
 ```
+**Definition:**  
+Areas covered by houses, streets, industry and other sealed surfaces.
 
 #### coconut plantation {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_coconut-plantation.jpg?raw=true")
 ```
+**Definition:**  
+Area covoered by coconut monoculture plantations. These plantations look similar to oil palm plantations from aerial images but are planted in smaller stripes in coastal areas.
 
 #### rice {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_rice.jpg?raw=true")
 ```
+Definition: Agricultural areas for rice production. These areas are covered seasonal with water. 
 
 #### tea plantation {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_tea-plantation.jpg?raw=true")
 ```
+**Definition:**  
+Agricultural areas used for tea production. Occours only in the upland areas of Jambi.  
 
 
 
@@ -184,11 +209,11 @@ Reference data is delineated in GEE with support of high resolution imagery from
 
 - medium to large sized polygons   
 *(more efficient but also less distributed with higher intracorrelation)*  
-- cover only one lulc-class  
+- cover only one LuLc-class  
 *(avoid mixed pixels and false references)*
 - based on high quality images from 2018/19  
 *(up-to-date mapping)*
-- have a low chance of further lulc-changes recently  
+- have a low chance of further LuLc-changes recently  
 *(avoid false references from changed classes)*
 - distributed in the entire region  
 *(cover regional variability)*
@@ -199,28 +224,54 @@ knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/out
 ```
 [see in GEE](https://code.earthengine.google.com/5a3241a7c5d90f1670bf1b3c910ca701)
 
+
+To generate the actual reference data a stratified sample of 1500 randomly distributed reference pixels per class was extracted from these polygons. In total 12000 reference samples are generated, which are then devided in training and validation data. 
+
+[`r icon::fa("code")` Code](https://wiesehahn.github.io/crc990_b05/ee_scripts.html#11_create_reference_data)
+
 -----------------
 
 ## Classification
 
-A supervised classification algorithm with good performance should be used in combination with good predictor variables.
+A supervised classification algorithm with good performance should be used in combination with informative predictor variables.
 
 **input variables**
 
-A combination of Sentinel-1 (radar) and Sentinel-2 (optical) imagery is used
+A combination of Sentinel-1 (radar) and Sentinel-2 (optical) imagery is used, from which a reduced number of bands and indices is needed as predictor variables. Since GEE does not provide the ability of model tuning these steps are done in R.
 
 **classification model**
 
-Decision tree models are used widely for classification problems, preliminary tests indicated that Random Forest (RF) algorithm performed better than Classification And Regression Trees (CART). Hence, a RF model was trained to classify Land-use and Land-cover.
+Decision tree models are used widely for classification problems, preliminary tests indicated that Random Forest (RF) algorithm performed better than Classification And Regression Trees (CART). Hence, a RF model was trained to classify Land-use and Land-cover. 
 
 **classification key**
+
+see previous section on [LuLc-Classes in this study]
 
 -----------------
 
 ### Model Tuning
 
+A number of model parameters can be changed to achieve different results. Model tuning changes these parameters to get optimal results. Overfitting might be a problem. Parameters to be changed in all classifiers are input variables (bands and indices in our case) and training data. 
+The random forest classifier implemented in GEE uses following parameters which can be tuned:  
+
+- numberOfTrees (Integer, default: 1):
+The number of Rifle decision trees to create per class.
+
+- variablesPerSplit (Integer, default: 0):
+The number of variables per split. If set to 0 (default), defaults to the square root of the number of variables.
+
+- minLeafPopulation (Integer, default: 1):
+The minimum size of a terminal node.
+
+- bagFraction (Float, default: 0.5):
+The fraction of input to bag per tree.
+
 
 #### Gridsearch Results
+
+Since model tuning is not implemented in GEE the reference data was imported in R and a gridsearch approach was applied to calculate performance metrics for different combinations of input parameters.  
+The *number of trees* was held constant at a value of 500 because generally it is assumed that more trees give better performance. On the other side larger numbers also mean more processing time and chances to produce time-outs on the GEE server increase.  
+Parameters for which a gridsearch was done are the *number of variables per split* (called mtry in R) and the *minimum terminal node size*. 
 
 ```{r read, message=FALSE, warning=FALSE}
 library(readr)
@@ -304,6 +355,7 @@ print(rf_fit)
 rf_fit$results %>%
   plot_ly(x= ~mtry) %>%
   add_trace(y = ~Accuracy, 
+            type = "scatter",
             mode = 'lines+markers', 
             color= ~ as.factor(min.node.size), colors = viridis_pal(option = "D")(3),
             error_y = ~list(array = AccuracySD),
@@ -314,13 +366,13 @@ rf_fit$results %>%
 
 ```
 
-Differences are not very pronounced.
+As we can see the differences are not very pronounced. Hence, a simpler model results in similar performance. Based on these results we can simplify our model in terms of minimal node size and variables per split without deteriorating the results.
 
 -----------------
 
 #### Model Simplification
 
-simplest model with high accuracy (max 2% difference to best model)
+Here we search for the simplest model without deteriorating the performance (max 2% difference to best model).
 
 ```{r gridsearch_result3}
 # get simplest model with similar accuracy
@@ -332,22 +384,10 @@ rf_fit$results[whichTwoPct,]
 
 -----------------
 
-#### Variable Importance
-
-In model fitting a relative variable importance is calculated to give an impression which predictor variables are valuable and which are less valuable for the prediction process. Nevertheless, correlation between variables is not taken into account.
-
-```{r gridsearch_importance, fig.cap= "Relative variable importance"}
-# variable importance
-imp <- varImp(rf_fit)
-
-plot(imp)
-```
-
------------------
 
 #### Model Validation
 
-The validation data is classified with the best model obtained by gridsearch. Its confusion matrix is calculated as a value of prediction accuracy.
+To have a closer look at the model performance the validation data is classified with the best model obtained by gridsearch. Its confusion matrix is calculated as a value of prediction accuracy.
 
 <br>
 
@@ -385,9 +425,28 @@ print(cm$overall[1:4])
 
 -----------------
 
+
+#### Variable Importance
+
+As determined before, model parameters *minimal node size* and *variables per split* have limited influence on model performance. As a consequence it is likely that the choice of predictor variables is important for model performance.  
+
+In model fitting a relative variable importance is calculated to give an impression which predictor variables are valuable and which are less valuable for the prediction process. Nevertheless, correlation between variables is not taken into account.
+
+```{r gridsearch_importance, fig.cap= "Relative variable importance"}
+# variable importance
+imp <- varImp(rf_fit)
+
+plot(imp)
+```
+
+As we can see the importance metric varies between predictor variables, suggesting that the choice of predictor variables very much influences our model. While more predictor variables might add information they are also complicating the model and might even introduce noise. Hence, a reduction of predictor variables can enhance our model.
+
+-----------------
+
+
 ### Feature Selection
 
-To further simplify the prediction model a Recursive Feature Elimitaion (rfe) is applied. This will eliminate worst performing predictor variables (chosen by importance) at each step and keep the best performing variables.
+To further simplify the prediction model a Recursive Feature Elimitaion (rfe) is applied. This will eliminate worst performing predictor variables (chosen by importance) at each step and keep the best performing variables to end up in a reduced number of predictor variables which perfom best in model prediction.
 
 ```{r rfe, message=FALSE, warning=FALSE}
 # perform reverse feature selection with all variables
@@ -440,7 +499,7 @@ if (file.exists(filename)){
 
 #### Number of Features
 
-The best model in regards to predictor variables uses 18 out of 19 variables, all except for *VV_variance*. However, one can see that the model performs equally good with less predictor variables.
+The best model in regards to predictor variables uses 18 out of 19 variables, all except for *VV_variance*. However, we can see that the model performs equally good with less predictor variables.
 ```{r rfe_result2, echo=FALSE, fig.cap= "Model performance by number of features evaluated with Recursive Feature Elimitaion"}
 #ggplot(rfProfile) + theme_classic()
 plot_ly(rfProfile$resample, y = ~Accuracy, color = ~as.factor(Variables), colors= viridis_pal(option = "D")(19), type = "box")
@@ -458,7 +517,7 @@ print(predictors(rfProfile)) # chosen predictors
 
 #### Model Simplification
 
-To simplify the model without loosing prediction accuracy we search for a model with less predictor variables, which has the same accury (max 2 % difference in accuracy).
+To simplify the model without loosing prediction accuracy we search for a model with less predictor variables, which has the same accuracy as the best performing model (max 2 % difference in accuracy).
 
 ```{r rfe_result3, echo=FALSE}
 # get simplest model with similar accuracy
@@ -504,7 +563,7 @@ The hyperparameters are:
 
 #### Model Validation
 
-Applying the final model to the validation data set the error matrix looks like this. 
+Applying the final model to predict LuLc classes for the validation data set, the error matrix looks like this: 
 
 <br>
 
@@ -552,10 +611,16 @@ cm.df %>%
 print(cm$overall[1:4])
 ```
 
+If we compare the accuracy calculated for this model with the accuracy calculated for the previous model (using all predictor variables) we can see that it dropped by more than the defined 2%. Why is this?
+
+- One reason might be that we optimized the model parameters (*minimal node size* and *variables per split*) for a model using all predictor variables. To check this we should apply the gridsearch to our simplified model.
+
+- Another reason might be that we calculated model performance based on cross-validated traing data in model tuning, while we used validation data for calculating the error matrices. Hence, using all predictor variables might result in overfitting on training data.
+
 ### Classification Reliability
 
 The model validation provides us with values for overall model performance, but cannot give us regional performance values.
-Therefore a second classification was produced to inform about per pixel classification certainty. Since classification probability can only be calculated for a two-class classifier and the project focus is put on oilpalm plantations, the lulc-classes in the training dataset were merged into following classes: 
+Therefore a second classification was produced to inform about per pixel classification certainty. Since classification probability can only be calculated for a two-class classifier and the project focus is put on oilpalm plantations, the LuLc-classes in the training dataset were merged into following classes: 
 
 1. **Oilpalm plantation (mature and immature)** 
 2. **other classes**
@@ -567,14 +632,25 @@ knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/out
 ```
 [see in GEE](https://code.earthengine.google.com/ae39bc061d4b551c20720a432d7b02e9)
 
+**dark purple** - high certainty for **other classes**
+
+**yellow** - high certainty for **oilpalm plantation**
+
+**pink/red** - low certainty for **any class**
+
 -----------------
 
 # Results
+
+Using the final model from previous steps we perform the classification itself in GEE. 
+
+[`r icon::fa("code")` Code](https://wiesehahn.github.io/crc990_b05/ee_scripts.html#13_export_of_classification)
 
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/presentation/results_banner.jpg?raw=true")
 ```
 [see in GEE](https://code.earthengine.google.com/f928cbe0eb9c6679c3fad8efb428306e)
+
 -----------------
 
 # Problems 

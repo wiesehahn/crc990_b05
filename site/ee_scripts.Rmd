@@ -6,13 +6,13 @@ title: "Google Earth Engine"
 
 All scripts for running the classification process are written in javascript within Google Earth Engine Editor with built-in version documentation.  
 They are available under following folder:  
-[**users/wiesehahn/jambi/classification_seperate/...**](https://code.earthengine.google.com/?accept_repo=users/wiesehahn/jambi)
+[`r icon::fa("cog")` **users/wiesehahn/jambi/classification_seperate/...**](https://code.earthengine.google.com/?accept_repo=users/wiesehahn/jambi)
 
 # Processing Scripts
 
 ## Create reference data {#A_reference_export}
 
-[**A_reference_export**](https://code.earthengine.google.com/fae4b87d9465b3a585fdc8ccfe17d6e4)
+[`r icon::fa("cog")` **A_reference_export**](https://code.earthengine.google.com/fae4b87d9465b3a585fdc8ccfe17d6e4)
 
 This script creates image composites of Sentinel-1 and Sentinel-2 data for the region of interest. The time period for image data is chosen. Predictor variables (image bands) are chosen. And parameters for filtering and merging image composites are defined. Stratified points within each reference class are created and values of predictor variables are extracted. This reference data set is then exported either as an asset to be used within Google Earth Engine or as a csv-Table to be used outside GEE (e.g. R). 
 
@@ -277,7 +277,7 @@ Export.table.toDrive({
 
 ## Export classified validation data {#B_validation_export}
 
-[**B_validation_export**](https://code.earthengine.google.com/89666a72b0458008b37c4a7211476f6d)
+[`r icon::fa("cog")` **B_validation_export**](https://code.earthengine.google.com/89666a72b0458008b37c4a7211476f6d)
 
 This script splits the reference data in training and validation data (70:30). 
 The random forest classifier is trained using training data and applied to classify the validation data, which is then exported as an asset to be used in Google Earth Engine. 
@@ -365,7 +365,7 @@ Export.table.toAsset({
 
 ## Export of classification {#C_classification_export}
 
-[**C_classification_export**](https://code.earthengine.google.com/1f761abff8044184b17137bde8b07c9b)
+[`r icon::fa("cog")` **C_classification_export**](https://code.earthengine.google.com/1f761abff8044184b17137bde8b07c9b)
 
 This script creates the same image composite as **A_reference_export**. The reference data created with that script is used to train the same random forest model as in **B_validation_export**, which is then applied to the entire image scene. The exported output is a classified image scene and a probability map representing the certainty for each pixel to be oilpalm plantation or any other lulc class.
 
@@ -648,7 +648,7 @@ Map.addLayer(roi);
 
 ## Visualisation of results {#D_display_results}
 
-[**D_display_results**](https://code.earthengine.google.com/774786e35d79a4efc1a8612d27a7f475)
+[`r icon::fa("cog")` **D_display_results**](https://code.earthengine.google.com/774786e35d79a4efc1a8612d27a7f475)
 
 This script is visualising the results created in previous scripts. Training data (classified wrong and right), validataion data error matrix, oilpalm probability and landuse/landcover classes for 2016/17 and 2018/19.
 

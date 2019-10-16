@@ -1,5 +1,8 @@
 ---
 title: "CRC990 B05"
+output: 
+  html_document:
+    toc: false
 ---
 
 Poject 
@@ -20,15 +23,21 @@ Workpackage
 
 #### Land use patterns in Jambi - quantification of structure, heterogeneity and changes of vegetation and land use as a basis for the explanation of ecological and socioeconomic functions{-}
 
+```{r,  echo=FALSE}
+knitr::include_graphics("https://www.uni-goettingen.de/admin/bilder/pictures/c269d1de873f483d33997b930cb7baaa.jpg")
+```
 
 -----------------
+
+### Objectives{-}
 
 The objective of this study is to analyse recent land-use and land-cover (lulc) patterns in Jambi Province, Indonesia.  
 
 Leading research questions are:  
-- Is it possible to detect land-use and land-cover types with appropriate accuracy?  
-- Is a combination of Sentinel platforms (1+2) useful?  
-- Which area is covered by oil palm plantations?  
-- How do these areas change and what are the hotspots?  
-- Are there still some intact forest landscapes left?  
+
+* Is it possible to detect land-use and land-cover types with appropriate accuracy?  
+* Is a combination of Sentinel platforms (1+2) useful?  
+* Which area is covered by oil palm plantations?  
+* How do these areas change and what are the hotspots?  
+* Are there still some intact forest landscapes left?  
 

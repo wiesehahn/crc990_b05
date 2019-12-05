@@ -646,7 +646,7 @@ Map.addLayer(roi);
 
 ```
 
-## Visualisation of results {#D_display_results}
+## Visualization of results {#D_display_results}
 
 [`r icon::fa("cog")` **D_display_results**](https://code.earthengine.google.com/774786e35d79a4efc1a8612d27a7f475)
 

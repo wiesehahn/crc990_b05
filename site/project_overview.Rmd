@@ -39,7 +39,8 @@ e.g. [@Ekadinata2011; @Melati2017; @Nurwanda2016; @SooChinLiew2003]
 
 ## Objectives of this study
 
-In order to serve as reference for further research questions in the project a number of demands have been defined, the produced map should:
+In order to serve as reference for further research questions in the project, a number of demands have been defined. 
+The produced map should:
 
 - cover the entire province
 - be up-to-date (ideally 2018/19)
@@ -91,7 +92,7 @@ knitr::include_graphics("https://static1.squarespace.com/static/56df0fad746fb935
 
 ### LuLc-Classes in previous studies
 
-Previous studies on land-cover and land-use in Jambi used different classification keys. Some classes were classified as sub-categories in other studies, while other classes were merged or were not assessed.  
+Previous studies on land-use and land-cover in Jambi used a variety of classification keys. Some classes were classified as sub-categories in other studies, while other classes were merged or were not assessed at all.  
 @Melati2017 used different classification schemes for different purposes (areas) by merging the 22 classes differentiated by the Ministry of Forestry. @Stolle2003 also used many classes (14), while @Sambodo2018, @Nurwanda2016, and @Ekadinata2011 merged some of the classes into broarder categories. 
 
 ```{r read_classes, message=FALSE, warning=FALSE, fig.cap = "LuLc-classes used by studies in Jambi province"}
@@ -193,18 +194,20 @@ Area covoered by coconut monoculture plantations. These plantations look similar
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_rice.jpg?raw=true")
 ```
-Definition: Agricultural areas for rice production. These areas are covered seasonal with water. 
+Definition: Agricultural areas for rice production. These areas are covered by water seasonally and usually occour in groups of patches. 
 
 #### tea plantation {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/examples/ge_tea-plantation.jpg?raw=true")
 ```
 **Definition:**  
-Agricultural areas used for tea production. Occours only in the upland areas of Jambi.  
+Agricultural areas used for tea production. Occours only in the upland areas of Jambi and shows narrow planting rows.  
 
 
 
 ### Data collection
+
+#### Areas for reference data collection 
 
 Reference data is delineated in GEE with support of high resolution imagery from GE Pro and Bing Maps. The following conditions were met for data collection:
 
@@ -216,7 +219,7 @@ Reference data is delineated in GEE with support of high resolution imagery from
 *(up-to-date mapping)*
 - have a low chance of further LuLc-changes recently  
 *(avoid false references from changed classes)*
-- distributed in the entire region  
+- distributed in the entire province  
 *(cover regional variability)*
 
 
@@ -225,6 +228,7 @@ knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/out
 ```
 [see in GEE](https://code.earthengine.google.com/5a3241a7c5d90f1670bf1b3c910ca701)
 
+#### Actual reference data selection
 
 To generate the actual reference data a stratified sample of 1500 randomly distributed reference pixels per class was extracted from these polygons. In total 12000 reference samples are generated, which are then devided in training and validation data. 
 
@@ -238,11 +242,11 @@ A supervised classification algorithm with good performance should be used in co
 
 **input variables**
 
-A combination of Sentinel-1 (radar) and Sentinel-2 (optical) imagery is used, from which a reduced number of bands and indices is needed as predictor variables. Since GEE does not provide the ability of model tuning these steps are done in R.
+A combination of *Sentinel-1* (radar) and *Sentinel-2* (optical) imagery is used, from which a reduced number of bands and indices is needed as predictor variables. Since GEE does not provide the ability of model tuning these steps are done in R.
 
 **classification model**
 
-Decision tree models are used widely for classification problems, preliminary tests indicated that Random Forest (RF) algorithm performed better than Classification And Regression Trees (CART). Hence, a RF model was trained to classify Land-use and Land-cover. 
+Decision tree models are used widely for classification problems, preliminary tests indicated that *Random Forest* (RF) algorithm performed better than *Classification And Regression Trees* (CART). Hence, a RF model was trained to classify Land-use and Land-cover. 
 
 **classification key**
 
@@ -383,6 +387,8 @@ whichTwoPct <- tolerance(rf_fit$results, metric = "Accuracy",
 rf_fit$results[whichTwoPct,]
 ```
 
+The results indicat that in terms of prediction accuracy a model with least variables per split (2) and a minimal node size of 1 is sufficient enough.
+
 -----------------
 
 
@@ -431,7 +437,18 @@ print(cm$overall[1:4])
 
 As determined before, model parameters *minimal node size* and *variables per split* have limited influence on model performance. As a consequence it is likely that the choice of predictor variables is important for model performance.  
 
-In model fitting a relative variable importance is calculated to give an impression which predictor variables are valuable and which are less valuable for the prediction process. Nevertheless, correlation between variables is not taken into account.
+Input variables considered as predictor variables in this study comprise: 
+
+*Sentinel-2*
+- Bands: 'B2','B3','B4','B5','B6','B7','B8','B8A','B11','B12'
+- Indices: 'NDVI','NDWI','NBRI','NDMI','SAVI'
+
+*Sentinel-1*
+- Bands: 'VV','VH'
+- Indices: 'VV_VH','VV_variance','VH_variance'
+
+In model fitting a relative variable importance is calculated to give an impression which predictor variables are valuable and which are less valuable for the prediction process. (However, correlation between variables is not taken into account)
+
 
 ```{r gridsearch_importance, fig.cap= "Relative predictor variable importance"}
 # variable importance
@@ -447,7 +464,7 @@ As we can see the importance metric varies between predictor variables, suggesti
 
 ### Feature Selection
 
-To further simplify the prediction model a Recursive Feature Elimitaion (rfe) is applied. This will eliminate worst performing predictor variables (chosen by importance) at each step and keep the best performing variables to end up in a reduced number of predictor variables which perfom best in model prediction.
+To further simplify the prediction model a *Recursive Feature Elimitaion* (rfe) is applied. This will eliminate worst performing predictor variables (chosen by importance) at each step and keep the best performing variables to end up in a reduced number of predictor variables which perfom best in model prediction.
 
 ```{r rfe, message=FALSE, warning=FALSE}
 # perform reverse feature selection with all variables
@@ -529,7 +546,7 @@ rfProfile$results[whichTwoPct,]
 
 ```
 
-A model using the following 8 prediction variables instead of all 18 variables has almost the same accuracy.
+As a result we get a model using the following 8 prediction variables instead of all 18 variables, which has almost the same accuracy.
 
 ```{r rfe_result4}
 selectedVars <- rfProfile$variables
@@ -543,7 +560,7 @@ bestVar
 
 Using the results from previous analysis we train a model with best performing predictor variables and model-hyperparameters. 
 
-The predictor variables are:
+The *predictor variables* are:
 
 * VH
 * B5
@@ -554,17 +571,17 @@ The predictor variables are:
 * NBRI
 * NDVI
 
-The hyperparameters are:
+The *hyperparameters* are:
 
 * Number of variables to possibly split at in each node (mtry) = 2
 * Minimal node size = 1
-* Number of trees = 500 (this was not optimized, as more trees usually give better results)
+* Number of trees = 500 (this was not optimized, as more trees usually give better results but the maximum number is limited by computation power)
 
 -----------------
 
 #### Model Validation
 
-Applying the final model to predict LuLc classes for the validation data set, the error matrix looks like this: 
+Applying the final model to predict LuLc-classes for the validation data set, the error matrix looks like this: 
 
 <br>
 
@@ -620,8 +637,8 @@ If we compare the accuracy calculated for this model with the accuracy calculate
 
 ### Classification Reliability
 
-The model validation provides us with values for overall model performance, but cannot give us regional performance values.
-Therefore a second classification was produced to inform about per pixel classification certainty. Since classification probability can only be calculated for a two-class classifier and the project focus is put on oilpalm plantations, the LuLc-classes in the training dataset were merged into following classes: 
+The model validation provides us with values for overall model performance, but cannot provide regional performance values.
+Therefore, a second classification was produced to inform about per pixel classification certainty. Since classification probability can only be calculated for a two-class classifier and the project focus is put on oilpalm plantations, the LuLc-classes in the training dataset were merged into following classes: 
 
 1. **Oilpalm plantation (mature and immature)** 
 2. **other classes**
@@ -671,13 +688,15 @@ For a lot of areas in Jambi there is no appropriate reference image available. P
 - high resolution imagery is covered by clouds  
 - last appropriate image is severeal years old  
 
+
 #### land-use mosaic 1 {-}
 ```{r, echo=FALSE, out.width = "100%"}
 knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/output_data/img/reference/problems/ge_mosaic1.jpg?raw=true")
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.1448537,104.1225995,1069m/data=!3m1!1e3)
 
-In many regions of Jambi province, the lulc-pattern is very heterogenious with many different classes densely mixed. In these cases it is hard to collect reference data because lulc areas covered by a single class are very small and chances are high to receive backscatter of mixed classes.
+In many regions of Jambi province, the LuLc-pattern is very heterogenious with many different classes densely mixed. In these cases it is hard to collect reference data because areas covered by a single LuLc-class are very small and chances are high to receive backscatter of mixed classes.
+
 
 #### land-use mosaic 2 {-}
 ```{r, echo=FALSE, out.width = "100%"}
@@ -685,7 +704,8 @@ knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/out
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.7708193,101.2165027,881m/data=!3m1!1e3)
 
-In some cases lulc classes are devided by other classes (e.g. intercropped with trees) which also makes it more difficult to collect proper reference data.
+In some cases LuLc-classes are devided by other classes (e.g. intercropped with trees) which also makes it more difficult to collect proper reference data.
+
 
 #### similar appearance {-}
 ```{r, echo=FALSE, out.width = "100%"}
@@ -693,10 +713,12 @@ knitr::include_graphics("https://github.com/wiesehahn/crc990_b05/blob/master/out
 ```
 [see in Google Maps](https://www.google.com/maps/@-1.396042,102.7611715,935m/data=!3m1!1e3)
 
-Some classes are hard to differentiate from each other in aerial images. For example:  
-- Primary forest - Secondary forest  
-- Secondary forest - Plantation forest  
-- Oil palm plantation - Coconut plantation  
+Some classes are hard to differentiate from each other even in high resolution aerial images. 
+For example:  
+- Primary forest / Secondary forest  
+- Secondary forest / Plantation forest  
+- Oil palm plantation / Coconut plantation  
+
 
 ### Processing
 
